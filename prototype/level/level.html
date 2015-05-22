@@ -1,0 +1,212 @@
+<html>
+  <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script>
+
+      function getIndex(x,y) {
+        return x + "x" + y;
+      }
+
+      function makeCell() {
+        return {
+          n: "face",
+          s: "face",
+          w: "face",
+          e: "face"
+        };
+      }
+
+      function drawLevelView(w, h, level) {
+        console.log("Draw level view", w, h, level);
+        var tc = $("<table>");
+
+        for(var i = 0; i < w; i++) {
+
+          var row = $("<tr>");
+          tc.append(row);
+          for(var j = 0; j < w; j++) {
+            var col = $("<td>");
+            row.append(col);
+
+            if(level[getIndex(j,i)]) {
+              col.addClass("level-cell");
+              level[getIndex(j,i)].cell = col;
+            }
+          }
+
+        }
+
+        levelView.append(tc);
+      }
+
+      function putPlayerToLevelCell(x, y, d, rlevel) {
+        console.log("Move to", x, y);
+        var v = rlevel[getIndex(x,y)];
+        if(v){
+          $("td.with-player", levelView).removeClass("with-player");
+          $(".with-player.-d-n", levelView).removeClass("-d-n");
+          $(".with-player.-d-s", levelView).removeClass("-d-s");
+          $(".with-player.-d-w", levelView).removeClass("-d-w");
+          $(".with-player.-d-e", levelView).removeClass("-d-e");
+          v.cell.addClass("with-player");
+          v.cell.addClass("-d-" + d);
+        } else {
+          throw("There is no cell at " + getIndex(x,y));
+        }
+      }
+
+      var level = {
+        "5x0": makeCell(),
+        "5x1": makeCell(),
+        "5x2": makeCell(),
+        "5x3": makeCell(),
+        "5x4": makeCell(),
+        "5x5": makeCell(),
+        "5x6": makeCell(),
+        "4x3": makeCell(),
+        "3x3": makeCell(),
+        "2x3": makeCell(),
+        "6x3": makeCell(),
+        "7x3": makeCell(),
+        "8x3": makeCell()
+      };
+
+
+      $(function(){
+
+        window.levelView = $("#level-view");
+
+        var playerP = {
+          x: 5, y: 6, d: "n"
+        };
+
+        drawLevelView(10, 10, level);
+
+        var refreshPlayerPosition = function() {
+          try{
+            putPlayerToLevelCell(playerP.x, playerP.y, playerP.d, level);
+            return true;
+          } catch(e) {
+            console.warn("Moving to unknown cell");
+            return false;
+          }
+        };
+
+        var handleMove = function(prop, value) {
+          var original = playerP[prop]
+          playerP[prop] = value;
+          if(!refreshPlayerPosition()) {
+            playerP[prop] = original;
+            refreshPlayerPosition();
+          }
+        };
+
+        var changeD = function(vector) {
+          var directions = ["n", "e", "s", "w"];
+          var cdi = directions.indexOf(playerP.d);
+
+          if(vector > 0) {
+            var ndi = cdi + 1;
+            if(ndi >= directions.length) ndi = 0;
+            playerP.d = ndi;
+          } else {
+            var ndi = cdi - 1;
+            if(ndi < 0) ndi = directions.length - 1;
+            playerP = ndi;
+          }
+        };
+
+        $(document).on("keyup", function(e) {
+
+          var KEY_UP = 38,
+              KEY_DOWN = 40,
+              KEY_LEFT = 37,
+              KEY_RIGHT = 39;
+
+          switch(e.which) {
+
+            case KEY_UP:
+              if(["n", "s"].indexOf(playerP.d) != -1 ) {
+                handleMove("y", playerP.y - 1);
+              } else {
+                handleMove("x", playerP.x - 1);
+              }
+              break;
+
+            case KEY_DOWN:
+              if(["n", "s"].indexOf(playerP.d) != -1 ) {
+                handleMove("y", playerP.y + 1);
+              } else {
+                handleMove("x", playerP.y + 1);
+              }
+              break;
+
+            case KEY_LEFT:
+              changeD(-1);
+              break;
+
+            case KEY_RIGHT:
+              changeD(+1);
+              break
+
+          }
+
+          refreshPlayerPosition();
+        });
+
+        refreshPlayerPosition();
+
+      });
+    </script>
+
+    <style>
+      #level-view table td {
+        width: 20px;
+        height: 20px;
+
+        border: 1px solid lightgrey;
+      }
+
+      #level-view table td.level-cell {
+        border: 1px solid blue;
+
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      #level-view table td.with-player {
+        background: red;
+      }
+
+      #level-view table td.with-player:before {
+        line-height: 0;
+      }
+
+      #level-view table td.with-player.-d-n:before {
+        content: 'n';
+        color: white;
+      }
+
+      #level-view table td.with-player.-d-s:before {
+        content: 's';
+        color: white;
+      }
+
+      #level-view table td.with-player.-d-w:before {
+        content: 'w';
+        color: white;
+      }
+
+      #level-view table td.with-player.-d-e:before {
+        content: 'e';
+        color: white;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="level-view"></div>
+  </body>
+</html>

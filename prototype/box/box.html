@@ -1,0 +1,186 @@
+<html>
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <style>
+    .viewport {
+      position: relative;
+      float: left;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: black;
+      -webkit-perspective: 700px;
+      -moz-perspective: 700px;
+      -ms-perspective: 700px;
+      perspective: 700px;
+    }
+
+    .world {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform-style: preserve-3d;
+      -moz-transform-style: preserve-3d;
+      -ms-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+
+      -webkit-transform-origin: 0px 0px 0px;
+      -webkit-transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    .plane {
+      position: absolute;
+      -webkit-transform-origin: 0 0 0;
+      -moz-transform-origin: 0 0 0;
+      -ms-transform-origin: 0 0 0;
+
+      width: 800px;
+      height: 800px;
+
+      border: 2px solid white;
+      background: transparent !important;
+    }
+
+    .plane1 {
+      -webkit-transform: translate3d(-400px, -400px, -400px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+      background: red;
+    }
+
+    .plane2 {
+      background: green;
+
+      -webkit-transform: translate3d(-400px, -400px, 400px) rotateX(0deg) rotateY(90deg) rotateZ(0deg);
+    }
+
+    .plane3 {
+      background: blue;
+
+      -webkit-transform: translate3d(400px, -400px, 400px) rotateX(0deg) rotateY(90deg) rotateZ(0deg);
+    }
+
+    .plane4 {
+      background: yellow;
+
+      -webkit-transform: translate3d(-400px, -400px, -400px) rotateX(90deg) rotateY(0deg) rotateZ(0deg);
+    }
+  </style>
+
+  <script>
+    $(function(){
+
+      var camera = $(".world");
+
+      var tx = 0, ty = 0, tz = 0;
+      var rx = 0, ry = 0, rz = 0;
+
+      var navigateCamera = function() {
+        var translate = [tx, ty, tz]
+          .map(function(v){return v + "px";})
+          .join(", ");
+
+        var rotate = [{a: "X", v: rx}, {a: "Y", v: ry}, {a: "Z", v: rz}]
+          .map(function(v){
+              return "rotate%A(%Vdeg)".replace("%A", v.a).replace("%V", v.v);
+            }).join(" ");
+
+        var prop = "translate3d(%T) %R".replace("%T", translate).replace("%R", rotate);
+
+        var origin = [-tx, -ty, 0].map(function(v){ return v.toString() + "px"; }).join(" ");
+
+        console.log("Navigate", origin);
+
+        camera.css(
+          {
+            "-webkit-transform": prop,
+            "-webkit-transform-origin": origin
+          }
+        );
+      };
+
+      $(document).on("keydown", function(e){
+
+        var step = 15;
+
+        var KEY_UP = 38,
+            KEY_DOWN = 40,
+            KEY_LEFT = 37,
+            KEY_RIGHT = 39;
+
+        switch(e.which) {
+          case KEY_UP:
+              tz += step;
+              navigateCamera();
+            break;
+
+          case KEY_DOWN:
+              tz -= step;
+              navigateCamera();
+            break;
+
+          case KEY_LEFT:
+              tx -= step;
+              navigateCamera();
+            break;
+
+          case KEY_RIGHT:
+              tx += step;
+              navigateCamera();
+            break;
+        }
+
+      });
+
+      (
+        function(){
+          var isdown = false;
+          var mvector = null;
+          var px = null;
+
+          // На сколько процентов двигаемся
+          var mp = 0.5;
+
+          $(document).on("mousedown", function(e){
+            isdown = true;
+          });
+
+          $(document).on("mouseup", function(e){
+            console.log("Mouseup", e);
+            isdown = false;
+            mvector = null;
+            px = null;
+          });
+
+          $(document).on("mousemove", function(e){
+            if(isdown) {
+              if(px == null) {
+                px = e.clientX;
+              }
+
+              mvector = (e.clientX - px) * mp;
+              px = e.clientX;
+
+              console.log("Vector is", e.clientX - px, mvector);
+
+              ry += mvector;
+              navigateCamera();
+            }
+          });
+        }
+      )();
+    });
+  </script>
+
+</head>
+<body>
+  <div class="viewport">
+    <div class="world">
+      <div class="plane plane1"></div>
+      <div class="plane plane2"></div>
+      <div class="plane plane3"></div>
+      <div class="plane plane4"></div>
+    </div>
+  </div>
+</body>
+</html>
