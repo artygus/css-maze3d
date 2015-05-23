@@ -1,0 +1,42 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#level-editor {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  -webkit-user-select: none;
+}
+
+.grid {
+  position: relative;
+
+  display: inline-block;
+}
+
+
+.grid__row {
+  white-space: nowrap;
+
+  display: inline-block;
+}
+
+.grid__col {
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid lightgray;
+
+  display: inline-block;
+
+  margin: 1px;
+}
+
+.level-cell {
+  border: 1px solid blue;
+  box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.2) inset;
+}
+
