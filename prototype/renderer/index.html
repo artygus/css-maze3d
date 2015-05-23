@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <script src="../lib/renderer.js"></script>
+  <link rel="stylesheet" href="./textures.css" />
+</head>
+<body style="margin:100px;">
+  <div id="viewport" style="width:500px;height:500px;perspective:1000px;">
+    <div id="world"></div>
+  </div>
+  <script>
+    var worldEl = document.getElementById('world'),
+        renderGod = new Renderer(worldEl);
+
+    renderGod.wall([0,0], 'n', 'wall');
+
+    renderGod.wall([0,0], 'e', 'wall');
+    renderGod.wall([0,0], 'w', 'wall');
+
+    renderGod.wall([0,1], 'w', 'wall');
+
+    renderGod.wall([1,1], 'n', 'wall');
+    renderGod.wall([1,1], 's', 'wall');
+    renderGod.wall([1,1], 'e', 'wall');
+
+    renderGod.wall([0,2], 'e', 'wall');
+    renderGod.wall([0,2], 'w', 'wall');
+
+    renderGod.wall([0,3], 'e', 'wall');
+    renderGod.wall([0,3], 'w', 'wall');
+
+    renderGod.wall([0,3], 's', 'wall');
+
+  </script>
+</body>
+</html

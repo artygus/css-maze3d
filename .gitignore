@@ -1,2 +1,4 @@
 .idea
 sandbox
+.DS_Store
+*.sw[o,p]
