@@ -1,0 +1,41 @@
+    window.levelView = $("#level-view");
+
+    window.playerP = {
+      x: 5, y: 6, d: "n"
+    };
+
+    drawLevelView(10, 10, level);
+
+    $(document).on("keyup", function(e) {
+      console.log("Keyup", e.which);
+      e.preventDefault();
+      e.stopPropagation();
+
+      switch(e.which) {
+
+        case KEY_UP:
+        case KEY_DOWN:
+          var v = getVectorByKeyAndDirection(e.which);
+          handleMove(v.dim, playerP[v.dim] + v.v);
+          break;
+
+        case KEY_LEFT:
+          changeD(-1);
+          break;
+
+        case KEY_RIGHT:
+          changeD(+1);
+          break;
+
+        case KEY_A:
+          attack();
+          break;
+
+      }
+
+      refreshPlayerPosition();
+    });
+
+    refreshPlayerPosition();
+
+  });
