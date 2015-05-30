@@ -12,6 +12,8 @@ class window.Actor
 
   I_UPDATED: "actor:updated"
 
+  I_DIED: "actor:died"
+
   constructor: ->
     @objid = utils.createObjectId()
     @currentPosition = null
@@ -113,6 +115,10 @@ class window.Actor
   # Calculate dmg
   calcDamage: (dice)=> Math.round(@DAMAGE * dice/100)
 
+  # @return {Boolean}
+  isDied: =>
+    @HEALTH <= 0
+
   # Receive damage
   # @param {Actor} from
   # @param {Integer} value
@@ -121,6 +127,8 @@ class window.Actor
     @HEALTH -= value
     @reactUpdated()
 
+    if @isDied()
+      @reactDied()
 
   # section: React
 
@@ -129,6 +137,10 @@ class window.Actor
 
   reactUpdated: =>
     $(@).trigger @I_UPDATED
+
+  reactDied: =>
+    console.log @DT, "Died #{@objid}"
+    $(@).trigger @I_DIED
 
 
 

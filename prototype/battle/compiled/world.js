@@ -19,6 +19,7 @@
       this.findEntityAt = __bind(this.findEntityAt, this);
       this.getNextCellFor = __bind(this.getNextCellFor, this);
       this.position = __bind(this.position, this);
+      this.removeAllDiedActors = __bind(this.removeAllDiedActors, this);
       this.actorTurn = __bind(this.actorTurn, this);
       this.timeStateUpdated = __bind(this.timeStateUpdated, this);
       this.createTime = __bind(this.createTime, this);
@@ -29,7 +30,8 @@
     }
 
     World.prototype.addEntity = function(entity) {
-      return this.entities.push(entity);
+      this.entities.push(entity);
+      return $(entity).one(entity.I_DIED, this.removeAllDiedActors);
     };
 
     World.prototype.ROUND_STATE_START = "round state start";
@@ -85,6 +87,15 @@
         $(p).one(p.I_ACTION_COMPLETED, completed);
         return p.act();
       }
+    };
+
+    World.prototype.removeAllDiedActors = function() {
+      this.entities = this.entities.filter((function(_this) {
+        return function(e) {
+          return !e.isDied();
+        };
+      })(this));
+      return this.reactUpdated();
     };
 
     World.prototype.position = function(entity, coord) {

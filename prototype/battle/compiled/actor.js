@@ -16,10 +16,14 @@
 
     Actor.prototype.I_UPDATED = "actor:updated";
 
+    Actor.prototype.I_DIED = "actor:died";
+
     function Actor() {
+      this.reactDied = __bind(this.reactDied, this);
       this.reactUpdated = __bind(this.reactUpdated, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
       this.receiveDmg = __bind(this.receiveDmg, this);
+      this.isDied = __bind(this.isDied, this);
       this.calcDamage = __bind(this.calcDamage, this);
       this.throwD100Dice = __bind(this.throwD100Dice, this);
       this.position = __bind(this.position, this);
@@ -124,10 +128,17 @@
       return Math.round(this.DAMAGE * dice / 100);
     };
 
+    Actor.prototype.isDied = function() {
+      return this.HEALTH <= 0;
+    };
+
     Actor.prototype.receiveDmg = function(from, value) {
       console.log(this.DT, "Receive dmg from " + from.objid, value);
       this.HEALTH -= value;
-      return this.reactUpdated();
+      this.reactUpdated();
+      if (this.isDied()) {
+        return this.reactDied();
+      }
     };
 
     Actor.prototype.reactActionCompleted = function() {
@@ -136,6 +147,11 @@
 
     Actor.prototype.reactUpdated = function() {
       return $(this).trigger(this.I_UPDATED);
+    };
+
+    Actor.prototype.reactDied = function() {
+      console.log(this.DT, "Died " + this.objid);
+      return $(this).trigger(this.I_DIED);
     };
 
     return Actor;
