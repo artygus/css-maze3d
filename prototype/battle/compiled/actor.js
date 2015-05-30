@@ -8,36 +8,134 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   window.Actor = (function() {
-    function Actor() {
-      this.reactActionCompleted = __bind(this.reactActionCompleted, this);
-      this.place = __bind(this.place, this);
-      this.move = __bind(this.move, this);
-      this.noop = __bind(this.noop, this);
-      this.act = __bind(this.act, this);
-    }
+    Actor.prototype.DT = "Actor";
 
     Actor.prototype.I_ACTION_COMPLETED = "action_completed";
 
     Actor.prototype.I_MOVED = "moved";
 
+    Actor.prototype.I_UPDATED = "actor:updated";
+
+    function Actor() {
+      this.reactUpdated = __bind(this.reactUpdated, this);
+      this.reactActionCompleted = __bind(this.reactActionCompleted, this);
+      this.receiveDmg = __bind(this.receiveDmg, this);
+      this.calcDamage = __bind(this.calcDamage, this);
+      this.throwD100Dice = __bind(this.throwD100Dice, this);
+      this.position = __bind(this.position, this);
+      this.place = __bind(this.place, this);
+      this.attack = __bind(this.attack, this);
+      this.turn = __bind(this.turn, this);
+      this.move = __bind(this.move, this);
+      this.noop = __bind(this.noop, this);
+      this.turnEnded = __bind(this.turnEnded, this);
+      this.act = __bind(this.act, this);
+      this.objid = utils.createObjectId();
+      this.currentPosition = null;
+    }
+
     Actor.prototype.act = function() {
-      return this.noop();
+      return this.inCharge = true;
+    };
+
+    Actor.prototype.turnEnded = function() {
+      return this.inCharge = false;
     };
 
     Actor.prototype.noop = function() {
+      if (!this.inCharge) {
+        return;
+      }
       return this.reactActionCompleted();
     };
 
-    Actor.prototype.move = function() {
-      return this.reactActionCompleted();
+    Actor.prototype.move = function(coord) {
+      if (!this.inCharge) {
+        return;
+      }
+      this.position(coord);
+      this.reactActionCompleted();
+      return this.reactUpdated();
     };
 
-    Actor.prototype.place = function(world, x, y, d) {
-      return world.addEntity(this);
+    Actor.prototype.turn = function(vector) {
+      var cdi, ndi;
+      if (!this.inCharge) {
+        return;
+      }
+      cdi = utils.directions.indexOf(this.currentPosition.d);
+      if (vector > 0) {
+        ndi = cdi + 1;
+        if (ndi >= utils.directions.length) {
+          ndi = 0;
+        }
+      } else {
+        ndi = cdi - 1;
+        if (ndi < 0) {
+          ndi = utils.directions.length - 1;
+        }
+      }
+      this.currentPosition.d = utils.directions[ndi];
+      return this.reactUpdated();
+    };
+
+    Actor.prototype.attack = function() {
+      var dmg, entity, nci;
+      if (!this.inCharge) {
+        return;
+      }
+      nci = this.world.getNextCellFor(this);
+      entity = this.world.findEntityAt(nci);
+      if (entity != null) {
+        console.log(this.DT, "" + this.objid + " perform attack " + entity.objid, nci);
+        dmg = this.calcDamage(this.throwD100Dice());
+        entity.receiveDmg(this, dmg);
+        this.reactUpdated();
+        return this.reactActionCompleted();
+      } else {
+        return console.warn(this.DT, "Trying to attack empty cell", JSON.stringify(nci));
+      }
+    };
+
+    Actor.prototype.place = function(world, coord) {
+      this.world = world;
+      this.world.addEntity(this);
+      $(this).on(this.I_UPDATED, this.world.reactUpdated);
+      return this.position(coord);
+    };
+
+    Actor.prototype.position = function(coord) {
+      console.log(this.DT, "Position " + this.objid + " to", JSON.stringify(coord));
+      this.currentPosition = this.world.position(this, coord);
+      return this.reactUpdated();
+    };
+
+    Actor.prototype.HEALTH = 100;
+
+    Actor.prototype.MAX_HEALTH = 100;
+
+    Actor.prototype.DAMAGE = 10;
+
+    Actor.prototype.throwD100Dice = function() {
+      return Math.floor(Math.random() * 100);
+    };
+
+    Actor.prototype.calcDamage = function(dice) {
+      return Math.round(this.DAMAGE * dice / 100);
+    };
+
+    Actor.prototype.receiveDmg = function(from, value) {
+      console.log(this.DT, "Receive dmg from " + from.objid, value);
+      this.HEALTH -= value;
+      return this.reactUpdated();
     };
 
     Actor.prototype.reactActionCompleted = function() {
       return $(this).trigger(this.I_ACTION_COMPLETED);
+    };
+
+    Actor.prototype.reactUpdated = function() {
+      return $(this).trigger(this.I_UPDATED);
     };
 
     return Actor;

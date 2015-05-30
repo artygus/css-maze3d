@@ -2,6 +2,14 @@
   Main file
 ###
 
+makeCell = =>
+  return {
+    n: "face",
+    s: "face",
+    w: "face",
+    e: "face"
+  }
+
 window.level = {
   "5x0": makeCell(),
   "5x1": makeCell(),
@@ -18,6 +26,41 @@ window.level = {
   "8x3": makeCell()
 };
 
+clearLevelView = =>
+  levelView.find(".with-player").removeClass "with-player"
+
+  dcl = utils.directions.map((e)=> "-d-#{e}")
+  for cl in dcl
+    levelView.find(".#{cl}").removeClass(cl)
+
+drawEntities = =>
+  for entity in world.entities
+    if (p = entity.currentPosition)?
+      cc = utils.getCellIndex(p.x, p.y)
+
+      cell = level[cc].cell;
+      cell.addClass "with-player"
+      cell.addClass "-d-#{p.d}"
+
+drawLevelView = (w, h, level) ->
+  console.log 'Draw level view', w, h, level
+  tc = $('<table>')
+  i = 0
+  while i < w
+    row = $('<tr>')
+    tc.append row
+    j = 0
+    while j < w
+      col = $('<td>')
+      row.append col
+      if level[utils.getCellIndex(j, i)]
+        col.addClass 'level-cell'
+        level[utils.getCellIndex(j, i)].cell = col
+      j++
+    i++
+  levelView.append tc
+
+
 $ ->
 
   window.levelView = $("#level-view")
@@ -26,9 +69,16 @@ $ ->
 
   window.world = new World(level);
 
+  $(world).on world.I_UPDATED, =>
+    console.log "Renderer", "World updated"
+    clearLevelView()
+    drawEntities()
+
   player = new Player()
-  player.place(world, 5, 6, "n")
+  player.place(world, utils.getCoord(5, 6, "n"))
 
   mob = new DummyActor()
-  mob.place(world, 5, 0, "s")
+  mob.place(world, utils.getCoord(5, 0, "s"))
+
+
 

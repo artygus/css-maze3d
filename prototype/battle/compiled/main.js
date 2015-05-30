@@ -5,6 +5,19 @@
  */
 
 (function() {
+  var clearLevelView, drawEntities, drawLevelView, makeCell;
+
+  makeCell = (function(_this) {
+    return function() {
+      return {
+        n: "face",
+        s: "face",
+        w: "face",
+        e: "face"
+      };
+    };
+  })(this);
+
   window.level = {
     "5x0": makeCell(),
     "5x1": makeCell(),
@@ -21,15 +34,81 @@
     "8x3": makeCell()
   };
 
+  clearLevelView = (function(_this) {
+    return function() {
+      var cl, dcl, _i, _len, _results;
+      levelView.find(".with-player").removeClass("with-player");
+      dcl = utils.directions.map(function(e) {
+        return "-d-" + e;
+      });
+      _results = [];
+      for (_i = 0, _len = dcl.length; _i < _len; _i++) {
+        cl = dcl[_i];
+        _results.push(levelView.find("." + cl).removeClass(cl));
+      }
+      return _results;
+    };
+  })(this);
+
+  drawEntities = (function(_this) {
+    return function() {
+      var cc, cell, entity, p, _i, _len, _ref, _results;
+      _ref = world.entities;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        entity = _ref[_i];
+        if ((p = entity.currentPosition) != null) {
+          cc = utils.getCellIndex(p.x, p.y);
+          cell = level[cc].cell;
+          cell.addClass("with-player");
+          _results.push(cell.addClass("-d-" + p.d));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+  })(this);
+
+  drawLevelView = function(w, h, level) {
+    var col, i, j, row, tc;
+    console.log('Draw level view', w, h, level);
+    tc = $('<table>');
+    i = 0;
+    while (i < w) {
+      row = $('<tr>');
+      tc.append(row);
+      j = 0;
+      while (j < w) {
+        col = $('<td>');
+        row.append(col);
+        if (level[utils.getCellIndex(j, i)]) {
+          col.addClass('level-cell');
+          level[utils.getCellIndex(j, i)].cell = col;
+        }
+        j++;
+      }
+      i++;
+    }
+    return levelView.append(tc);
+  };
+
   $(function() {
     var mob, player;
     window.levelView = $("#level-view");
     drawLevelView(10, 10, level);
     window.world = new World(level);
+    $(world).on(world.I_UPDATED, (function(_this) {
+      return function() {
+        console.log("Renderer", "World updated");
+        clearLevelView();
+        return drawEntities();
+      };
+    })(this));
     player = new Player();
-    player.place(world, 5, 6, "n");
+    player.place(world, utils.getCoord(5, 6, "n"));
     mob = new DummyActor();
-    return mob.place(world, 5, 0, "s");
+    return mob.place(world, utils.getCoord(5, 0, "s"));
   });
 
 }).call(this);

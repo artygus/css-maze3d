@@ -12,14 +12,50 @@
   window.Player = (function(_super) {
     __extends(Player, _super);
 
+    Player.prototype.DT = "Player";
+
     function Player() {
+      this.initKeyboardControls = __bind(this.initKeyboardControls, this);
       this.act = __bind(this.act, this);
-      return Player.__super__.constructor.apply(this, arguments);
+      Player.__super__.constructor.apply(this, arguments);
+      this.initKeyboardControls();
     }
 
     Player.prototype.act = function() {
-      return setTimeout(this.reactActionCompleted, 5000);
+      return Player.__super__.act.apply(this, arguments);
     };
+
+    Player.prototype.initKeyboardControls = function() {
+      return $(document).on("keyup", (function(_this) {
+        return function(e) {
+          var cc, v;
+          switch (e.which) {
+            case utils.KEY_UP:
+            case utils.KEY_DOWN:
+              console.log(_this.DT, "Key up or down");
+              cc = $.extend({}, _this.currentPosition);
+              v = utils.getVectorByKeyAndDirection(e.which, _this.currentPosition.d);
+              cc[v.dim] += v.v;
+              return _this.move(cc);
+            case utils.KEY_LEFT:
+              console.log(_this.DT, "Key left");
+              return _this.turn(-1);
+            case utils.KEY_RIGHT:
+              console.log(_this.DT, "Key right");
+              return _this.turn(+1);
+            case utils.KEY_A:
+              console.log(_this.DT, "Key A");
+              return _this.attack();
+          }
+        };
+      })(this));
+    };
+
+    Player.prototype.HEALTH = 200;
+
+    Player.prototype.MAX_HEALTH = 200;
+
+    Player.prototype.DAMAGE = 20;
 
     return Player;
 

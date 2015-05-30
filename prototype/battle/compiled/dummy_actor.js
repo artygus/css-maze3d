@@ -6,15 +6,34 @@
  */
 
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   window.DummyActor = (function(_super) {
     __extends(DummyActor, _super);
 
     function DummyActor() {
+      this.act = __bind(this.act, this);
       return DummyActor.__super__.constructor.apply(this, arguments);
     }
+
+    DummyActor.prototype.act = function() {
+      var entity;
+      DummyActor.__super__.act.apply(this, arguments);
+      entity = this.world.findEntityAt(this.world.getNextCellFor(this));
+      if (entity != null) {
+        return this.attack();
+      } else {
+        return this.noop();
+      }
+    };
+
+    DummyActor.prototype.HEALTH = 50;
+
+    DummyActor.prototype.MAX_HEALTH = 50;
+
+    DummyActor.prototype.DAMAGE = 10;
 
     return DummyActor;
 
