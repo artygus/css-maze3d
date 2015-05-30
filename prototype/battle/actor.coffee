@@ -42,9 +42,9 @@ class window.Actor
   move: (coord)=>
     return unless @inCharge
 
-    @position(coord)
-    @reactActionCompleted()
-    @reactUpdated()
+    if @position(coord)
+      @reactActionCompleted()
+      @reactUpdated()
 
   # Turn
   turn: (vector)=>
@@ -92,10 +92,18 @@ class window.Actor
     @position coord
 
   # @param {Coordinate|null} coord
+  # @return {Boolean} true - positioned, otherwise false
   position: (coord)=>
     console.log @DT, "Position #{@objid} to", JSON.stringify(coord)
-    @currentPosition = @world.position @, coord
+
+    try
+      @currentPosition = @world.position @, coord
+    catch e
+      console.warn e
+      return false
+
     @reactUpdated()
+    return true
 
 
   # section: Combat mechanics

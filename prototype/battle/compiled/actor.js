@@ -57,9 +57,10 @@
       if (!this.inCharge) {
         return;
       }
-      this.position(coord);
-      this.reactActionCompleted();
-      return this.reactUpdated();
+      if (this.position(coord)) {
+        this.reactActionCompleted();
+        return this.reactUpdated();
+      }
     };
 
     Actor.prototype.turn = function(vector) {
@@ -109,9 +110,17 @@
     };
 
     Actor.prototype.position = function(coord) {
+      var e;
       console.log(this.DT, "Position " + this.objid + " to", JSON.stringify(coord));
-      this.currentPosition = this.world.position(this, coord);
-      return this.reactUpdated();
+      try {
+        this.currentPosition = this.world.position(this, coord);
+      } catch (_error) {
+        e = _error;
+        console.warn(e);
+        return false;
+      }
+      this.reactUpdated();
+      return true;
     };
 
     Actor.prototype.HEALTH = 100;

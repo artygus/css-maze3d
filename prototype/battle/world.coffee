@@ -93,11 +93,15 @@ class window.World
   position: (entity, coord)=>
     cc = utils.getCellIndex(coord.x, coord.y)
 
-    if @level[cc]?
+    cellExist = @level[cc]?
+    cellEmpty = !@findEntityAt({x: coord.x, y: coord.y})?
+
+    if cellEmpty && cellExist
       return coord
+    else if !cellExist
+      throw "World does not have a cell at a given coord #{cc}"
     else
-      console.error @DT, "World does not have a cell at a given coord #{cc}"
-      return entity.currentPosition
+      throw "Cell is not empty"
 
   # Get next cell for a given entity
   getNextCellFor: (entity)=>
@@ -132,7 +136,7 @@ class window.World
     for entity in @entities
       c = entity.currentPosition
 
-      if c.x == pos.x && c.y == pos.y
+      if c? && c.x == pos.x && c.y == pos.y
         return entity
 
     return null

@@ -99,13 +99,19 @@
     };
 
     World.prototype.position = function(entity, coord) {
-      var cc;
+      var cc, cellEmpty, cellExist;
       cc = utils.getCellIndex(coord.x, coord.y);
-      if (this.level[cc] != null) {
+      cellExist = this.level[cc] != null;
+      cellEmpty = this.findEntityAt({
+        x: coord.x,
+        y: coord.y
+      }) == null;
+      if (cellEmpty && cellExist) {
         return coord;
+      } else if (!cellExist) {
+        throw "World does not have a cell at a given coord " + cc;
       } else {
-        console.error(this.DT, "World does not have a cell at a given coord " + cc);
-        return entity.currentPosition;
+        throw "Cell is not empty";
       }
     };
 
@@ -141,7 +147,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         entity = _ref[_i];
         c = entity.currentPosition;
-        if (c.x === pos.x && c.y === pos.y) {
+        if ((c != null) && c.x === pos.x && c.y === pos.y) {
           return entity;
         }
       }
