@@ -60,10 +60,32 @@ drawLevelView = (w, h, level) ->
     i++
   levelView.append tc
 
+clearActorsView = ->
+  actorsView.html("")
+
+drawActorsView = ->
+  for entity in world.entities
+    v = $("<div>", class: "actor")
+    nv = $("<h2>")
+    hv = $("<div>", class: "actor__healthbar")
+
+    v.append(nv)
+    v.append(hv)
+
+    if entity.constructor == Player
+      nv.text "Player"
+    else
+      nv.text "Actor #{entity.objid}"
+
+    health = (entity.HEALTH/entity.MAX_HEALTH)*100
+    hv.css width: "#{health}%"
+
+    actorsView.append v
 
 $ ->
 
   window.levelView = $("#level-view")
+  window.actorsView = $("#actors-view")
 
   drawLevelView(10, 10, level);
 
@@ -73,6 +95,8 @@ $ ->
     console.log "Renderer", "World updated"
     clearLevelView()
     drawEntities()
+    clearActorsView()
+    drawActorsView()
 
   player = new Player()
   player.place(world, utils.getCoord(5, 6, "n"))

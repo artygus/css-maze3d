@@ -5,7 +5,7 @@
  */
 
 (function() {
-  var clearLevelView, drawEntities, drawLevelView, makeCell;
+  var clearActorsView, clearLevelView, drawActorsView, drawEntities, drawLevelView, makeCell;
 
   makeCell = (function(_this) {
     return function() {
@@ -93,16 +93,52 @@
     return levelView.append(tc);
   };
 
+  clearActorsView = function() {
+    return actorsView.html("");
+  };
+
+  drawActorsView = function() {
+    var entity, health, hv, nv, v, _i, _len, _ref, _results;
+    _ref = world.entities;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      entity = _ref[_i];
+      v = $("<div>", {
+        "class": "actor"
+      });
+      nv = $("<h2>");
+      hv = $("<div>", {
+        "class": "actor__healthbar"
+      });
+      v.append(nv);
+      v.append(hv);
+      if (entity.constructor === Player) {
+        nv.text("Player");
+      } else {
+        nv.text("Actor " + entity.objid);
+      }
+      health = (entity.HEALTH / entity.MAX_HEALTH) * 100;
+      hv.css({
+        width: "" + health + "%"
+      });
+      _results.push(actorsView.append(v));
+    }
+    return _results;
+  };
+
   $(function() {
     var mob, player;
     window.levelView = $("#level-view");
+    window.actorsView = $("#actors-view");
     drawLevelView(10, 10, level);
     window.world = new World(level);
     $(world).on(world.I_UPDATED, (function(_this) {
       return function() {
         console.log("Renderer", "World updated");
         clearLevelView();
-        return drawEntities();
+        drawEntities();
+        clearActorsView();
+        return drawActorsView();
       };
     })(this));
     player = new Player();
