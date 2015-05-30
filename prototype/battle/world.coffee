@@ -23,6 +23,8 @@ class window.World
   addEntity: (entity)=>
     @entities.push entity
 
+    $(entity).one entity.s.I_DIED, @removeAllDiedActors
+
   # section: Round system
 
   ROUND_STATE_START: "round state start"
@@ -80,6 +82,10 @@ class window.World
 
       p.act()
 
+  # Remove died actors
+  removeAllDiedActors: =>
+    @entities = @entities.filter (e)=> !e.isDied()
+    @reactUpdated()
 
   # section: Positioning
 
