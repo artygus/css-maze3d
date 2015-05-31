@@ -2,7 +2,7 @@
 (function() {
   $(function() {
     return $('#modalSave').on('shown.bs.modal', function() {
-      return $("#modalSave #levelJson").text(JSON.stringify(window.level));
+      return $("#modalSave [name='levelJson']").text(JSON.stringify(window.level));
     });
   });
 

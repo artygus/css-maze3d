@@ -1,0 +1,85 @@
+renderGrid = (size) ->
+  startAt = Date.now()
+  rows = ''
+  i = 0
+  while i < size
+    ii = i.toString()
+    cols = ''
+    j = 0
+    while j < size
+      xy = 'x=\'' + j + '\' y=\'' + ii + '\''
+      cols += '<div class=\'grid__col\' cell ' + xy + '></div>'
+      j++
+    rows += '<div class=\'grid__row\'>' + cols + '</div>'
+    i++
+  container = '<div class=\'grid\'>' + rows + '</div>'
+  levelEditorEl.append container
+  console.log 'Ended by', Date.now() - startAt
+  levelEditorEl.find '.grid'
+
+getCenterGridX = ->
+  -Math.round(grid.width() / 2)
+
+getCenterGridY = ->
+  -Math.round(grid.height() / 2)
+
+positionGrid = ->
+  grid.css
+    top: gX
+    left: gY
+  return
+
+getXYfromCell = (cell) ->
+  {
+  x: parseInt(cell.attr('x'))
+  y: parseInt(cell.attr('y'))
+  }
+
+getIndex = (x, y) ->
+  x + 'x' + y
+
+makeCell = ->
+  {
+  n: 'face'
+  s: 'face'
+  w: 'face'
+  e: 'face'
+  }
+
+centerGrid = ->
+  window.gX = getCenterGridX()
+  window.gY = getCenterGridY()
+  positionGrid()
+  return
+
+window.drawLevel = ->
+  console.log "Draw level", window.level
+  levelEditorEl.find(".level-cell").removeClass "level-cell"
+
+  for index, cell of level
+    coords = index.split("x")
+    levelEditorEl
+      .find("[x='#{coords[0]}'][y='#{coords[1]}']")
+      .addClass "level-cell"
+
+$ ->
+  window.level = {}
+  window.levelEditorEl = $('#level-editor')
+  window.grid = renderGrid(100)
+  centerGrid()
+  # Cell click
+  grid.find('[cell]').on 'click', (e) ->
+    el = $(e.target)
+    console.log 'Click on', el, e
+    xy = getXYfromCell(el)
+    ci = getIndex(xy.x, xy.y)
+    if e.altKey
+      el.removeClass 'level-cell'
+      delete level[ci]
+    else
+      el.addClass 'level-cell'
+      level[ci] = makeCell()
+      level[ci].cell = el
+    return
+  return
+
