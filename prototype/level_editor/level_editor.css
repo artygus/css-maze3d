@@ -9,6 +9,8 @@ body {
   overflow: hidden;
 
   -webkit-user-select: none;
+
+  position: relative;
 }
 
 .grid {
@@ -16,7 +18,6 @@ body {
 
   display: inline-block;
 }
-
 
 .grid__row {
   white-space: nowrap;
@@ -39,4 +40,47 @@ body {
   border: 1px solid blue;
   box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.2) inset;
 }
+
+/* UI */
+
+.ui {
+  position: absolute;
+
+  z-index: 1;
+}
+
+.ui.-left {
+  left: 0;
+}
+
+.ui.-right {
+  right: 0;
+}
+
+.ui.-top {
+  top: 0;
+}
+
+.ui.-bottom {
+  bottom: 0;
+}
+
+.ui__save {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+
+  position: relative;
+  top: 30px;
+  right: 36px;
+}
+
+/* Helpers */
+
+.-rounded {
+  border-radius: 8px;
+}
+
+
+
+
 
