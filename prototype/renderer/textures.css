@@ -1,9 +1,9 @@
 .wall {
-  background-color: brown;
+  border: 1px solid white;
 }
 
 .floor {
-  background-color: gray;
+  background-color: grey;
 }
 
 .ceiling {

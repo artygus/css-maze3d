@@ -1,6 +1,6 @@
-function Renderer(el) {
+function Renderer(el, unit) {
   this.node = el;
-  this.unit = 100; // unit vector in px
+  this.unit = unit; // unit vector in px
 }
 
 Renderer.prototype = {
@@ -36,7 +36,6 @@ Renderer.prototype = {
         origin = [0, 50];
         rotate3 = [0, 1, 0];
         translate3 = [-this.unit, 0, 0];
-        break;
     }
 
     wallEl.style.position = 'absolute';
@@ -46,10 +45,11 @@ Renderer.prototype = {
     wallEl.style.width = this.unit + 'px';
     wallEl.style.height = this.unit + 'px';
 
-    wallEl.style.transform = 'rotate3d(' + rotate3 + ',90deg) translate3d(' + translate3.map(function(p) { return p + 'px' }) + ')';
+    wallEl.style.transform = 'rotate3d(' + rotate3 + ',90deg) translate3d(' + translate3.map(function(p) { return p + 'px ' }) + ')';
     wallEl.style.transformOrigin = origin[0] + '% ' + origin[1] + '%';
 
     wallEl.className = cls;
+    wallEl.setAttribute('data-coord', coord)
     this.node.appendChild(wallEl);
   }
 }

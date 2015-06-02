@@ -1,16 +1,28 @@
 <!doctype html>
 <html>
 <head>
+  <script src="../lib/camera.js"></script>
   <script src="../lib/renderer.js"></script>
   <link rel="stylesheet" href="./textures.css" />
+  <style>
+    #viewport {
+      background: #000;
+      position: relative;
+    }
+  </style>
 </head>
-<body style="margin:100px;">
-  <div id="viewport" style="width:500px;height:500px;perspective:1000px;">
-    <div id="world"></div>
+<body style="margin:0">
+  <div id="viewport">
+    <div id="camera">
+      <div id="world"></div>
+    </div>
   </div>
+
   <script>
     var worldEl = document.getElementById('world'),
-        renderGod = new Renderer(worldEl);
+        cameraEl = document.getElementById('camera'),
+        viewportEl = document.getElementById('viewport'),
+        renderGod = new Renderer(worldEl, 100);
 
     renderGod.wall([0,0], 'n', 'wall');
 
@@ -31,6 +43,63 @@
 
     renderGod.wall([0,3], 's', 'wall');
 
+    // camera
+    var camera = new Camera(viewportEl, window.innerWidth, window.innerHeight, cameraEl, 100),
+        coords = [0, 0],
+        directions = ['n', 'w', 's', 'e'],
+        directionIndex = 2;
+
+    camera.set(coords, directions[directionIndex]);
+
+    // free camera
+    var mx = 0,
+        my = 0;
+
+    document.addEventListener("mouseover", function(ev) {
+      mx = ev.pageX;
+      my = ev.pageY;
+      document.removeEventListener("mouseover", arguments.callee)
+    }, false);
+
+    document.addEventListener("mousemove", function(ev) {
+      camera.rotate(-(ev.pageY - my) / 2, -(ev.pageX - mx) / 2);
+      camera.update();
+      mx = ev.pageX;
+      my = ev.pageY;
+    }, false);
+
+    // keyboard
+    function cycle(array, index) {
+      return array[index % array.length];
+    }
+
+    document.addEventListener("keyup", function(e) {
+      switch (e.keyCode) {
+        case 83:
+          coords[1]--;
+          break;
+        case 65:
+          coords[0]++;
+          break;
+        case 87:
+          coords[1]++;
+          break;
+        case 68:
+          coords[0]--;
+          break;
+        case 81:
+          directionIndex--;
+          break;
+        case 69:
+          directionIndex++;
+          break;
+        default:
+          return false;
+      }
+
+      camera.set(coords, cycle(directions, directionIndex));
+      camera.update();
+    }, false);
   </script>
 </body>
 </html
