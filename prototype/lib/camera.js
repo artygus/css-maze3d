@@ -76,6 +76,6 @@ Camera.prototype = {
     }
     // apply
     this.node.style.transformOrigin = this.origin3.join('px ') + 'px';
-    this.node.style.transform = transforms.join(' ')
+    this.node.style.transform = transforms.join(' ');
   }
 }
