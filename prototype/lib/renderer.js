@@ -54,5 +54,15 @@ Renderer.prototype = {
     wallEl.setAttribute('data-coord', coord);
     wallEl.setAttribute('data-direction', dir);
     this.node.appendChild(wallEl);
+  },
+
+  walls: function(data) {
+    for(var i in data) {
+      if (data[i] instanceof Array) {
+        this.wall(data[i][0], data[i][1], data[i][2]);
+      } else {
+        this.wall(data[i].coord, data[i].dir, data[i].cls);
+      }
+    }
   }
 }

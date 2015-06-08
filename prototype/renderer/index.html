@@ -24,24 +24,20 @@
         viewportEl = document.getElementById('viewport'),
         renderGod = new Renderer(worldEl, 100);
 
-    renderGod.wall([0,0], 'n', 'wall');
-
-    renderGod.wall([0,0], 'e', 'wall');
-    renderGod.wall([0,0], 'w', 'wall');
-
-    renderGod.wall([0,1], 'w', 'wall');
-
-    renderGod.wall([1,1], 'n', 'wall');
-    renderGod.wall([1,1], 's', 'wall');
-    renderGod.wall([1,1], 'e', 'wall');
-
-    renderGod.wall([0,2], 'e', 'wall');
-    renderGod.wall([0,2], 'w', 'wall');
-
-    renderGod.wall([0,3], 'e', 'wall');
-    renderGod.wall([0,3], 'w', 'wall');
-
-    renderGod.wall([0,3], 's', 'wall');
+    renderGod.walls([
+      [[0,0], 'n', 'wall'],
+      [[0,0], 'e', 'wall'],
+      [[0,0], 'w', 'wall'],
+      [[0,1], 'w', 'wall'],
+      [[1,1], 'n', 'wall'],
+      [[1,1], 's', 'wall'],
+      [[1,1], 'e', 'wall'],
+      [[0,2], 'e', 'wall'],
+      [[0,2], 'w', 'wall'],
+      [[0,3], 'e', 'wall'],
+      [[0,3], 'w', 'wall'],
+      [[0,3], 's', 'wall']
+    ]);
 
     // camera
     var camera = new Camera(viewportEl, worldEl, window.innerWidth, window.innerHeight, cameraEl, 100),
