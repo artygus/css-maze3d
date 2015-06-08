@@ -1,42 +1,30 @@
-function Camera(viewportEl, width, height, cameraEl, unit) {
-  this.node = cameraEl;
-  this.unit = unit;
-  this.viewportSize = [width, height];
+function Camera(viewportEl, worldEl, width, height, cameraEl, unit) {
   this.perspective = 700;
+  this.unit = unit;
+  this.node = cameraEl;
+  this.worldNode = worldEl;
 
-  this.origin3 = [0, 0, 0];
   this.rotate3 = [90, 0, 0];
-  this.translate3 = [0, 0, this.perspective * 0.9];
+  this.translate3 = [0, 0, 0];
 
   viewportEl.style.width = width + 'px';
   viewportEl.style.height = height + 'px';
   viewportEl.style.perspective = this.perspective + 'px';
-  // viewportEl.style.overflow = 'hidden';
 
   cameraEl.style.transformStyle = 'preserve-3d';
-  // cameraEl.style.transition = 'transform 0.05s'
+  cameraEl.style.transformOrigin = '50% 50% 50px';
+  cameraEl.style.position = 'absolute';
+  cameraEl.style.top = '50%';
+  cameraEl.style.left = '50%';
+
+  worldEl.style.transformStyle = 'preserve-3d';
+  worldEl.style.transition = 'transform 0.5s linear'
 }
 
 Camera.prototype = {
-  // @param {Array} coord - [x,y]
-  // @param {String} dir - direction: n,e,s,w
-  set: function(coord, dir) {
-    var x = coord[0],
-        y = coord[1];
-
-    this.setCell(x, y);
-    this.setDirection(dir);
-
-    this.update();
-  },
-
   setCell: function(x, y) {
-    this.origin3[0] = x * this.unit + this.unit / 2;
-    this.origin3[1] = y * this.unit + this.unit / 2;
-    this.origin3[2] = this.unit / 2;
-
-    this.translate3[0] = this.viewportSize[0] / 2 - this.origin3[0];
-    this.translate3[1] = this.viewportSize[1] / 2 - this.origin3[1];
+    this.translate3[0] = -x * this.unit - this.unit / 2;
+    this.translate3[1] = -y * this.unit - this.unit / 2;
   },
 
   setDirection: function(dir) {
@@ -57,6 +45,18 @@ Camera.prototype = {
     }
   },
 
+  // @param {Array} coord - [x,y]
+  // @param {String} dir - direction: n,e,s,w
+  set: function(coord, dir) {
+    var x = coord[0],
+        y = coord[1];
+
+    this.setCell(x, y);
+    this.setDirection(dir);
+
+    this.update();
+  },
+
   rotate: function(dx, dz) {
     var newX = this.rotate3[0] + dx;
     if (newX < 180 && newX > 0) {
@@ -68,14 +68,14 @@ Camera.prototype = {
   update: function() {
     var axes = ['X','Y','Z'],
         transforms = [];
-    // translate
-    transforms.push('translate3d(' + this.translate3.join('px,') + 'px)');
+    // perspective
+    transforms.push('translateZ(' + this.perspective * 0.9 + 'px)');
     // rotate
     for(var i in axes) {
       transforms.push('rotate' + axes[i] + '(' + this.rotate3[i] + 'deg)');
     }
     // apply
-    this.node.style.transformOrigin = this.origin3.join('px ') + 'px';
     this.node.style.transform = transforms.join(' ');
+    this.worldNode.style.transform = 'translate3d(' + this.translate3.join('px,') + 'px)';
   }
 }

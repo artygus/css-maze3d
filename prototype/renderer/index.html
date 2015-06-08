@@ -44,7 +44,7 @@
     renderGod.wall([0,3], 's', 'wall');
 
     // camera
-    var camera = new Camera(viewportEl, window.innerWidth, window.innerHeight, cameraEl, 100),
+    var camera = new Camera(viewportEl, worldEl, window.innerWidth, window.innerHeight, cameraEl, 100),
         coords = [0, 0],
         directions = ['n', 'w', 's', 'e'],
         directionIndex = 2;
@@ -89,15 +89,17 @@
           break;
         case 81:
           directionIndex--;
+          camera.setDirection(cycle(directions, directionIndex));
           break;
         case 69:
           directionIndex++;
+          camera.setDirection(cycle(directions, directionIndex));
           break;
         default:
           return false;
       }
 
-      camera.set(coords, cycle(directions, directionIndex));
+      camera.setCell(coords[0], coords[1]);
       camera.update();
     }, false);
   </script>
