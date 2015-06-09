@@ -11,31 +11,25 @@ Renderer.prototype = {
     var wallEl = document.createElement('div'),
         x = coord[0] * this.unit,
         y = coord[1] * this.unit,
-        origin = [0, 0],
         rotate3 = [0, 0, 0],
-        translate3 = [0, 0, 0];
+        translate3 = [0, 0, this.unit / 2];
 
     switch(dir) {
       case 'n':
-        origin = [50, 0];
-        rotate3 = [1, 0, 0];
+        rotate3 = [90, 0, -180];
+        translate3[1] = - this.unit/ 2;
         break;
       case 'e':
-        x += this.unit;
-        origin = [0, 50];
-        rotate3 = [0, 1, 0];
-        translate3 = [-this.unit, 0, 0];
+        rotate3 = [0, 90, -90];
+        translate3[0] = this.unit / 2;
         break;
       case 's':
-        y += this.unit;
-        origin = [50, 0];
-        rotate3 = [1, 0, 0];
-        rotate3 = [1, 0, 0];
+        rotate3 = [90, 0, -180];
+        translate3[1] = this.unit / 2;
         break;
       case 'w':
-        origin = [0, 50];
-        rotate3 = [0, 1, 0];
-        translate3 = [-this.unit, 0, 0];
+        rotate3 = [0, 90, -90];
+        translate3[0] = - this.unit / 2;
     }
 
     wallEl.style.position = 'absolute';
@@ -45,11 +39,30 @@ Renderer.prototype = {
     wallEl.style.width = this.unit + 'px';
     wallEl.style.height = this.unit + 'px';
 
-    wallEl.style.transform = 'rotate3d(' + rotate3 + ',90deg) translate3d(' + translate3.map(function(p) { return p + 'px ' }) + ')';
-    wallEl.style.transformOrigin = origin[0] + '% ' + origin[1] + '%';
+    var axes = ['X','Y','Z'],
+        transforms = [];
+    // translate
+    transforms.push('translate3d(' + translate3.join('px,') + 'px)');
+    // rotate
+    for(var i in axes) {
+      transforms.push('rotate' + axes[i] + '(' + rotate3[i] + 'deg)');
+    }
+    // apply
+    wallEl.style.transform = transforms.join(' ');
 
     wallEl.className = cls;
-    wallEl.setAttribute('data-coord', coord)
+    wallEl.setAttribute('data-coord', coord);
+    wallEl.setAttribute('data-direction', dir);
     this.node.appendChild(wallEl);
+  },
+
+  walls: function(data) {
+    for(var i in data) {
+      if (data[i] instanceof Array) {
+        this.wall(data[i][0], data[i][1], data[i][2]);
+      } else {
+        this.wall(data[i].coord, data[i].dir, data[i].cls);
+      }
+    }
   }
 }
