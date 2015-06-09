@@ -41,11 +41,9 @@
 
     // camera
     var camera = new Camera(viewportEl, worldEl, window.innerWidth, window.innerHeight, cameraEl, 100),
-        coords = [0, 0],
-        directions = ['n', 'w', 's', 'e'],
-        directionIndex = 2;
+        coords = [0, 0];
 
-    camera.set(coords, directions[directionIndex]);
+    camera.set(coords, 's');
 
     // free camera
     var mx = 0,
@@ -59,44 +57,38 @@
 
     document.addEventListener("mousemove", function(ev) {
       camera.rotate(-(ev.pageY - my) / 2, -(ev.pageX - mx) / 2);
-      camera.update();
       mx = ev.pageX;
       my = ev.pageY;
     }, false);
 
     // keyboard
-    function cycle(array, index) {
-      return array[index % array.length];
-    }
-
     document.addEventListener("keyup", function(e) {
+      var course;
+
       switch (e.keyCode) {
         case 83:
-          coords[1]--;
-          break;
-        case 65:
-          coords[0]++;
-          break;
-        case 87:
-          coords[1]++;
+          course = 'f';
           break;
         case 68:
-          coords[0]--;
+          course = 'r';
           break;
-        case 81:
-          directionIndex--;
-          camera.setDirection(cycle(directions, directionIndex));
+        case 87:
+          course = 'b';
           break;
-        case 69:
-          directionIndex++;
-          camera.setDirection(cycle(directions, directionIndex));
+        case 65:
+          course = 'l';
           break;
         default:
           return false;
       }
 
-      camera.setCell(coords[0], coords[1]);
-      camera.update();
+      var nCoords = camera.getNextCell(coords[0], coords[1], course);
+
+      if (true/* check for collisions */) {
+        camera.setCell(nCoords[0], nCoords[1]);
+        camera.update();
+        coords = nCoords;
+      }
     }, false);
   </script>
 </body>

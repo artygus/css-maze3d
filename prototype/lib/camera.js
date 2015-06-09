@@ -58,11 +58,67 @@ Camera.prototype = {
   },
 
   rotate: function(dx, dz) {
-    var newX = this.rotate3[0] + dx;
+    var newX = this.rotate3[0] + dx,
+        newZ = this.rotate3[2] + dz;
+
     if (newX < 180 && newX > 0) {
       this.rotate3[0] = newX;
     }
-    this.rotate3[2] += dz;
+
+    if (newZ < 0) {
+      newZ += 360;
+    } else if (newZ >= 360) {
+      newZ -= 360;
+    }
+
+    this.rotate3[2] = newZ;
+    this.update();
+  },
+
+  getNextCell: function(x, y, course) {
+    var walkAxis, walkForwardFactor,
+        strafeAxis, strafeLeftFactor,
+        turnAngle = this.rotate3[2],
+        switchAxis = false;
+
+    if (turnAngle >= 135 && turnAngle <= 225) { // 180
+      walkAxis = y;
+      walkForwardFactor = -1;
+      strafeAxis = x;
+      strafeLeftFactor = 1;
+    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
+      walkAxis = x;
+      walkForwardFactor = 1;
+      strafeAxis = y;
+      strafeLeftFactor = 1;
+      switchAxis = true;
+    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
+      walkAxis = y;
+      walkForwardFactor = 1;
+      strafeAxis = x;
+      strafeLeftFactor = -1;
+    } else { // 270
+      walkAxis = x;
+      walkForwardFactor = -1;
+      strafeAxis = y;
+      strafeLeftFactor = -1;
+      switchAxis = true;
+    }
+
+    switch(course) {
+      case 'f':
+        walkAxis += walkForwardFactor;
+        break;
+      case 'r':
+        strafeAxis -= strafeLeftFactor;
+        break;
+      case 'b':
+        walkAxis -= walkForwardFactor;
+        break;
+      case 'l':
+        strafeAxis += strafeLeftFactor;
+    }
+    return switchAxis ? [walkAxis, strafeAxis] : [strafeAxis, walkAxis];
   },
 
   update: function() {
