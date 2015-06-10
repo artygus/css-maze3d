@@ -1,14 +1,10 @@
-.wall {
+.black-wall {
   background-color: black;
   border: solid white;
   border-width: 1px;
   box-sizing: border-box;
 }
 
-.floor {
-  background-color: grey;
-}
-
-.ceiling {
-  background-color: black;
+.white-wall {
+  background-color: white;
 }

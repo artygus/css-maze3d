@@ -24,19 +24,30 @@
         viewportEl = document.getElementById('viewport'),
         renderGod = new Renderer(worldEl, 100);
 
-    renderGod.walls([
-      [[0,0], 'n', 'wall'],
-      [[0,0], 'e', 'wall'],
-      [[0,0], 'w', 'wall'],
-      [[0,1], 'w', 'wall'],
-      [[1,1], 'n', 'wall'],
-      [[1,1], 's', 'wall'],
-      [[1,1], 'e', 'wall'],
-      [[0,2], 'e', 'wall'],
-      [[0,2], 'w', 'wall'],
-      [[0,3], 'e', 'wall'],
-      [[0,3], 'w', 'wall'],
-      [[0,3], 's', 'wall']
+    renderGod.cells([
+      {
+        x: 0, y: 0,
+        n: {type: 'wall', face: 'black-wall'},
+        e: {type: 'wall', face: 'black-wall'},
+        w: {type: 'wall', face: 'black-wall'}
+      }, {
+        x: 0, y: 1,
+        w: {type: 'wall', face: 'black-wall'}
+      }, {
+        x: 1, y: 1,
+        n: {type: 'wall', face: 'black-wall'},
+        e: {type: 'wall', face: 'white-wall'},
+        s: {type: 'wall', face: 'black-wall'}
+      }, {
+        x: 0, y: 2,
+        e: {type: 'wall', face: 'black-wall'},
+        w: {type: 'wall', face: 'black-wall'}
+      }, {
+        x: 0, y: 3,
+        e: {type: 'wall', face: 'black-wall'},
+        s: {type: 'wall', face: 'black-wall'},
+        w: {type: 'wall', face: 'black-wall'}
+      }
     ]);
 
     // camera
