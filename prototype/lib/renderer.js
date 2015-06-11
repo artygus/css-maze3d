@@ -56,12 +56,29 @@ Renderer.prototype = {
     this.node.appendChild(wallEl);
   },
 
-  walls: function(data) {
-    for(var i in data) {
-      if (data[i] instanceof Array) {
-        this.wall(data[i][0], data[i][1], data[i][2]);
-      } else {
-        this.wall(data[i].coord, data[i].dir, data[i].cls);
+
+  item: function(obj, coords, dir) {
+    if (obj.type === 'wall') {
+      console.log(coords, dir, obj.face);
+      this.wall(coords, dir, obj.face);
+    } else if (obj.type === 'door') {
+      //
+    }
+  },
+
+
+  cells: function(data) {
+    var directions = ['n', 'e', 's', 'w'];
+
+    for(var k in data) {
+      var obj = data[k];
+
+      for(var i in directions) {
+        var dir = directions[i];
+
+        if (dir in obj) {
+          this.item(obj[dir], [obj.x, obj.y], dir);
+        }
       }
     }
   }
