@@ -66,18 +66,30 @@ body {
 }
 
 .ui__save {
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.5);
-
   position: relative;
   top: 30px;
   right: 36px;
 }
 
+.ui__faces {
+  position: relative;
+  right: 36px;
+  bottom: 30px;
+}
+
+
+
 /* Helpers */
 
 .-rounded {
   border-radius: 8px;
+}
+
+.-box {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+
+  color: white;
 }
 
 

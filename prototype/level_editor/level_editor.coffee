@@ -38,12 +38,14 @@ getXYfromCell = (cell) ->
 getIndex = (x, y) ->
   x + 'x' + y
 
-makeCell = ->
+makeCell = (x, y)->
   {
-  n: 'face'
-  s: 'face'
-  w: 'face'
-  e: 'face'
+    x: x
+    y: y
+#    n: {type: 'wall', face: 'black-wall'}
+#    s: {type: 'wall', face: 'black-wall'}
+#    w: {type: 'wall', face: 'black-wall'}
+#    e: {type: 'wall', face: 'black-wall'}
   }
 
 centerGrid = ->
@@ -78,7 +80,7 @@ $ ->
       delete level[ci]
     else
       el.addClass 'level-cell'
-      level[ci] = makeCell()
+      level[ci] = makeCell(xy.x, xy.y)
       level[ci].cell = el
     return
   return

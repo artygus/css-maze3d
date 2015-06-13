@@ -51,12 +51,10 @@
     return x + 'x' + y;
   };
 
-  makeCell = function() {
+  makeCell = function(x, y) {
     return {
-      n: 'face',
-      s: 'face',
-      w: 'face',
-      e: 'face'
+      x: x,
+      y: y
     };
   };
 
@@ -95,7 +93,7 @@
         delete level[ci];
       } else {
         el.addClass('level-cell');
-        level[ci] = makeCell();
+        level[ci] = makeCell(xy.x, xy.y);
         level[ci].cell = el;
       }
     });
