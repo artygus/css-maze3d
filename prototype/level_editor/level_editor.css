@@ -75,9 +75,9 @@ body {
   position: relative;
   right: 36px;
   bottom: 30px;
+
+
 }
-
-
 
 /* Helpers */
 
@@ -92,7 +92,8 @@ body {
   color: white;
 }
 
-
-
+.-centered {
+  text-align: center;
+}
 
 
