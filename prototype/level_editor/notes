@@ -1,2 +1,33 @@
 + Выделение ячеек
-+ Верстка панели с фейсами
+v Верстка панели с фейсами
++ Функционал панели с фейсами
+
+==
+Выделение ячеек
+
+Кликаешь - предыдущий сброй убирается
+Если кликаешь с шифтом тогда добавляется к выделению
+Кликаешь повторно - убирается выделение
+cmd + d убирает выделение
+
+==
+Выделение зажатием
+
+Появляется рамка и мы можем выделять
+
+
+==
+
+#    el = $(e.target)
+#    console.log 'Click on', el, e
+#    xy = getXYfromCell(el)
+#    ci = getIndex(xy.x, xy.y)
+#    if e.altKey
+#      el.removeClass 'level-cell'
+#      el.removeClass
+#      delete level[ci]
+#    else
+#      el.addClass 'level-cell'
+#      level[ci] = makeCell(xy.x, xy.y)
+#      level[ci].cell = el
+#    return

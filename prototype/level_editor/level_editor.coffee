@@ -64,24 +64,36 @@ window.drawLevel = ->
       .find("[x='#{coords[0]}'][y='#{coords[1]}']")
       .addClass "level-cell"
 
+desectAll = ->
+  grid.find('[cell]').removeClass "-selected"
+
 $ ->
   window.level = {}
   window.levelEditorEl = $('#level-editor')
   window.grid = renderGrid(100)
   centerGrid()
+
+  $(document).on "keyup", (e)->
+
+    switch e.which
+
+      when (KEY_CODE_D = 68)
+        desectAll()
+
   # Cell click
   grid.find('[cell]').on 'click', (e) ->
     el = $(e.target)
     console.log 'Click on', el, e
     xy = getXYfromCell(el)
     ci = getIndex(xy.x, xy.y)
-    if e.altKey
-      el.removeClass 'level-cell'
-      delete level[ci]
+
+    isSelected = el.hasClass "-selected"
+
+    if !e.shiftKey
+      desectAll()
+
+    if isSelected
+      el.removeClass "-selected"
     else
-      el.addClass 'level-cell'
-      level[ci] = makeCell(xy.x, xy.y)
-      level[ci].cell = el
-    return
-  return
+      el.addClass "-selected"
 
