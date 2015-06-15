@@ -10,6 +10,7 @@
   <script src="compiled/save_level_modal.js"></script>
   <script src="compiled/load_level_modal.js"></script>
   <script src="compiled/level_editor.js"></script>
+  <script src="compiled/faces_editor.js"></script>
 </head>
 <body>
   <div id="level-editor">
@@ -35,7 +36,7 @@
 
     <div class="ui -right -bottom">
 
-      <div class="ui__faces -box -rounded form-horizontal">
+      <div class="ui__faces -box -rounded form-horizontal" widget-faces-editor>
         <h4>Faces</h4>
 
         <div class="form-group form-group-sm">
@@ -67,7 +68,7 @@
         </div>
 
         <div class="form-group form-group-sm -centered">
-          <button type="button" class="btn btn-success">Update</button>
+          <button type="button" class="btn btn-success" update>Update</button>
         </div>
 
       </div>

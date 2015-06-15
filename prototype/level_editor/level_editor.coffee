@@ -29,23 +29,19 @@ positionGrid = ->
     left: gY
   return
 
-getXYfromCell = (cell) ->
+window.getXYfromCell = (cell) ->
   {
   x: parseInt(cell.attr('x'))
   y: parseInt(cell.attr('y'))
   }
 
-getIndex = (x, y) ->
+window.getIndex = (x, y) ->
   x + 'x' + y
 
-makeCell = (x, y)->
+window.makeCell = (x, y)->
   {
     x: x
     y: y
-#    n: {type: 'wall', face: 'black-wall'}
-#    s: {type: 'wall', face: 'black-wall'}
-#    w: {type: 'wall', face: 'black-wall'}
-#    e: {type: 'wall', face: 'black-wall'}
   }
 
 centerGrid = ->
@@ -97,3 +93,5 @@ $ ->
     else
       el.addClass "-selected"
 
+
+  new window.FacesEditor($("[widget-faces-editor]"))
