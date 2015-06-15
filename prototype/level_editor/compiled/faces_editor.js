@@ -44,12 +44,13 @@
           for (key in _ref) {
             input = _ref[key];
             if (input.val() !== "") {
-              _results1.push(level[ci][key] = {
+              level[ci][key] = {
                 face: input.val(),
                 type: 'wall'
-              });
+              };
+              _results1.push(cell.addClass("-face-" + key + "-wall"));
             } else {
-              _results1.push(void 0);
+              _results1.push(cell.removeClass("-face-" + key + "-wall"));
             }
           }
           return _results1;

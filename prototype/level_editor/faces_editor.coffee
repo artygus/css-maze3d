@@ -41,6 +41,12 @@ class window.FacesEditor
             type: 'wall'
           }
 
+          cell.addClass "-face-#{key}-wall"
+        else
+          cell.removeClass "-face-#{key}-wall"
+
+
+
 
 
 

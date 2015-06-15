@@ -29,7 +29,7 @@ body {
   width: 30px;
   height: 30px;
 
-  border: 1px solid lightgray;
+  border: 1px solid rgba(0,0,0,0.075);
 
   display: inline-block;
 
@@ -41,10 +41,28 @@ body {
   background: white;
 }
 
+/* Level cell */
 .level-cell {
-  border: 1px solid blue;
-  box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.2) inset;
+  border: 2px solid lightgreen;
+  /*box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.2) inset;*/
 }
+
+.level-cell.-face-n-wall {
+  border-top-color: blue;
+}
+
+.level-cell.-face-e-wall {
+  border-right-color: blue;
+}
+
+.level-cell.-face-s-wall {
+  border-bottom-color: blue;
+}
+
+.level-cell.-face-w-wall {
+  border-left-color: blue;
+}
+
 
 /* UI */
 
