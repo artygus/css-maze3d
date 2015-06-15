@@ -2,8 +2,22 @@
 <head>
   <script src="lib/jquery-1.11.3.min.js"></script>
   <script src="lib/ard.js"></script>
+
+  <script src="compiled/namespaces.js"></script>
+  <script src="compiled/object.js"></script>
+  <script src="compiled/level_editor.js"></script>
+  <script src="compiled/view_grid.js"></script>
+
+  <link rel="stylesheet" href="level_editor.css"/>
 </head>
 <body>
+
+  <div app-level-editor class="level-editor">
+  </div>
+
+  <script>
+    levelEditor.App.init()
+  </script>
 
 </body>
 </html>

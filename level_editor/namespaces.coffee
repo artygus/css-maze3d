@@ -1,0 +1,7 @@
+###
+  Namespaces
+###
+
+window.levelEditor = {
+  view: {}
+}
