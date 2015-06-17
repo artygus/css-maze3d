@@ -4,4 +4,5 @@
 
 window.levelEditor = {
   view: {}
+  data: {}
 }

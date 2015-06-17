@@ -12,8 +12,9 @@ class levelEditor.App extends levelEditor.Object
     super
     console.log @DT, "Init."
 
-    new levelEditor.view.Grid @
+    @data = new levelEditor.data.Editor()
 
+    new levelEditor.view.Grid @
 
   # section: Static
 

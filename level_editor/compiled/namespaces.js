@@ -6,7 +6,8 @@
 
 (function() {
   window.levelEditor = {
-    view: {}
+    view: {},
+    data: {}
   };
 
 }).call(this);

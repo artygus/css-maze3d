@@ -19,10 +19,23 @@
       this.templateRow = __bind(this.templateRow, this);
       this.templateCell = __bind(this.templateCell, this);
       this.template = __bind(this.template, this);
+      this.interactionMouseMove = __bind(this.interactionMouseMove, this);
+      this.drawPosition = __bind(this.drawPosition, this);
       this.drawInitially = __bind(this.drawInitially, this);
       Grid.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.drawInitially();
+      this.drawPosition();
+      this.interactionMouseMove();
+      $(this.app.data).on(this.app.data.s.I_DATA_CHANGED, (function(_this) {
+        return function(v) {
+          switch (v.key) {
+            case "gridOffsetX":
+            case "gridOffsetY":
+              return _this.drawPosition();
+          }
+        };
+      })(this));
     }
 
     Grid.prototype.GRID_SIZE = 100;
@@ -40,6 +53,85 @@
       }
       this.el = $(this.template(rows));
       return this.app.el.append(this.el);
+    };
+
+    Grid.prototype.drawPosition = function() {
+      return this.el.css({
+        left: this.app.data.get("gridOffsetX"),
+        top: this.app.data.get("gridOffsetY")
+      });
+    };
+
+    Grid.prototype.interactionMouseMove = function() {
+      var mdown, mmove, mouse, mup, prevx, prevy;
+      mdown = $(document).asEventStream("mousedown").filter((function(_this) {
+        return function(e) {
+          return e.which === 1;
+        };
+      })(this)).map((function(_this) {
+        return function() {
+          return {
+            mstate: "down"
+          };
+        };
+      })(this));
+      mup = $(document).asEventStream("mouseup").map((function(_this) {
+        return function() {
+          return {
+            mstate: "up"
+          };
+        };
+      })(this));
+      mmove = $(document).asEventStream("mousemove").map((function(_this) {
+        return function(v) {
+          return {
+            x: v.clientX,
+            y: v.clientY
+          };
+        };
+      })(this));
+      prevx = null;
+      prevy = null;
+      mup.onValue((function(_this) {
+        return function() {
+          prevx = null;
+          return prevy = null;
+        };
+      })(this));
+      mouse = mdown.merge(mup).combine(mmove, (function(_this) {
+        return function(f, s) {
+          return $.extend(f, s);
+        };
+      })(this)).filter((function(_this) {
+        return function(v) {
+          return v.mstate === "down";
+        };
+      })(this)).map((function(_this) {
+        return function(v) {
+          var r;
+          if ((prevx != null) && (prevy != null)) {
+            r = $.extend(v, {
+              offsetx: v.x - prevx,
+              offsety: v.y - prevy
+            });
+          } else {
+            r = v;
+          }
+          prevx = v.x;
+          prevy = v.y;
+          return r;
+        };
+      })(this));
+      return mouse.filter((function(_this) {
+        return function(v) {
+          return (v.offsetx != null) && (v.offsety != null);
+        };
+      })(this)).onValue((function(_this) {
+        return function(v) {
+          _this.app.data.set("gridOffsetX", _this.app.data.get("gridOffsetX") + v.offsetx);
+          return _this.app.data.set("gridOffsetY", _this.app.data.get("gridOffsetY") + v.offsety);
+        };
+      })(this));
     };
 
     Grid.prototype.template = function(rows) {
