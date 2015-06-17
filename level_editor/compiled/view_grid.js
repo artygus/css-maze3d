@@ -16,49 +16,111 @@
 
     function Grid(app) {
       this.app = app;
+      this.getBlockId = __bind(this.getBlockId, this);
+      this.getGridCoordsByBlock = __bind(this.getGridCoordsByBlock, this);
+      this.getGridCoords = __bind(this.getGridCoords, this);
       this.templateRow = __bind(this.templateRow, this);
       this.templateCell = __bind(this.templateCell, this);
+      this.templateBlock = __bind(this.templateBlock, this);
       this.template = __bind(this.template, this);
       this.interactionMouseMove = __bind(this.interactionMouseMove, this);
-      this.drawPosition = __bind(this.drawPosition, this);
+      this.positionGrid = __bind(this.positionGrid, this);
+      this.positionBlock = __bind(this.positionBlock, this);
+      this.renderGridBlock = __bind(this.renderGridBlock, this);
+      this.drawVisibleBlock = __bind(this.drawVisibleBlock, this);
+      this.drawGridPosition = __bind(this.drawGridPosition, this);
+      this.drawInitialBlock = __bind(this.drawInitialBlock, this);
       this.drawInitially = __bind(this.drawInitially, this);
+      this.stateInit = __bind(this.stateInit, this);
       Grid.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
-      this.drawInitially();
-      this.drawPosition();
+      this.stateInit();
       this.interactionMouseMove();
-      $(this.app.data).on(this.app.data.s.I_DATA_CHANGED, (function(_this) {
+      this.drawInitially();
+    }
+
+    Grid.prototype.stateInit = function() {
+      this.state = new chms.ard.AbstractReactiveData();
+      this.state.set("gridBlockSize", null);
+      this.state.set("gridBlockX", 0);
+      this.state.set("gridBlockY", 0);
+      return $(this.state).on(this.app.data.s.I_DATA_CHANGED, (function(_this) {
         return function(v) {
           switch (v.key) {
-            case "gridOffsetX":
-            case "gridOffsetY":
-              return _this.drawPosition();
+            case "gridBlockX":
+            case "gridBlockY":
+              _this.drawGridPosition();
+              return _this.drawVisibleBlock();
           }
         };
       })(this));
-    }
+    };
 
-    Grid.prototype.GRID_SIZE = 100;
+    Grid.prototype.MAX_GRID_BLOCKS = 5;
+
+    Grid.prototype.GRID_BLOCK_SIZE = 100;
 
     Grid.prototype.drawInitially = function() {
-      var cols, i, ii, j, rows, _i, _j, _ref, _ref1;
+      this.el = $(this.template());
+      this.app.el.append(this.el);
+      this.drawGridPosition();
+      return this.drawInitialBlock();
+    };
+
+    Grid.prototype.INITIAL_BLOCK_XY = [2, 2];
+
+    Grid.prototype.drawInitialBlock = function() {
+      var b, bxy, gxy;
+      b = $(this.renderGridBlock());
+      this.el.append(b);
+      this.state.set("gridBlockSize", b.width());
+      bxy = this.INITIAL_BLOCK_XY;
+      this.positionBlock(b, bxy[0], bxy[1]);
+      gxy = this.getGridCoordsByBlock(bxy[0], bxy[1]);
+      this.state.set("gridBlockX", -gxy[0]);
+      this.state.set("gridBlockY", -gxy[1]);
+      return this.state.set(this.getBlockId(gxy[0], gxy[1]), b);
+    };
+
+    Grid.prototype.drawGridPosition = function() {
+      var xy;
+      xy = this.getGridCoords();
+      return this.positionGrid(xy[0], xy[1]);
+    };
+
+    Grid.prototype.drawVisibleBlock = function() {
+      var xy;
+      return xy = this.getGridCoords();
+    };
+
+    Grid.prototype.renderGridBlock = function() {
+      var block, cols, i, ii, j, rows, _i, _j, _ref, _ref1;
       rows = "";
-      for (i = _i = 1, _ref = this.GRID_SIZE; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+      for (i = _i = 1, _ref = this.GRID_BLOCK_SIZE; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         cols = '';
         ii = i.toString();
-        for (j = _j = 1, _ref1 = this.GRID_SIZE; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 1 <= _ref1 ? ++_j : --_j) {
+        for (j = _j = 1, _ref1 = this.GRID_BLOCK_SIZE; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 1 <= _ref1 ? ++_j : --_j) {
           cols += this.templateCell(j, ii);
         }
         rows += this.templateRow(cols);
       }
-      this.el = $(this.template(rows));
-      return this.app.el.append(this.el);
+      block = this.templateBlock(rows);
+      return block;
     };
 
-    Grid.prototype.drawPosition = function() {
+    Grid.prototype.positionBlock = function(block, x, y) {
+      var xy;
+      xy = this.getGridCoordsByBlock(x, y);
+      return block.css({
+        left: xy[0],
+        top: xy[1]
+      });
+    };
+
+    Grid.prototype.positionGrid = function(x, y) {
       return this.el.css({
-        left: this.app.data.get("gridOffsetX"),
-        top: this.app.data.get("gridOffsetY")
+        left: x,
+        top: y
       });
     };
 
@@ -128,14 +190,20 @@
         };
       })(this)).onValue((function(_this) {
         return function(v) {
-          _this.app.data.set("gridOffsetX", _this.app.data.get("gridOffsetX") + v.offsetx);
-          return _this.app.data.set("gridOffsetY", _this.app.data.get("gridOffsetY") + v.offsety);
+          var xy;
+          xy = _this.getGridCoords();
+          _this.state.set("gridBlockX", xy[0] + v.offsetx);
+          return _this.state.set("gridBlockY", xy[1] + v.offsety);
         };
       })(this));
     };
 
-    Grid.prototype.template = function(rows) {
-      return "<div class=\"grid\">\n  " + rows + "\n</div>";
+    Grid.prototype.template = function() {
+      return "<div class=\"grid\">\n</div>";
+    };
+
+    Grid.prototype.templateBlock = function(block) {
+      return "<div class=\"grid__block\">\n  " + block + "\n</div>";
     };
 
     Grid.prototype.templateCell = function(x, y) {
@@ -146,6 +214,20 @@
 
     Grid.prototype.templateRow = function(cols) {
       return "<div class=\"grid__row\">" + cols + "</div>";
+    };
+
+    Grid.prototype.getGridCoords = function() {
+      return [this.state.get("gridBlockX"), this.state.get("gridBlockY")];
+    };
+
+    Grid.prototype.getGridCoordsByBlock = function(x, y) {
+      var bs;
+      bs = this.state.get("gridBlockSize");
+      return [x * bs, y * bs];
+    };
+
+    Grid.prototype.getBlockId = function(x, y) {
+      return "block" + x + "-" + y;
     };
 
     return Grid;

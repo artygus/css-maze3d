@@ -10,42 +10,91 @@ class levelEditor.view.Grid extends levelEditor.Object
     super
     console.log @DT, "Init."
 
-    @drawInitially()
-    @drawPosition()
-
+    @stateInit()
     @interactionMouseMove()
+    @drawInitially()
 
-    $(@app.data).on @app.data.s.I_DATA_CHANGED, (v)=>
+  # section: State
+
+  stateInit: =>
+    @state = new chms.ard.AbstractReactiveData()
+
+    @state.set "gridBlockSize", null
+    @state.set "gridBlockX", 0
+    @state.set "gridBlockY", 0
+
+    $(@state).on @app.data.s.I_DATA_CHANGED, (v)=>
 
       switch v.key
 
-        when "gridOffsetX", "gridOffsetY"
-          @drawPosition()
-
+        when "gridBlockX", "gridBlockY"
+          @drawGridPosition()
+          @drawVisibleBlock()
 
   # section: Rendering
 
-  GRID_SIZE: 100
+  MAX_GRID_BLOCKS: 5
+
+  GRID_BLOCK_SIZE: 100
 
   drawInitially: =>
+    @el = $ @template()
+
+    @app.el.append @el
+
+    @drawGridPosition()
+    @drawInitialBlock()
+
+  INITIAL_BLOCK_XY: [2, 2]
+
+  drawInitialBlock: =>
+    b = $ @renderGridBlock()
+    @el.append b
+
+    @state.set "gridBlockSize", b.width()
+
+    bxy = @INITIAL_BLOCK_XY
+    @positionBlock b, bxy[0], bxy[1]
+
+    gxy = @getGridCoordsByBlock(bxy[0], bxy[1])
+
+    @state.set "gridBlockX", -gxy[0]
+    @state.set "gridBlockY", -gxy[1]
+
+    @state.set @getBlockId(gxy[0], gxy[1]), b
+
+  drawGridPosition: =>
+    xy = @getGridCoords()
+    @positionGrid(xy[0], xy[1])
+
+  drawVisibleBlock: =>
+    xy = @getGridCoords()
+
+  # @return {String}
+  renderGridBlock: =>
     rows = ""
-    for i in [1..@GRID_SIZE]
+    for i in [1..@GRID_BLOCK_SIZE]
       cols = ''
       ii = i.toString()
-      for j in [1..@GRID_SIZE]
+      for j in [1..@GRID_BLOCK_SIZE]
         cols += @templateCell(j, ii)
 
       rows += @templateRow(cols)
 
-    @el = $ @template(rows)
+    block = @templateBlock(rows)
 
-    @app.el.append @el
+    return block
 
-  drawPosition: =>
+  positionBlock: (block, x, y)=>
+    xy = @getGridCoordsByBlock(x, y)
+    block.css
+      left: xy[0]
+      top:  xy[1]
+
+  positionGrid: (x, y)=>
     @el.css
-      left: @app.data.get("gridOffsetX")
-      top: @app.data.get("gridOffsetY")
-
+      left: x
+      top:  y
 
   # section: User interactions
 
@@ -83,15 +132,23 @@ class levelEditor.view.Grid extends levelEditor.Object
     mouse
       .filter((v)=> v.offsetx? && v.offsety?)
       .onValue (v)=>
-        @app.data.set "gridOffsetX", @app.data.get("gridOffsetX") + v.offsetx
-        @app.data.set "gridOffsetY", @app.data.get("gridOffsetY") + v.offsety
+        xy = @getGridCoords()
+        @state.set "gridBlockX", xy[0] + v.offsetx
+        @state.set "gridBlockY", xy[1] + v.offsety
+
 
   # section: Templates
 
-  template: (rows)=>
+  template: =>
     """
       <div class="grid">
-        #{rows}
+      </div>
+    """
+
+  templateBlock: (block)=>
+    """
+      <div class="grid__block">
+        #{block}
       </div>
     """
 
@@ -105,3 +162,23 @@ class levelEditor.view.Grid extends levelEditor.Object
     """
       <div class="grid__row">#{cols}</div>
     """
+
+
+  # section: Helpers
+
+  # @return {Array.<X, Y>}
+  getGridCoords: =>
+    [
+      @state.get("gridBlockX")
+      @state.get("gridBlockY")
+    ]
+
+  # @return {Array.<X, Y>}
+  getGridCoordsByBlock: (x, y)=>
+    bs = @state.get "gridBlockSize"
+
+    [x * bs, y * bs]
+
+  # @return {String}
+  getBlockId: (x, y)=>
+    "block#{x}-#{y}"

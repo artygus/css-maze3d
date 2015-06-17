@@ -13,8 +13,4 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
   init: =>
     super
 
-    @set "gridOffsetX", 0
-
-    @set "gridOffsetY", 0
-
 

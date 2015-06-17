@@ -19,6 +19,12 @@ body {
   display: inline-block;
 }
 
+.grid__block {
+  position: relative;
+
+  display: inline-block;
+}
+
 .grid__row {
   white-space: nowrap;
 

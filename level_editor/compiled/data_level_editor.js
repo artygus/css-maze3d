@@ -21,9 +21,7 @@
     }
 
     Editor.prototype.init = function() {
-      Editor.__super__.init.apply(this, arguments);
-      this.set("gridOffsetX", 0);
-      return this.set("gridOffsetY", 0);
+      return Editor.__super__.init.apply(this, arguments);
     };
 
     return Editor;
