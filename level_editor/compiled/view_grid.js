@@ -24,10 +24,12 @@
       this.templateCell = __bind(this.templateCell, this);
       this.templateBlock = __bind(this.templateBlock, this);
       this.template = __bind(this.template, this);
+      this.handleGridPosition = __bind(this.handleGridPosition, this);
       this.interactionMouseMove = __bind(this.interactionMouseMove, this);
       this.positionGrid = __bind(this.positionGrid, this);
       this.positionBlock = __bind(this.positionBlock, this);
       this.renderGridBlock = __bind(this.renderGridBlock, this);
+      this.drawBlock = __bind(this.drawBlock, this);
       this.drawVisibleBlock = __bind(this.drawVisibleBlock, this);
       this.drawGridPosition = __bind(this.drawGridPosition, this);
       this.drawInitialBlock = __bind(this.drawInitialBlock, this);
@@ -38,19 +40,18 @@
       this.stateInit();
       this.interactionMouseMove();
       this.drawInitially();
-      window.checkMe = this;
     }
 
     Grid.prototype.stateInit = function() {
       this.state = new chms.ard.AbstractReactiveData();
       this.state.set("gridBlockSize", null);
-      this.state.set("gridBlockX", 0);
-      this.state.set("gridBlockY", 0);
+      this.state.set("gridX", 0);
+      this.state.set("gridY", 0);
       return $(this.state).on(this.app.data.s.I_DATA_CHANGED, (function(_this) {
         return function(v) {
           switch (v.key) {
-            case "gridBlockX":
-            case "gridBlockY":
+            case "gridX":
+            case "gridY":
               _this.drawGridPosition();
               return _this.drawVisibleBlock();
           }
@@ -72,16 +73,13 @@
     Grid.prototype.INITIAL_BLOCK_XY = [2, 2];
 
     Grid.prototype.drawInitialBlock = function() {
-      var b, bxy, gxy;
-      b = $(this.renderGridBlock());
-      this.el.append(b);
-      this.state.set("gridBlockSize", b.width());
+      var bxy, gxy;
       bxy = this.INITIAL_BLOCK_XY;
-      this.state.set(this.getBlockId(bxy[0], bxy[1]), b);
-      this.positionBlock(b, bxy[0], bxy[1]);
+      this.drawBlock(bxy[0], bxy[1]);
       gxy = this.getGridXYByBlockXY(bxy[0], bxy[1]);
-      this.state.set("gridBlockX", -gxy[0]);
-      return this.state.set("gridBlockY", -gxy[1]);
+      gxy = this.handleGridPosition(-gxy[0], -gxy[1]);
+      this.state.set("gridX", gxy[0]);
+      return this.state.set("gridY", gxy[1]);
     };
 
     Grid.prototype.drawGridPosition = function() {
@@ -91,7 +89,7 @@
     };
 
     Grid.prototype.drawVisibleBlock = function() {
-      var b, bid, block, bxy, windowh, windoww, xy, xyBottomLeft, xyBottomRight, xyTopLeft, xyTopRight, xys, _i, _len, _results;
+      var bid, block, bxy, windowh, windoww, xy, xyBottomLeft, xyBottomRight, xyTopLeft, xyTopRight, xys, _i, _len, _results;
       xy = this.getGridXY();
       windoww = $(window).width();
       windowh = $(window).height();
@@ -106,15 +104,24 @@
         bxy = this.getBlockXYByGridXY(xy[0], xy[1]);
         bid = this.getBlockId(bxy[0], bxy[1]);
         if (this.state.get(bid) == null) {
-          b = $(this.renderGridBlock());
-          this.el.append(b);
-          this.positionBlock(b, bxy[0], bxy[1]);
-          this.state.set(bid, b);
+          this.drawBlock(bxy[0], bxy[1]);
         }
         block = this.state.get(bid);
         _results.push(block.show());
       }
       return _results;
+    };
+
+    Grid.prototype.drawBlock = function(blockx, blocky) {
+      var b;
+      b = $(this.renderGridBlock());
+      this.el.append(b);
+      if (this.state.get("gridBlockSize") == null) {
+        this.state.set("gridBlockSize", b.width());
+      }
+      this.positionBlock(b, blockx, blocky);
+      this.state.set(this.getBlockId(blockx, blocky), b);
+      return b;
     };
 
     Grid.prototype.renderGridBlock = function() {
@@ -132,19 +139,19 @@
       return block;
     };
 
-    Grid.prototype.positionBlock = function(block, x, y) {
+    Grid.prototype.positionBlock = function(block, gridx, gridy) {
       var xy;
-      xy = this.getGridXYByBlockXY(x, y);
+      xy = this.getGridXYByBlockXY(gridx, gridy);
       return block.css({
         left: xy[0],
         top: xy[1]
       });
     };
 
-    Grid.prototype.positionGrid = function(x, y) {
+    Grid.prototype.positionGrid = function(gridx, gridy) {
       return this.el.css({
-        left: x,
-        top: y
+        left: gridx,
+        top: gridy
       });
     };
 
@@ -216,10 +223,25 @@
         return function(v) {
           var xy;
           xy = _this.getGridXY();
-          _this.state.set("gridBlockX", xy[0] + v.offsetx);
-          return _this.state.set("gridBlockY", xy[1] + v.offsety);
+          xy = _this.handleGridPosition(xy[0] + v.offsetx, xy[1] + v.offsety);
+          _this.state.set("gridX", xy[0]);
+          return _this.state.set("gridY", xy[1]);
         };
       })(this));
+    };
+
+    Grid.prototype.handleGridPosition = function(x, y) {
+      var dim, max, r, xy, _i, _len, _ref;
+      max = -(this.state.get("gridBlockSize") * this.MAX_GRID_BLOCKS);
+      xy = [];
+      _ref = [x, y];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        dim = _ref[_i];
+        r = Math.min(0, dim);
+        r = Math.max(max, r);
+        xy.push(r);
+      }
+      return xy;
     };
 
     Grid.prototype.template = function() {
@@ -241,23 +263,23 @@
     };
 
     Grid.prototype.getGridXY = function() {
-      return [this.state.get("gridBlockX"), this.state.get("gridBlockY")];
+      return [this.state.get("gridX"), this.state.get("gridY")];
     };
 
-    Grid.prototype.getGridXYByBlockXY = function(x, y) {
+    Grid.prototype.getGridXYByBlockXY = function(blockx, blocky) {
       var bs;
       bs = this.state.get("gridBlockSize");
-      return [x * bs, y * bs];
+      return [blockx * bs, blocky * bs];
     };
 
-    Grid.prototype.getBlockId = function(x, y) {
-      return "block" + x + "-" + y;
+    Grid.prototype.getBlockId = function(blockx, blocky) {
+      return "block" + blockx + "-" + blocky;
     };
 
-    Grid.prototype.getBlockXYByGridXY = function(x, y) {
+    Grid.prototype.getBlockXYByGridXY = function(gridx, gridy) {
       var bs;
       bs = this.state.get("gridBlockSize");
-      return [Math.floor(x / bs), Math.floor(y / bs)];
+      return [Math.floor(gridx / bs), Math.floor(gridy / bs)];
     };
 
     return Grid;

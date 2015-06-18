@@ -52,9 +52,10 @@ class levelEditor.view.Grid extends levelEditor.Object
     @drawBlock bxy[0], bxy[1]
 
     gxy = @getGridXYByBlockXY(bxy[0], bxy[1])
+    gxy = @handleGridPosition(-gxy[0], -gxy[1])
 
-    @state.set "gridX", -gxy[0]
-    @state.set "gridY", -gxy[1]
+    @state.set "gridX", gxy[0]
+    @state.set "gridY", gxy[1]
 
   drawGridPosition: =>
     xy = @getGridXY()
@@ -159,9 +160,27 @@ class levelEditor.view.Grid extends levelEditor.Object
       .filter((v)=> v.offsetx? && v.offsety?)
       .onValue (v)=>
         xy = @getGridXY()
-        @state.set "gridX", xy[0] + v.offsetx
-        @state.set "gridY", xy[1] + v.offsety
+        xy = @handleGridPosition(xy[0] + v.offsetx, xy[1] + v.offsety)
 
+        @state.set "gridX", xy[0]
+        @state.set "gridY", xy[1]
+
+
+  # section: Handlers
+
+  # @return {Array.<Integer, Integer>}
+  handleGridPosition: (x, y)=>
+    max = -(@state.get("gridBlockSize") * @MAX_GRID_BLOCKS)
+
+    xy = []
+
+    for dim in [x, y]
+      r = Math.min(0, dim)
+      r = Math.max(max, r)
+
+      xy.push r
+
+    return xy
 
   # section: Templates
 
