@@ -14,22 +14,20 @@ class levelEditor.view.Grid extends levelEditor.Object
     @interactionMouseMove()
     @drawInitially()
 
-    window.checkMe = @
-
   # section: State
 
   stateInit: =>
     @state = new chms.ard.AbstractReactiveData()
 
     @state.set "gridBlockSize", null
-    @state.set "gridBlockX", 0
-    @state.set "gridBlockY", 0
+    @state.set "gridX", 0
+    @state.set "gridY", 0
 
     $(@state).on @app.data.s.I_DATA_CHANGED, (v)=>
 
       switch v.key
 
-        when "gridBlockX", "gridBlockY"
+        when "gridX", "gridY"
           @drawGridPosition()
           @drawVisibleBlock()
 
@@ -50,19 +48,13 @@ class levelEditor.view.Grid extends levelEditor.Object
   INITIAL_BLOCK_XY: [2, 2]
 
   drawInitialBlock: =>
-    b = $ @renderGridBlock()
-    @el.append b
-    @state.set "gridBlockSize", b.width()
-
     bxy = @INITIAL_BLOCK_XY
-    @state.set @getBlockId(bxy[0], bxy[1]), b
-
-    @positionBlock b, bxy[0], bxy[1]
+    @drawBlock bxy[0], bxy[1]
 
     gxy = @getGridXYByBlockXY(bxy[0], bxy[1])
 
-    @state.set "gridBlockX", -gxy[0]
-    @state.set "gridBlockY", -gxy[1]
+    @state.set "gridX", -gxy[0]
+    @state.set "gridY", -gxy[1]
 
   drawGridPosition: =>
     xy = @getGridXY()
@@ -86,14 +78,23 @@ class levelEditor.view.Grid extends levelEditor.Object
       bid = @getBlockId(bxy[0], bxy[1])
 
       unless @state.get(bid)?
-        b = $ @renderGridBlock()
-        @el.append b
-
-        @positionBlock b, bxy[0], bxy[1]
-        @state.set bid, b
+        @drawBlock bxy[0], bxy[1]
 
       block = @state.get bid
       block.show()
+
+  # @return {jQuery}
+  drawBlock: (blockx, blocky)=>
+    b = $ @renderGridBlock()
+    @el.append b
+
+    unless @state.get("gridBlockSize")?
+      @state.set "gridBlockSize", b.width()
+
+    @positionBlock b, blockx, blocky
+    @state.set @getBlockId(blockx, blocky), b
+
+    return b
 
   # @return {String}
   renderGridBlock: =>
@@ -110,16 +111,16 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     return block
 
-  positionBlock: (block, x, y)=>
-    xy = @getGridXYByBlockXY(x, y)
+  positionBlock: (block, gridx, gridy)=>
+    xy = @getGridXYByBlockXY(gridx, gridy)
     block.css
       left: xy[0]
       top:  xy[1]
 
-  positionGrid: (x, y)=>
+  positionGrid: (gridx, gridy)=>
     @el.css
-      left: x
-      top:  y
+      left: gridx
+      top:  gridy
 
   # section: User interactions
 
@@ -158,8 +159,8 @@ class levelEditor.view.Grid extends levelEditor.Object
       .filter((v)=> v.offsetx? && v.offsety?)
       .onValue (v)=>
         xy = @getGridXY()
-        @state.set "gridBlockX", xy[0] + v.offsetx
-        @state.set "gridBlockY", xy[1] + v.offsety
+        @state.set "gridX", xy[0] + v.offsetx
+        @state.set "gridY", xy[1] + v.offsety
 
 
   # section: Templates
@@ -194,27 +195,27 @@ class levelEditor.view.Grid extends levelEditor.Object
   # @return {Array.<X, Y>}
   getGridXY: =>
     [
-      @state.get("gridBlockX")
-      @state.get("gridBlockY")
+      @state.get("gridX")
+      @state.get("gridY")
     ]
 
   # @return {Array.<X, Y>}
-  getGridXYByBlockXY: (x, y)=>
+  getGridXYByBlockXY: (blockx, blocky)=>
     bs = @state.get "gridBlockSize"
 
-    [x * bs, y * bs]
+    [blockx * bs, blocky * bs]
 
   # @return {String}
-  getBlockId: (x, y)=>
-    "block#{x}-#{y}"
+  getBlockId: (blockx, blocky)=>
+    "block#{blockx}-#{blocky}"
 
   # @return {Array.<X, Y>}
-  getBlockXYByGridXY: (x, y)=>
+  getBlockXYByGridXY: (gridx, gridy)=>
     bs = @state.get "gridBlockSize"
 
     [
-      Math.floor x / bs
-      Math.floor y / bs
+      Math.floor gridx / bs
+      Math.floor gridy / bs
     ]
 
 
