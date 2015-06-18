@@ -16,9 +16,10 @@
 
     function Grid(app) {
       this.app = app;
+      this.getBlockXYByGridXY = __bind(this.getBlockXYByGridXY, this);
       this.getBlockId = __bind(this.getBlockId, this);
-      this.getGridCoordsByBlock = __bind(this.getGridCoordsByBlock, this);
-      this.getGridCoords = __bind(this.getGridCoords, this);
+      this.getGridXYByBlockXY = __bind(this.getGridXYByBlockXY, this);
+      this.getGridXY = __bind(this.getGridXY, this);
       this.templateRow = __bind(this.templateRow, this);
       this.templateCell = __bind(this.templateCell, this);
       this.templateBlock = __bind(this.templateBlock, this);
@@ -37,6 +38,7 @@
       this.stateInit();
       this.interactionMouseMove();
       this.drawInitially();
+      window.checkMe = this;
     }
 
     Grid.prototype.stateInit = function() {
@@ -75,22 +77,44 @@
       this.el.append(b);
       this.state.set("gridBlockSize", b.width());
       bxy = this.INITIAL_BLOCK_XY;
+      this.state.set(this.getBlockId(bxy[0], bxy[1]), b);
       this.positionBlock(b, bxy[0], bxy[1]);
-      gxy = this.getGridCoordsByBlock(bxy[0], bxy[1]);
+      gxy = this.getGridXYByBlockXY(bxy[0], bxy[1]);
       this.state.set("gridBlockX", -gxy[0]);
-      this.state.set("gridBlockY", -gxy[1]);
-      return this.state.set(this.getBlockId(gxy[0], gxy[1]), b);
+      return this.state.set("gridBlockY", -gxy[1]);
     };
 
     Grid.prototype.drawGridPosition = function() {
       var xy;
-      xy = this.getGridCoords();
+      xy = this.getGridXY();
       return this.positionGrid(xy[0], xy[1]);
     };
 
     Grid.prototype.drawVisibleBlock = function() {
-      var xy;
-      return xy = this.getGridCoords();
+      var b, bid, block, bxy, windowh, windoww, xy, xyBottomLeft, xyBottomRight, xyTopLeft, xyTopRight, xys, _i, _len, _results;
+      xy = this.getGridXY();
+      windoww = $(window).width();
+      windowh = $(window).height();
+      xyTopLeft = [-xy[0], -xy[1]];
+      xyTopRight = [xyTopLeft[0] + windoww, xyTopLeft[1]];
+      xyBottomLeft = [xyTopLeft[0], xyTopLeft[1] + windowh];
+      xyBottomRight = [xyTopRight[0], xyBottomLeft[1]];
+      xys = [xyTopLeft, xyTopRight, xyBottomLeft, xyBottomRight];
+      _results = [];
+      for (_i = 0, _len = xys.length; _i < _len; _i++) {
+        xy = xys[_i];
+        bxy = this.getBlockXYByGridXY(xy[0], xy[1]);
+        bid = this.getBlockId(bxy[0], bxy[1]);
+        if (this.state.get(bid) == null) {
+          b = $(this.renderGridBlock());
+          this.el.append(b);
+          this.positionBlock(b, bxy[0], bxy[1]);
+          this.state.set(bid, b);
+        }
+        block = this.state.get(bid);
+        _results.push(block.show());
+      }
+      return _results;
     };
 
     Grid.prototype.renderGridBlock = function() {
@@ -110,7 +134,7 @@
 
     Grid.prototype.positionBlock = function(block, x, y) {
       var xy;
-      xy = this.getGridCoordsByBlock(x, y);
+      xy = this.getGridXYByBlockXY(x, y);
       return block.css({
         left: xy[0],
         top: xy[1]
@@ -191,7 +215,7 @@
       })(this)).onValue((function(_this) {
         return function(v) {
           var xy;
-          xy = _this.getGridCoords();
+          xy = _this.getGridXY();
           _this.state.set("gridBlockX", xy[0] + v.offsetx);
           return _this.state.set("gridBlockY", xy[1] + v.offsety);
         };
@@ -216,11 +240,11 @@
       return "<div class=\"grid__row\">" + cols + "</div>";
     };
 
-    Grid.prototype.getGridCoords = function() {
+    Grid.prototype.getGridXY = function() {
       return [this.state.get("gridBlockX"), this.state.get("gridBlockY")];
     };
 
-    Grid.prototype.getGridCoordsByBlock = function(x, y) {
+    Grid.prototype.getGridXYByBlockXY = function(x, y) {
       var bs;
       bs = this.state.get("gridBlockSize");
       return [x * bs, y * bs];
@@ -228,6 +252,12 @@
 
     Grid.prototype.getBlockId = function(x, y) {
       return "block" + x + "-" + y;
+    };
+
+    Grid.prototype.getBlockXYByGridXY = function(x, y) {
+      var bs;
+      bs = this.state.get("gridBlockSize");
+      return [Math.floor(x / bs), Math.floor(y / bs)];
     };
 
     return Grid;

@@ -14,6 +14,8 @@ class levelEditor.view.Grid extends levelEditor.Object
     @interactionMouseMove()
     @drawInitially()
 
+    window.checkMe = @
+
   # section: State
 
   stateInit: =>
@@ -50,25 +52,48 @@ class levelEditor.view.Grid extends levelEditor.Object
   drawInitialBlock: =>
     b = $ @renderGridBlock()
     @el.append b
-
     @state.set "gridBlockSize", b.width()
 
     bxy = @INITIAL_BLOCK_XY
+    @state.set @getBlockId(bxy[0], bxy[1]), b
+
     @positionBlock b, bxy[0], bxy[1]
 
-    gxy = @getGridCoordsByBlock(bxy[0], bxy[1])
+    gxy = @getGridXYByBlockXY(bxy[0], bxy[1])
 
     @state.set "gridBlockX", -gxy[0]
     @state.set "gridBlockY", -gxy[1]
 
-    @state.set @getBlockId(gxy[0], gxy[1]), b
-
   drawGridPosition: =>
-    xy = @getGridCoords()
+    xy = @getGridXY()
     @positionGrid(xy[0], xy[1])
 
   drawVisibleBlock: =>
-    xy = @getGridCoords()
+    xy = @getGridXY()
+    windoww = $(window).width()
+    windowh = $(window).height()
+
+    xyTopLeft     = [-xy[0], -xy[1]]
+    xyTopRight    = [xyTopLeft[0] + windoww, xyTopLeft[1]]
+    xyBottomLeft  = [xyTopLeft[0], xyTopLeft[1] + windowh]
+    xyBottomRight = [xyTopRight[0], xyBottomLeft[1]]
+
+    xys = [xyTopLeft, xyTopRight, xyBottomLeft, xyBottomRight]
+
+    for xy in xys
+      bxy = @getBlockXYByGridXY(xy[0], xy[1])
+
+      bid = @getBlockId(bxy[0], bxy[1])
+
+      unless @state.get(bid)?
+        b = $ @renderGridBlock()
+        @el.append b
+
+        @positionBlock b, bxy[0], bxy[1]
+        @state.set bid, b
+
+      block = @state.get bid
+      block.show()
 
   # @return {String}
   renderGridBlock: =>
@@ -86,7 +111,7 @@ class levelEditor.view.Grid extends levelEditor.Object
     return block
 
   positionBlock: (block, x, y)=>
-    xy = @getGridCoordsByBlock(x, y)
+    xy = @getGridXYByBlockXY(x, y)
     block.css
       left: xy[0]
       top:  xy[1]
@@ -132,7 +157,7 @@ class levelEditor.view.Grid extends levelEditor.Object
     mouse
       .filter((v)=> v.offsetx? && v.offsety?)
       .onValue (v)=>
-        xy = @getGridCoords()
+        xy = @getGridXY()
         @state.set "gridBlockX", xy[0] + v.offsetx
         @state.set "gridBlockY", xy[1] + v.offsety
 
@@ -167,14 +192,14 @@ class levelEditor.view.Grid extends levelEditor.Object
   # section: Helpers
 
   # @return {Array.<X, Y>}
-  getGridCoords: =>
+  getGridXY: =>
     [
       @state.get("gridBlockX")
       @state.get("gridBlockY")
     ]
 
   # @return {Array.<X, Y>}
-  getGridCoordsByBlock: (x, y)=>
+  getGridXYByBlockXY: (x, y)=>
     bs = @state.get "gridBlockSize"
 
     [x * bs, y * bs]
@@ -182,3 +207,15 @@ class levelEditor.view.Grid extends levelEditor.Object
   # @return {String}
   getBlockId: (x, y)=>
     "block#{x}-#{y}"
+
+  # @return {Array.<X, Y>}
+  getBlockXYByGridXY: (x, y)=>
+    bs = @state.get "gridBlockSize"
+
+    [
+      Math.floor x / bs
+      Math.floor y / bs
+    ]
+
+
+

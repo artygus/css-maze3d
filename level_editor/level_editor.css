@@ -20,7 +20,7 @@ body {
 }
 
 .grid__block {
-  position: relative;
+  position: absolute;
 
   display: inline-block;
 }
