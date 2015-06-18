@@ -22,6 +22,7 @@ class levelEditor.view.Grid extends levelEditor.Object
     @state.set "gridBlockSize", null
     @state.set "gridX", 0
     @state.set "gridY", 0
+    @state.set "blocks", {}
 
     $(@state).on @app.data.s.I_DATA_CHANGED, (v)=>
 
@@ -73,16 +74,25 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     xys = [xyTopLeft, xyTopRight, xyBottomLeft, xyBottomRight]
 
+    visible = []
+
     for xy in xys
       bxy = @getBlockXYByGridXY(xy[0], xy[1])
 
       bid = @getBlockId(bxy[0], bxy[1])
 
-      unless @state.get(bid)?
+      unless @state.get("blocks")[bid]?
         @drawBlock bxy[0], bxy[1]
 
-      block = @state.get bid
+      block = @state.get("blocks")[bid]
       block.show()
+
+      visible.push block
+
+    for key, block of @state.get("blocks")
+      if visible.indexOf(block) == -1
+        block.hide()
+
 
   # @return {jQuery}
   drawBlock: (blockx, blocky)=>
@@ -93,7 +103,7 @@ class levelEditor.view.Grid extends levelEditor.Object
       @state.set "gridBlockSize", b.width()
 
     @positionBlock b, blockx, blocky
-    @state.set @getBlockId(blockx, blocky), b
+    @state.get("blocks")[@getBlockId(blockx, blocky)] = b
 
     return b
 

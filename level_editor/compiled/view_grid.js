@@ -47,6 +47,7 @@
       this.state.set("gridBlockSize", null);
       this.state.set("gridX", 0);
       this.state.set("gridY", 0);
+      this.state.set("blocks", {});
       return $(this.state).on(this.app.data.s.I_DATA_CHANGED, (function(_this) {
         return function(v) {
           switch (v.key) {
@@ -89,7 +90,7 @@
     };
 
     Grid.prototype.drawVisibleBlock = function() {
-      var bid, block, bxy, windowh, windoww, xy, xyBottomLeft, xyBottomRight, xyTopLeft, xyTopRight, xys, _i, _len, _results;
+      var bid, block, bxy, key, visible, windowh, windoww, xy, xyBottomLeft, xyBottomRight, xyTopLeft, xyTopRight, xys, _i, _len, _ref, _results;
       xy = this.getGridXY();
       windoww = $(window).width();
       windowh = $(window).height();
@@ -98,16 +99,27 @@
       xyBottomLeft = [xyTopLeft[0], xyTopLeft[1] + windowh];
       xyBottomRight = [xyTopRight[0], xyBottomLeft[1]];
       xys = [xyTopLeft, xyTopRight, xyBottomLeft, xyBottomRight];
-      _results = [];
+      visible = [];
       for (_i = 0, _len = xys.length; _i < _len; _i++) {
         xy = xys[_i];
         bxy = this.getBlockXYByGridXY(xy[0], xy[1]);
         bid = this.getBlockId(bxy[0], bxy[1]);
-        if (this.state.get(bid) == null) {
+        if (this.state.get("blocks")[bid] == null) {
           this.drawBlock(bxy[0], bxy[1]);
         }
-        block = this.state.get(bid);
-        _results.push(block.show());
+        block = this.state.get("blocks")[bid];
+        block.show();
+        visible.push(block);
+      }
+      _ref = this.state.get("blocks");
+      _results = [];
+      for (key in _ref) {
+        block = _ref[key];
+        if (visible.indexOf(block) === -1) {
+          _results.push(block.hide());
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };
@@ -120,7 +132,7 @@
         this.state.set("gridBlockSize", b.width());
       }
       this.positionBlock(b, blockx, blocky);
-      this.state.set(this.getBlockId(blockx, blocky), b);
+      this.state.get("blocks")[this.getBlockId(blockx, blocky)] = b;
       return b;
     };
 
