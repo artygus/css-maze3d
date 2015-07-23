@@ -21,7 +21,8 @@
     }
 
     Editor.prototype.init = function() {
-      return Editor.__super__.init.apply(this, arguments);
+      Editor.__super__.init.apply(this, arguments);
+      return this.set("ui-modes", new levelEditor.data.UiModes());
     };
 
     return Editor;

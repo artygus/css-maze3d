@@ -10,6 +10,8 @@ class levelEditor.view.Grid extends levelEditor.Object
     super
     console.log @DT, "Init."
 
+    @dUiModes = @app.data.get("ui-modes")
+
     @stateInit()
     @interactionMouseMove()
     @drawInitially()
@@ -168,6 +170,7 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     mouse
       .filter((v)=> v.offsetx? && v.offsety?)
+      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_NAVIGATE)
       .onValue (v)=>
         xy = @getGridXY()
         xy = @handleGridPosition(xy[0] + v.offsetx, xy[1] + v.offsety)

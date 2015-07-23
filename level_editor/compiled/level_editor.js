@@ -20,6 +20,7 @@
       App.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.data = new levelEditor.data.Editor();
+      new levelEditor.modules.Hotkeys(this);
       new levelEditor.view.Grid(this);
     }
 

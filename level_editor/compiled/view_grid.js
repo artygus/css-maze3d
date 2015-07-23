@@ -37,6 +37,7 @@
       this.stateInit = __bind(this.stateInit, this);
       Grid.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
+      this.dUiModes = this.app.data.get("ui-modes");
       this.stateInit();
       this.interactionMouseMove();
       this.drawInitially();
@@ -230,6 +231,10 @@
       return mouse.filter((function(_this) {
         return function(v) {
           return (v.offsetx != null) && (v.offsety != null);
+        };
+      })(this)).filter((function(_this) {
+        return function() {
+          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_NAVIGATE;
         };
       })(this)).onValue((function(_this) {
         return function(v) {

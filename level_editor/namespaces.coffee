@@ -5,4 +5,5 @@
 window.levelEditor = {
   view: {}
   data: {}
+  modules: {}
 }

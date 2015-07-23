@@ -13,4 +13,6 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
   init: =>
     super
 
+    @set "ui-modes", new levelEditor.data.UiModes()
+
 
