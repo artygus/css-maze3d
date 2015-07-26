@@ -22,6 +22,11 @@
       this.data = new levelEditor.data.Editor();
       new levelEditor.modules.Hotkeys(this);
       new levelEditor.view.Grid(this);
+      this.el.find("[" + levelEditor.view.UIModeSwitchButton.VID + "]").each((function(_this) {
+        return function(i, v) {
+          return new levelEditor.view.UIModeSwitchButton($(v), _this);
+        };
+      })(this));
     }
 
     App.init = function() {

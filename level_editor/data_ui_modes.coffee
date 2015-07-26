@@ -17,4 +17,4 @@ class levelEditor.data.UiModes extends chms.ard.AbstractReactiveData
   init: =>
     super
 
-    @set "currentMode", @MODE_SELECT
+    @set "currentMode", @s.MODE_SELECT

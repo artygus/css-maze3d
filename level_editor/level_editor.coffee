@@ -21,6 +21,10 @@ class levelEditor.App extends levelEditor.Object
     # Views
     new levelEditor.view.Grid @
 
+    @el.find("[#{levelEditor.view.UIModeSwitchButton.VID}]").each (i, v)=>
+      new levelEditor.view.UIModeSwitchButton $(v), @
+
+
   # section: Static
 
   @init: ->
