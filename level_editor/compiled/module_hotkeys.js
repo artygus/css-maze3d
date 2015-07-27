@@ -13,9 +13,21 @@
 
     Hotkeys.prototype.DT = "levelEditor.modules.Hotkeys";
 
-    function Hotkeys() {
+    function Hotkeys(app) {
+      this.app = app;
       Hotkeys.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
+      this.dUiModes = this.app.data.get("ui-modes");
+      keyboardJS.bind('1', null, (function(_this) {
+        return function(e) {
+          return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_SELECT);
+        };
+      })(this));
+      keyboardJS.bind('2', null, (function(_this) {
+        return function(e) {
+          return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_NAVIGATE);
+        };
+      })(this));
     }
 
     return Hotkeys;

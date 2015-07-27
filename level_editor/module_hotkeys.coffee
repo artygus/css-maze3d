@@ -6,6 +6,15 @@ class levelEditor.modules.Hotkeys extends levelEditor.Object
 
   DT: "levelEditor.modules.Hotkeys"
 
-  constructor: ->
+  constructor: (@app)->
     super
     console.log @DT, "Init."
+
+    @dUiModes = @app.data.get("ui-modes")
+
+    keyboardJS.bind '1', null, (e)=>
+      @dUiModes.set "currentMode", @dUiModes.s.MODE_SELECT
+
+    keyboardJS.bind '2', null, (e)=>
+      @dUiModes.set "currentMode", @dUiModes.s.MODE_NAVIGATE
+
