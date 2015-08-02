@@ -25,7 +25,6 @@
       this.templateBlock = __bind(this.templateBlock, this);
       this.template = __bind(this.template, this);
       this.handleGridPosition = __bind(this.handleGridPosition, this);
-      this.interactionGridClick = __bind(this.interactionGridClick, this);
       this.interactionMouseMove = __bind(this.interactionMouseMove, this);
       this.positionGrid = __bind(this.positionGrid, this);
       this.positionBlock = __bind(this.positionBlock, this);
@@ -71,7 +70,7 @@
       this.app.el.append(this.el);
       this.drawGridPosition();
       this.drawInitialBlock();
-      return this.interactionGridClick();
+      return new levelEditor.view.Cells(this.el, this.app);
     };
 
     Grid.prototype.INITIAL_BLOCK_XY = [2, 2];
@@ -245,28 +244,6 @@
           xy = _this.handleGridPosition(xy[0] + v.offsetx, xy[1] + v.offsety);
           _this.state.set("gridX", xy[0]);
           return _this.state.set("gridY", xy[1]);
-        };
-      })(this));
-    };
-
-    Grid.prototype.interactionGridClick = function() {
-      return this.el.asEventStream("click").map((function(_this) {
-        return function(v) {
-          return {
-            el: $(v.target)
-          };
-        };
-      })(this)).filter((function(_this) {
-        return function(v) {
-          return v.el.attr("cell") != null;
-        };
-      })(this)).filter((function(_this) {
-        return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_SELECT;
-        };
-      })(this)).onValue((function(_this) {
-        return function(v) {
-          return console.log(_this.DT, "Clicked", v);
         };
       })(this));
     };
