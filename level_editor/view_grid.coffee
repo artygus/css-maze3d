@@ -47,6 +47,7 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     @drawGridPosition()
     @drawInitialBlock()
+    @interactionGridClick()
 
   INITIAL_BLOCK_XY: [2, 2]
 
@@ -177,6 +178,16 @@ class levelEditor.view.Grid extends levelEditor.Object
 
         @state.set "gridX", xy[0]
         @state.set "gridY", xy[1]
+
+  # Grid click
+  interactionGridClick: =>
+
+    @el.asEventStream("click")
+      .map((v)=> {el: $(v.target)})
+      .filter((v)=> v.el.attr("cell")?)
+      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_SELECT)
+      .onValue (v)=>
+        console.log @DT, "Clicked", v
 
 
   # section: Handlers
