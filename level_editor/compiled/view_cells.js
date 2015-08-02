@@ -22,6 +22,7 @@
       Cells.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.dUiModes = this.app.data.get("ui-modes");
+      this.stateInit();
       this.interactionGridClick();
     }
 
@@ -47,9 +48,19 @@
         };
       })(this)).onValue((function(_this) {
         return function(v) {
-          return console.log(_this.DT, "Clicked", v);
+          var i, xy;
+          xy = _this.s.getCellXYByEl(v.el);
+          if ((i = _.findIndex(_this.state.get("selected"), xy)) === -1) {
+            return _this.state.tarray.push("selected", xy);
+          } else {
+            return _this.state.tarray["delete"]("selected", i);
+          }
         };
       })(this));
+    };
+
+    Cells.getCellXYByEl = function(el) {
+      return [el.attr("x"), el.attr("y")];
     };
 
     return Cells;

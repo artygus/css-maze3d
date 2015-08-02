@@ -12,6 +12,8 @@ class levelEditor.view.Cells extends levelEditor.Object
 
     @dUiModes = @app.data.get("ui-modes")
 
+    @stateInit()
+
     @interactionGridClick()
 
 
@@ -33,4 +35,21 @@ class levelEditor.view.Cells extends levelEditor.Object
     .filter((v)=> v.el.attr("cell")?)
     .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_SELECT)
     .onValue (v)=>
-        console.log @DT, "Clicked", v
+      xy = @s.getCellXYByEl(v.el)
+
+      if ((i = _.findIndex(@state.get("selected"), xy)) == -1)
+        @state.tarray.push "selected", xy
+      else
+        @state.tarray.delete "selected", i
+
+
+  # section: Static
+
+  # sub section: Helpers
+
+  # Get cell x,y by element
+  # @return {Array.<String, String>}
+  @getCellXYByEl: (el)->
+    [el.attr("x"), el.attr("y")]
+
+
