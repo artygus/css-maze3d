@@ -15,4 +15,6 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
 
     @set "ui-modes", new levelEditor.data.UiModes()
 
+    @set "level-cells", new levelEditor.data.LevelCells()
+
 

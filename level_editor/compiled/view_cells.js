@@ -17,18 +17,21 @@
     function Cells(grid, app) {
       this.grid = grid;
       this.app = app;
+      this.drawCellState = __bind(this.drawCellState, this);
+      this.initRender = __bind(this.initRender, this);
       this.interactionGridClick = __bind(this.interactionGridClick, this);
-      this.stateInit = __bind(this.stateInit, this);
+      this.initState = __bind(this.initState, this);
       Cells.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.dUiModes = this.app.data.get("ui-modes");
-      this.stateInit();
+      this.dLevelCells = this.app.data.get("level-cells");
+      this.initState();
+      this.initRender();
       this.interactionGridClick();
     }
 
-    Cells.prototype.stateInit = function() {
-      this.state = new chms.ard.AbstractReactiveData();
-      return this.state.set("selected", []);
+    Cells.prototype.initState = function() {
+      return this.state = new chms.ard.AbstractReactiveData();
     };
 
     Cells.prototype.interactionGridClick = function() {
@@ -48,19 +51,57 @@
         };
       })(this)).onValue((function(_this) {
         return function(v) {
-          var i, xy;
-          xy = _this.s.getCellXYByEl(v.el);
-          if ((i = _.findIndex(_this.state.get("selected"), xy)) === -1) {
-            return _this.state.tarray.push("selected", xy);
+          var cell;
+          cell = _this.s.getCellXYByEl(v.el);
+          if (_this.dLevelCells.isCellBelongs(cell)) {
+            return _this.dLevelCells.removeCell(cell);
           } else {
-            return _this.state.tarray["delete"]("selected", i);
+            return _this.dLevelCells.addCell(cell);
           }
         };
       })(this));
     };
 
+    Cells.prototype.initRender = function() {
+      var imp, _i, _len, _ref, _results;
+      _ref = [this.dLevelCells.tarray.s.I_DATA_INSERTED, this.dLevelCells.tarray.s.I_DATA_DELETED];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        imp = _ref[_i];
+        _results.push($(this.dLevelCells).asEventStream(imp).filter((function(_this) {
+          return function(v) {
+            return v.key === "levelCells";
+          };
+        })(this)).onValue((function(_this) {
+          return function(v) {
+            if (v.type === _this.dLevelCells.tarray.s.I_DATA_INSERTED) {
+              return _this.drawCellState(v.inserted);
+            } else {
+              return _this.drawCellState(v.deleted);
+            }
+          };
+        })(this)));
+      }
+      return _results;
+    };
+
+    Cells.prototype.drawCellState = function(cell) {
+      var el;
+      console.log(this.DT, "Draw cell state", cell);
+      el = this.s.getCellByXY(cell, this.grid);
+      if (this.dLevelCells.isCellBelongs(cell)) {
+        return el.addClass("level-cell");
+      } else {
+        return el.removeClass("level-cell");
+      }
+    };
+
     Cells.getCellXYByEl = function(el) {
       return [el.attr("x"), el.attr("y")];
+    };
+
+    Cells.getCellByXY = function(cell, grid) {
+      return grid.find("[cell][x=" + cell[0] + "][y=" + cell[1] + "]");
     };
 
     return Cells;

@@ -11,18 +11,18 @@ class levelEditor.view.Cells extends levelEditor.Object
     console.log @DT, "Init."
 
     @dUiModes = @app.data.get("ui-modes")
+    @dLevelCells = @app.data.get("level-cells")
 
-    @stateInit()
+    @initState()
+    @initRender()
 
     @interactionGridClick()
 
 
   # section: State
 
-  stateInit: =>
+  initState: =>
     @state = new chms.ard.AbstractReactiveData()
-
-    @state.set "selected", []
 
 
   # section: Interactions
@@ -35,12 +35,39 @@ class levelEditor.view.Cells extends levelEditor.Object
     .filter((v)=> v.el.attr("cell")?)
     .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_SELECT)
     .onValue (v)=>
-      xy = @s.getCellXYByEl(v.el)
+      cell = @s.getCellXYByEl(v.el)
 
-      if ((i = _.findIndex(@state.get("selected"), xy)) == -1)
-        @state.tarray.push "selected", xy
+      if @dLevelCells.isCellBelongs(cell)
+        @dLevelCells.removeCell cell
       else
-        @state.tarray.delete "selected", i
+        @dLevelCells.addCell cell
+
+
+  # section: Rendering
+
+  # Init rendering functions
+  initRender: =>
+    for imp in [@dLevelCells.tarray.s.I_DATA_INSERTED, @dLevelCells.tarray.s.I_DATA_DELETED]
+      $(@dLevelCells)
+        .asEventStream(imp)
+        .filter((v)=> v.key == "levelCells")
+        .onValue (v)=>
+          if v.type == @dLevelCells.tarray.s.I_DATA_INSERTED
+            @drawCellState(v.inserted)
+          else
+            @drawCellState(v.deleted)
+
+  # Draw current cell state
+  # @param {Cell} cell
+  drawCellState: (cell)=>
+    console.log @DT, "Draw cell state", cell
+
+    el = @s.getCellByXY(cell, @grid)
+
+    if @dLevelCells.isCellBelongs(cell)
+      el.addClass "level-cell"
+    else
+      el.removeClass "level-cell"
 
 
   # section: Static
@@ -51,5 +78,12 @@ class levelEditor.view.Cells extends levelEditor.Object
   # @return {Array.<String, String>}
   @getCellXYByEl: (el)->
     [el.attr("x"), el.attr("y")]
+
+  # Get cell by x,y
+  # @param {Cell} cell
+  # @param {jQuery} grid
+  @getCellByXY: (cell, grid)=>
+    grid.find("[cell][x=#{cell[0]}][y=#{cell[1]}]")
+
 
 

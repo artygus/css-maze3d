@@ -39,7 +39,7 @@ body {
 
   display: inline-block;
 
-  margin: 1px;
+  background: rgba(0,0,0,0.7);
 }
 
 .grid__col.-selected {
@@ -49,8 +49,9 @@ body {
 
 /* Level cell */
 .level-cell {
-  border: 2px solid lightgreen;
+  /*border: 2px solid lightgreen;*/
   /*box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.2) inset;*/
+  background: white;
 }
 
 .level-cell.-face-n-wall {
