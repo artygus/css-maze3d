@@ -12,6 +12,8 @@ class levelEditor.data.UiModes extends chms.ard.AbstractReactiveData
 
   @MODE_BUILD: "m_build"
 
+  @MODE_DESTROY: "m_destroy"
+
   constructor: ->
     super
     console.log @DT, "Init."

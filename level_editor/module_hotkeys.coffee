@@ -19,5 +19,8 @@ class levelEditor.modules.Hotkeys extends levelEditor.Object
       @dUiModes.set "currentMode", @dUiModes.s.MODE_BUILD
 
     keyboardJS.bind '3', null, (e)=>
+      @dUiModes.set "currentMode", @dUiModes.s.MODE_DESTROY
+
+    keyboardJS.bind '4', null, (e)=>
       @dUiModes.set "currentMode", @dUiModes.s.MODE_NAVIGATE
 

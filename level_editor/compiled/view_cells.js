@@ -35,7 +35,7 @@
     };
 
     Cells.prototype.interactionGridClick = function() {
-      var stream, streamBuild;
+      var stream;
       stream = this.grid.asEventStream("click").map((function(_this) {
         return function(v) {
           return {
@@ -55,23 +55,26 @@
           };
         };
       })(this));
-      streamBuild = stream.filter((function(_this) {
+      stream.filter((function(_this) {
         return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_BUILD;
+          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_DESTROY;
         };
-      })(this));
-      streamBuild.filter((function(_this) {
+      })(this)).filter((function(_this) {
         return function(v) {
-          return v.altKey && _this.dLevelCells.isCellBelongs(v.cell);
+          return _this.dLevelCells.isCellBelongs(v.cell);
         };
       })(this)).onValue((function(_this) {
         return function(v) {
           return _this.dLevelCells.removeCell(v.cell);
         };
       })(this));
-      return streamBuild.filter((function(_this) {
+      return stream.filter((function(_this) {
+        return function() {
+          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_BUILD;
+        };
+      })(this)).filter((function(_this) {
         return function(v) {
-          return !v.altKey && !_this.dLevelCells.isCellBelongs(v.cell);
+          return !_this.dLevelCells.isCellBelongs(v.cell);
         };
       })(this)).onValue((function(_this) {
         return function(v) {

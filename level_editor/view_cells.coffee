@@ -35,16 +35,15 @@ class levelEditor.view.Cells extends levelEditor.Object
       .filter((v)=> v.el.attr("cell")?)
       .map((v)=> {cell: @s.getCellXYByEl(v.el), altKey: v.altKey})
 
-    streamBuild = stream
-      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_BUILD)
-
-    streamBuild
-      .filter((v)=> v.altKey && @dLevelCells.isCellBelongs(v.cell))
+    stream
+      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_DESTROY)
+      .filter((v)=> @dLevelCells.isCellBelongs(v.cell))
       .onValue (v)=>
         @dLevelCells.removeCell v.cell
 
-    streamBuild
-      .filter((v)=> !v.altKey && !@dLevelCells.isCellBelongs(v.cell))
+    stream
+      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_BUILD)
+      .filter((v)=> !@dLevelCells.isCellBelongs(v.cell))
       .onValue (v)=>
         @dLevelCells.addCell v.cell
 

@@ -20,6 +20,8 @@
 
     UiModes.MODE_BUILD = "m_build";
 
+    UiModes.MODE_DESTROY = "m_destroy";
+
     function UiModes() {
       this.init = __bind(this.init, this);
       UiModes.__super__.constructor.apply(this, arguments);

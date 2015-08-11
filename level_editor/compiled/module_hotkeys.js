@@ -30,6 +30,11 @@
       })(this));
       keyboardJS.bind('3', null, (function(_this) {
         return function(e) {
+          return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_DESTROY);
+        };
+      })(this));
+      keyboardJS.bind('4', null, (function(_this) {
+        return function(e) {
           return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_NAVIGATE);
         };
       })(this));
