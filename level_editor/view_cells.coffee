@@ -30,17 +30,23 @@ class levelEditor.view.Cells extends levelEditor.Object
   # Grid click
   interactionGridClick: =>
 
-    @grid.asEventStream("click")
-    .map((v)=> {el: $(v.target)})
-    .filter((v)=> v.el.attr("cell")?)
-    .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_SELECT)
-    .onValue (v)=>
-      cell = @s.getCellXYByEl(v.el)
+    stream = @grid.asEventStream("click")
+      .map((v)=> {el: $(v.target), altKey: v.altKey})
+      .filter((v)=> v.el.attr("cell")?)
+      .map((v)=> {cell: @s.getCellXYByEl(v.el), altKey: v.altKey})
 
-      if @dLevelCells.isCellBelongs(cell)
-        @dLevelCells.removeCell cell
-      else
-        @dLevelCells.addCell cell
+    streamBuild = stream
+      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_BUILD)
+
+    streamBuild
+      .filter((v)=> v.altKey && @dLevelCells.isCellBelongs(v.cell))
+      .onValue (v)=>
+        @dLevelCells.removeCell v.cell
+
+    streamBuild
+      .filter((v)=> !v.altKey && !@dLevelCells.isCellBelongs(v.cell))
+      .onValue (v)=>
+        @dLevelCells.addCell v.cell
 
 
   # section: Rendering

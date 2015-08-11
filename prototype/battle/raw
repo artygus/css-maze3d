@@ -39,3 +39,5 @@
     refreshPlayerPosition();
 
   });
+
+glyphicon glyphicon-erase

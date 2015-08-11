@@ -25,6 +25,11 @@
       })(this));
       keyboardJS.bind('2', null, (function(_this) {
         return function(e) {
+          return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_BUILD);
+        };
+      })(this));
+      keyboardJS.bind('3', null, (function(_this) {
+        return function(e) {
           return _this.dUiModes.set("currentMode", _this.dUiModes.s.MODE_NAVIGATE);
         };
       })(this));

@@ -10,6 +10,8 @@ class levelEditor.data.UiModes extends chms.ard.AbstractReactiveData
 
   @MODE_NAVIGATE: "m_navigate"
 
+  @MODE_BUILD: "m_build"
+
   constructor: ->
     super
     console.log @DT, "Init."

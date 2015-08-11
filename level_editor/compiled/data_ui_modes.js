@@ -18,6 +18,8 @@
 
     UiModes.MODE_NAVIGATE = "m_navigate";
 
+    UiModes.MODE_BUILD = "m_build";
+
     function UiModes() {
       this.init = __bind(this.init, this);
       UiModes.__super__.constructor.apply(this, arguments);

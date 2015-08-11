@@ -35,29 +35,47 @@
     };
 
     Cells.prototype.interactionGridClick = function() {
-      return this.grid.asEventStream("click").map((function(_this) {
+      var stream, streamBuild;
+      stream = this.grid.asEventStream("click").map((function(_this) {
         return function(v) {
           return {
-            el: $(v.target)
+            el: $(v.target),
+            altKey: v.altKey
           };
         };
       })(this)).filter((function(_this) {
         return function(v) {
           return v.el.attr("cell") != null;
         };
-      })(this)).filter((function(_this) {
+      })(this)).map((function(_this) {
+        return function(v) {
+          return {
+            cell: _this.s.getCellXYByEl(v.el),
+            altKey: v.altKey
+          };
+        };
+      })(this));
+      streamBuild = stream.filter((function(_this) {
         return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_SELECT;
+          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_BUILD;
+        };
+      })(this));
+      streamBuild.filter((function(_this) {
+        return function(v) {
+          return v.altKey && _this.dLevelCells.isCellBelongs(v.cell);
         };
       })(this)).onValue((function(_this) {
         return function(v) {
-          var cell;
-          cell = _this.s.getCellXYByEl(v.el);
-          if (_this.dLevelCells.isCellBelongs(cell)) {
-            return _this.dLevelCells.removeCell(cell);
-          } else {
-            return _this.dLevelCells.addCell(cell);
-          }
+          return _this.dLevelCells.removeCell(v.cell);
+        };
+      })(this));
+      return streamBuild.filter((function(_this) {
+        return function(v) {
+          return !v.altKey && !_this.dLevelCells.isCellBelongs(v.cell);
+        };
+      })(this)).onValue((function(_this) {
+        return function(v) {
+          return _this.dLevelCells.addCell(v.cell);
         };
       })(this));
     };
