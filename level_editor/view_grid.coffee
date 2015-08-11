@@ -98,9 +98,11 @@ class levelEditor.view.Grid extends levelEditor.Object
         block.hide()
 
 
+  # @param {Integer} blockx
+  # @param {Integer} blocky
   # @return {jQuery}
   drawBlock: (blockx, blocky)=>
-    b = $ @renderGridBlock()
+    b = $ @renderGridBlock(blockx, blocky)
     @el.append b
 
     unless @state.get("gridBlockSize")?
@@ -111,14 +113,15 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     return b
 
+  # @param {Integer} blockx
+  # @param {Integer} blocky
   # @return {String}
-  renderGridBlock: =>
+  renderGridBlock: (blockx, blocky)=>
     rows = ""
     for i in [1..@GRID_BLOCK_SIZE]
       cols = ''
-      ii = i.toString()
       for j in [1..@GRID_BLOCK_SIZE]
-        cols += @templateCell(j, ii)
+        cols += @templateCell(j, i, blockx, blocky)
 
       rows += @templateRow(cols)
 
@@ -212,8 +215,14 @@ class levelEditor.view.Grid extends levelEditor.Object
       </div>
     """
 
-  templateCell: (x, y)=>
-    xy = "x=\"#{x}\" y=\"#{y}\""
+  # @param {Integer} x
+  # @param {Integer} y
+  # @param {Integer} blockx
+  # @param {Integer} blocky
+  templateCell: (x, y, blockx, blocky)=>
+    tx = x + @GRID_BLOCK_SIZE * blockx
+    ty = y + @GRID_BLOCK_SIZE * blocky
+    xy = "x=\"#{tx}\" y=\"#{ty}\""
     """
       <div class="grid__col" #{xy} cell></div>
     """

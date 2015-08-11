@@ -128,7 +128,7 @@
 
     Grid.prototype.drawBlock = function(blockx, blocky) {
       var b;
-      b = $(this.renderGridBlock());
+      b = $(this.renderGridBlock(blockx, blocky));
       this.el.append(b);
       if (this.state.get("gridBlockSize") == null) {
         this.state.set("gridBlockSize", b.width());
@@ -138,14 +138,13 @@
       return b;
     };
 
-    Grid.prototype.renderGridBlock = function() {
-      var block, cols, i, ii, j, rows, _i, _j, _ref, _ref1;
+    Grid.prototype.renderGridBlock = function(blockx, blocky) {
+      var block, cols, i, j, rows, _i, _j, _ref, _ref1;
       rows = "";
       for (i = _i = 1, _ref = this.GRID_BLOCK_SIZE; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         cols = '';
-        ii = i.toString();
         for (j = _j = 1, _ref1 = this.GRID_BLOCK_SIZE; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 1 <= _ref1 ? ++_j : --_j) {
-          cols += this.templateCell(j, ii);
+          cols += this.templateCell(j, i, blockx, blocky);
         }
         rows += this.templateRow(cols);
       }
@@ -270,9 +269,11 @@
       return "<div class=\"grid__block\">\n  " + block + "\n</div>";
     };
 
-    Grid.prototype.templateCell = function(x, y) {
-      var xy;
-      xy = "x=\"" + x + "\" y=\"" + y + "\"";
+    Grid.prototype.templateCell = function(x, y, blockx, blocky) {
+      var tx, ty, xy;
+      tx = x + this.GRID_BLOCK_SIZE * blockx;
+      ty = y + this.GRID_BLOCK_SIZE * blocky;
+      xy = "x=\"" + tx + "\" y=\"" + ty + "\"";
       return "<div class=\"grid__col\" " + xy + " cell></div>";
     };
 
