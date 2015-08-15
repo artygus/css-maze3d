@@ -32,9 +32,7 @@
     }
 
     App.init = function() {
-      return $(function() {
-        return new levelEditor.App($("[app-level-editor]"));
-      });
+      return new levelEditor.App($("[app-level-editor]"));
     };
 
     return App;

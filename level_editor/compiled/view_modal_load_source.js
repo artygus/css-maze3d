@@ -19,15 +19,37 @@
     function ModalLoadSource(el, app) {
       this.el = el;
       this.app = app;
+      this.clearForm = __bind(this.clearForm, this);
+      this.loadLevel = __bind(this.loadLevel, this);
       this.loadBtnClick = __bind(this.loadBtnClick, this);
       ModalLoadSource.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.loadbtn = this.el.find("[load]");
+      this.textarea = this.el.find("textarea[name=level-source]");
       this.loadbtn.on("click", this.loadBtnClick);
+      this.el.on("hidden.bs.modal", this.clearForm);
     }
 
     ModalLoadSource.prototype.loadBtnClick = function() {
+      this.loadLevel();
       return this.el.modal('hide');
+    };
+
+    ModalLoadSource.prototype.loadLevel = function() {
+      var flags, h, lc, level, lobject;
+      lobject = this.textarea.val();
+      if (lobject.length > 0) {
+        h = levelEditor.serializers.Level;
+        level = h.parseSerializedFromString(lobject);
+        lc = this.app.data.get("level-cells");
+        flags = {};
+        flags[lc.FLAG_LEVEL_LOADED] = true;
+        return lc.set("levelCells", level, flags);
+      }
+    };
+
+    ModalLoadSource.prototype.clearForm = function() {
+      return this.textarea.val("");
     };
 
     return ModalLoadSource;

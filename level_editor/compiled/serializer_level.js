@@ -33,6 +33,19 @@
     },
     serializeToString: function(level) {
       return JSON.stringify(levelEditor.serializers.Level.serialize(level));
+    },
+    parseSerialized: function(serialized) {
+      var cell, cid, level;
+      level = [];
+      for (cid in serialized) {
+        cell = serialized[cid];
+        level.push([cell.x, cell.y]);
+      }
+      return level;
+    },
+    parseSerializedFromString: function(serialized) {
+      serialized = JSON.parse(serialized);
+      return levelEditor.serializers.Level.parseSerialized(serialized);
     }
   };
 

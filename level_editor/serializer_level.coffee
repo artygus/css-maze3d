@@ -35,6 +35,24 @@ levelEditor.serializers.Level =
   serializeToString: (level)->
     JSON.stringify levelEditor.serializers.Level.serialize(level)
 
+  # Parse serialized level
+  # @param {Object} serialized
+  # @return {Array.<Cell>}
+  parseSerialized: (serialized)->
+    level = []
+
+    for cid, cell of serialized
+      level.push [cell.x, cell.y]
+
+    return level
+
+  # @param {String} serialized
+  # @return {String}
+  parseSerializedFromString: (serialized)->
+    serialized = JSON.parse serialized
+    return levelEditor.serializers.Level.parseSerialized(serialized)
+
+
 
 
 

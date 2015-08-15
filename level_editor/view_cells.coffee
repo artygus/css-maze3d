@@ -62,6 +62,12 @@ class levelEditor.view.Cells extends levelEditor.Object
           else
             @drawCellState(v.deleted)
 
+    $(@dLevelCells)
+      .asEventStream(@dLevelCells.s.I_DATA_CHANGED)
+      .filter((v)=> v.flags? && v.flags[@dLevelCells.FLAG_LEVEL_LOADED] == true)
+      .onValue @redrawLevel
+
+
   # Draw current cell state
   # @param {Cell} cell
   drawCellState: (cell)=>
@@ -73,6 +79,13 @@ class levelEditor.view.Cells extends levelEditor.Object
       el.addClass "level-cell"
     else
       el.removeClass "level-cell"
+
+  # Redraw level
+  redrawLevel: =>
+    @grid.find("[cell].level-cell").removeClass "level-cell"
+
+    for cell in @dLevelCells.get("levelCells")
+      @drawCellState cell
 
 
   # section: Static

@@ -30,7 +30,6 @@ class levelEditor.App extends levelEditor.Object
   # section: Static
 
   @init: ->
-    $ ->
-      new levelEditor.App(
-        $("[app-level-editor]")
-      )
+    new levelEditor.App(
+      $("[app-level-editor]")
+    )

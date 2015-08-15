@@ -6,6 +6,8 @@ class levelEditor.data.LevelCells extends chms.ard.AbstractReactiveData
 
   DT: "levelEditor.data.LevelCells"
 
+  FLAG_LEVEL_LOADED: "level-loaded"
+
   constructor: ->
     super
     console.log @DT, "Init."
