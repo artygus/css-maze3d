@@ -21,6 +21,7 @@ class levelEditor.App extends levelEditor.Object
     # Views
     new levelEditor.view.Grid @
     new levelEditor.view.ModalSource @el.find("[#{levelEditor.view.ModalSource.VID}]"), @
+    new levelEditor.view.ModalLoadSource @el.find("[#{levelEditor.view.ModalLoadSource.VID}]"), @
 
     @el.find("[#{levelEditor.view.UIModeSwitchButton.VID}]").each (i, v)=>
       new levelEditor.view.UIModeSwitchButton $(v), @
