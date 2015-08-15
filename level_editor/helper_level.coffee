@@ -14,8 +14,8 @@ levelEditor.helpers.Level =
     return {
       n: [x, y-1]
       s: [x, y+1]
-      e: [x-1, y]
-      w: [x+1, y]
+      w: [x-1, y]
+      e: [x+1, y]
     }
 
   # Construct cell-id for a given cell
