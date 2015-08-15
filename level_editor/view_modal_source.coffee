@@ -21,6 +21,7 @@ class levelEditor.view.ModalSource extends levelEditor.Object
 
   # Draw level source
   drawLevelSource: =>
-    @textarea.text "source would be here"
+    @textarea.text levelEditor.serializers.Level.serializeToString(@app.data.get("level-cells"))
+
 
 

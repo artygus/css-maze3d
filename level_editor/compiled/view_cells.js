@@ -118,7 +118,7 @@
     };
 
     Cells.getCellXYByEl = function(el) {
-      return [el.attr("x"), el.attr("y")];
+      return [parseInt(el.attr("x")), parseInt(el.attr("y"))];
     };
 
     Cells.getCellByXY = function(cell, grid) {

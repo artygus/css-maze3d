@@ -8,7 +8,9 @@
   window.levelEditor = {
     view: {},
     data: {},
-    modules: {}
+    modules: {},
+    serializers: {},
+    helpers: {}
   };
 
 }).call(this);
