@@ -7,7 +7,8 @@
 (function() {
   window.game = {
     data: {},
-    modules: {}
+    modules: {},
+    entities: {}
   };
 
 }).call(this);
