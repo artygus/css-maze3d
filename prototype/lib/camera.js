@@ -1,14 +1,11 @@
-function Camera(viewportEl, worldEl, width, height, cameraEl, unit) {
-  this.perspective = 700;
-  this.unit = unit;
+function Camera(viewportEl, worldEl, cameraEl) {
+  this.perspective = 1000;
   this.node = cameraEl;
   this.worldNode = worldEl;
 
   this.rotate3 = [90, 0, 0];
   this.translate3 = [0, 0, 0];
 
-  viewportEl.style.width = width + 'px';
-  viewportEl.style.height = height + 'px';
   viewportEl.style.perspective = this.perspective + 'px';
 
   cameraEl.style.transformStyle = 'preserve-3d';
@@ -18,50 +15,24 @@ function Camera(viewportEl, worldEl, width, height, cameraEl, unit) {
   cameraEl.style.left = '50%';
 
   worldEl.style.transformStyle = 'preserve-3d';
-  worldEl.style.transition = 'transform 0.5s linear'
 }
 
 Camera.prototype = {
-  setCell: function(x, y) {
-    this.translate3[0] = -x * this.unit - this.unit / 2;
-    this.translate3[1] = -y * this.unit - this.unit / 2;
+  move: function(x, y) {
+    this.translate3[0] = x;
+    this.translate3[1] = y;
   },
 
-  setDirection: function(dir) {
-    this.rotate[0] = 0;
-
-    switch(dir) {
-      case 'n':
-        this.rotate3[2] = 0;
-        break;
-      case 'e':
-        this.rotate3[2] = 90;
-        break;
-      case 's':
-        this.rotate3[2] = 180;
-        break;
-      case 'w':
-        this.rotate3[2] = 270;
-    }
+  rotate: function(x, z) {
+    this.rotate3[0] = x;
+    this.rotate3[2] = z;
   },
 
-  // @param {Array} coord - [x,y]
-  // @param {String} dir - direction: n,e,s,w
-  set: function(coord, dir) {
-    var x = coord[0],
-        y = coord[1];
-
-    this.setCell(x, y);
-    this.setDirection(dir);
-
-    this.update();
-  },
-
-  rotate: function(dx, dz) {
+  rotateDelta: function(dx, dz) {
     var newX = this.rotate3[0] + dx,
         newZ = this.rotate3[2] + dz;
 
-    if (newX < 180 && newX > 0) {
+    if (newX > 0 && newX < 180) {
       this.rotate3[0] = newX;
     }
 
@@ -72,53 +43,12 @@ Camera.prototype = {
     }
 
     this.rotate3[2] = newZ;
-    this.update();
   },
 
-  getNextCell: function(x, y, course) {
-    var walkAxis, walkForwardFactor,
-        strafeAxis, strafeLeftFactor,
-        turnAngle = this.rotate3[2],
-        switchAxis = false;
-
-    if (turnAngle >= 135 && turnAngle <= 225) { // 180
-      walkAxis = y;
-      walkForwardFactor = -1;
-      strafeAxis = x;
-      strafeLeftFactor = 1;
-    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      walkAxis = x;
-      walkForwardFactor = 1;
-      strafeAxis = y;
-      strafeLeftFactor = 1;
-      switchAxis = true;
-    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
-      walkAxis = y;
-      walkForwardFactor = 1;
-      strafeAxis = x;
-      strafeLeftFactor = -1;
-    } else { // 270
-      walkAxis = x;
-      walkForwardFactor = -1;
-      strafeAxis = y;
-      strafeLeftFactor = -1;
-      switchAxis = true;
-    }
-
-    switch(course) {
-      case 'f':
-        walkAxis += walkForwardFactor;
-        break;
-      case 'r':
-        strafeAxis -= strafeLeftFactor;
-        break;
-      case 'b':
-        walkAxis -= walkForwardFactor;
-        break;
-      case 'l':
-        strafeAxis += strafeLeftFactor;
-    }
-    return switchAxis ? [walkAxis, strafeAxis] : [strafeAxis, walkAxis];
+  moveDelta: function(dx, dy, dz) {
+    this.translate3[0] += dx;
+    this.translate3[1] += dy;
+    this.translate3[2] += dz;
   },
 
   update: function() {
@@ -133,5 +63,13 @@ Camera.prototype = {
     // apply
     this.node.style.transform = transforms.join(' ');
     this.worldNode.style.transform = 'translate3d(' + this.translate3.join('px,') + 'px)';
+  },
+
+  setTransition: function(val) {
+    this.node.style.transition = val ? 'transform ' + val + 's linear' : '';
+  },
+
+  setWorldTransition: function(val) {
+    this.worldNode.style.transition = val ? 'transform ' + val + 's linear' : '';
   }
 }

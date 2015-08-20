@@ -1,14 +1,22 @@
 <!doctype html>
 <html>
 <head>
+  <script src="../lib/utils.js"></script>
   <script src="../lib/camera.js"></script>
-  <script src="../lib/free_camera.js"></script>
+  <script src="../lib/game_camera.js"></script>
   <script src="../lib/renderer.js"></script>
-  <link rel="stylesheet" href="./textures.css" />
+  <script src="../lib/player.js"></script>
+  <link rel="stylesheet" href="../renderer/textures.css" />
   <style>
+    html, body {
+      height: 100%;
+    }
+
     #viewport {
       background: #000;
+      height: 100%;
       position: relative;
+      width: 100%;
     }
   </style>
 </head>
@@ -52,8 +60,10 @@
       }
     ]);
 
-    // camera
-    var camera = new FreeCamera(viewportEl, worldEl, cameraEl, unit);
+    var camera = new GameCamera(viewportEl, worldEl, cameraEl, unit),
+        player = new Player(camera);
+
+    player.set(0, 0, 's');
   </script>
 </body>
-</html
+</html>
