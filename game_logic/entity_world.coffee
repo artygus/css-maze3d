@@ -2,16 +2,16 @@
   World entity
 ###
 
-class game.entities.World extends game.Object
+class gameLogic.entities.World extends gameLogic.Object
 
-  DT: "game.entities.World"
+  DT: "gameLogic.entities.World"
 
   constructor: (@app)->
     super
 
     console.log @DT, "Init world."
 
-    @data = new game.data.World()
+    @data = new gameLogic.data.World()
 
 
   # Section: Level

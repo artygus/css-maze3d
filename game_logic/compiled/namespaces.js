@@ -5,7 +5,7 @@
  */
 
 (function() {
-  window.game = {
+  window.gameLogic = {
     data: {},
     modules: {},
     entities: {}

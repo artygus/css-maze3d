@@ -2,7 +2,7 @@
   Abstract game object
 ###
 
-class game.Object
+class gameLogic.Object
 
   constructor: ->
     @s = @constructor

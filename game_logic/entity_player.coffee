@@ -2,9 +2,9 @@
   Player entity
 ###
 
-class game.entities.Player extends game.Object
+class gameLogic.entities.Player extends gameLogic.Object
 
-  DT: "game.entities.Player"
+  DT: "gameLogic.entities.Player"
 
   constructor: (@app)->
     super

@@ -2,9 +2,9 @@
   World data
 ###
 
-class game.data.World extends chms.ard.AbstractReactiveData
+class gameLogic.data.World extends chms.ard.AbstractReactiveData
 
-  DT: "game.data.World"
+  DT: "gameLogic.data.World"
 
   constructor: ->
     super

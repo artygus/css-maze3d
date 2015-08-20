@@ -5,7 +5,7 @@
  */
 
 (function() {
-  game.Object = (function() {
+  gameLogic.Object = (function() {
     function Object() {
       this.s = this.constructor;
     }

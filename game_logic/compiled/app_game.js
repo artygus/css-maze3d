@@ -8,19 +8,19 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  game.App = (function(_super) {
+  gameLogic.App = (function(_super) {
     __extends(App, _super);
 
-    App.prototype.DT = "game.App";
+    App.prototype.DT = "gameLogic.App";
 
     function App() {
       App.__super__.constructor.apply(this, arguments);
-      this.world = new game.entities.World(this);
-      this.player = new game.entities.Player(this);
+      this.world = new gameLogic.entities.World(this);
+      this.player = new gameLogic.entities.Player(this);
     }
 
     return App;
 
-  })(game.Object);
+  })(gameLogic.Object);
 
 }).call(this);

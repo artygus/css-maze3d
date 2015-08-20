@@ -8,10 +8,10 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  game.entities.Player = (function(_super) {
+  gameLogic.entities.Player = (function(_super) {
     __extends(Player, _super);
 
-    Player.prototype.DT = "game.entities.Player";
+    Player.prototype.DT = "gameLogic.entities.Player";
 
     function Player(app) {
       this.app = app;
@@ -21,6 +21,6 @@
 
     return Player;
 
-  })(game.Object);
+  })(gameLogic.Object);
 
 }).call(this);
