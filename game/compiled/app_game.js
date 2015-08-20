@@ -16,6 +16,7 @@
     function App() {
       App.__super__.constructor.apply(this, arguments);
       this.world = new game.entities.World(this);
+      this.player = new game.entities.Player(this);
     }
 
     return App;

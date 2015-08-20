@@ -11,5 +11,6 @@ class game.App extends game.Object
 
     # Entities
     @world = new game.entities.World @
+    @player = new game.entities.Player @
 
 
