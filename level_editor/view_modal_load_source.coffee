@@ -33,7 +33,7 @@ class levelEditor.view.ModalLoadSource extends levelEditor.Object
     lobject = @textarea.val()
 
     if lobject.length > 0
-      h = levelEditor.serializers.Level
+      h = utils.serializers.Level
       level = h.parseSerializedFromString(lobject)
 
       lc = @app.data.get("level-cells")

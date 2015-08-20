@@ -5,7 +5,7 @@
  */
 
 (function() {
-  levelEditor.helpers.Level = {
+  utils.helpers.Level = {
     getCrossCellsForCell: function(cell) {
       var x, y;
       x = cell[0];

@@ -2,12 +2,12 @@
   Level serializer
 ###
 
-levelEditor.serializers.Level =
+utils.serializers.Level =
 
   # @param {levelEditor.data.LevelCells} level
   # @return {Object}
   serialize: (level)->
-    h = levelEditor.helpers.Level
+    h = utils.helpers.Level
     serialized = {}
     cells = level.get("levelCells")
 
@@ -33,7 +33,7 @@ levelEditor.serializers.Level =
   # @param {levelEditor.data.LevelCells} level
   # @return {String}
   serializeToString: (level)->
-    JSON.stringify levelEditor.serializers.Level.serialize(level)
+    JSON.stringify utils.serializers.Level.serialize(level)
 
   # Parse serialized level
   # @param {Object} serialized
@@ -50,7 +50,7 @@ levelEditor.serializers.Level =
   # @return {String}
   parseSerializedFromString: (serialized)->
     serialized = JSON.parse serialized
-    return levelEditor.serializers.Level.parseSerialized(serialized)
+    return utils.serializers.Level.parseSerialized(serialized)
 
 
 

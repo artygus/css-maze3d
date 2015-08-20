@@ -5,10 +5,10 @@
  */
 
 (function() {
-  levelEditor.serializers.Level = {
+  utils.serializers.Level = {
     serialize: function(level) {
       var cell, cells, cid, d, h, serialized, xcell, xcells, _i, _len;
-      h = levelEditor.helpers.Level;
+      h = utils.helpers.Level;
       serialized = {};
       cells = level.get("levelCells");
       for (_i = 0, _len = cells.length; _i < _len; _i++) {
@@ -32,7 +32,7 @@
       return serialized;
     },
     serializeToString: function(level) {
-      return JSON.stringify(levelEditor.serializers.Level.serialize(level));
+      return JSON.stringify(utils.serializers.Level.serialize(level));
     },
     parseSerialized: function(serialized) {
       var cell, cid, level;
@@ -45,7 +45,7 @@
     },
     parseSerializedFromString: function(serialized) {
       serialized = JSON.parse(serialized);
-      return levelEditor.serializers.Level.parseSerialized(serialized);
+      return utils.serializers.Level.parseSerialized(serialized);
     }
   };
 

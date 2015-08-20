@@ -2,7 +2,7 @@
   Various helpers for level data
 ###
 
-levelEditor.helpers.Level =
+utils.helpers.Level =
 
   # Get nearest cross-cells for a given cell
   # @param {Cell} cell

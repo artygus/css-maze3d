@@ -10,7 +10,15 @@ window.levelEditor = {
   helpers: {}
 }
 
-window.gameLogic =
+window.gameLogic = {
   data: {}
   modules: {}
   entities: {}
+}
+
+window.serializers = {}
+
+window.utils = {
+  serializers: {}
+  helpers: {}
+}

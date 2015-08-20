@@ -39,7 +39,7 @@
       var extraData, h, lc, level, lobject;
       lobject = this.textarea.val();
       if (lobject.length > 0) {
-        h = levelEditor.serializers.Level;
+        h = utils.serializers.Level;
         level = h.parseSerializedFromString(lobject);
         lc = this.app.data.get("level-cells");
         extraData = {};
