@@ -37,9 +37,9 @@ class levelEditor.view.ModalLoadSource extends levelEditor.Object
       level = h.parseSerializedFromString(lobject)
 
       lc = @app.data.get("level-cells")
-      flags = {}
-      flags[lc.FLAG_LEVEL_LOADED] = true
-      lc.set "levelCells", level, flags
+      extraData = {}
+      extraData[lc.FLAG_LEVEL_LOADED] = true
+      lc.set "levelCells", level, extraData
 
 
   # section: Rendering

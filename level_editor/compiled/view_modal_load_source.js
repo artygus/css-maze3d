@@ -36,15 +36,15 @@
     };
 
     ModalLoadSource.prototype.loadLevel = function() {
-      var flags, h, lc, level, lobject;
+      var extraData, h, lc, level, lobject;
       lobject = this.textarea.val();
       if (lobject.length > 0) {
         h = levelEditor.serializers.Level;
         level = h.parseSerializedFromString(lobject);
         lc = this.app.data.get("level-cells");
-        flags = {};
-        flags[lc.FLAG_LEVEL_LOADED] = true;
-        return lc.set("levelCells", level, flags);
+        extraData = {};
+        extraData[lc.FLAG_LEVEL_LOADED] = true;
+        return lc.set("levelCells", level, extraData);
       }
     };
 

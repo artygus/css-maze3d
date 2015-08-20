@@ -105,7 +105,7 @@
       }
       return $(this.dLevelCells).asEventStream(this.dLevelCells.s.I_DATA_CHANGED).filter((function(_this) {
         return function(v) {
-          return (v.flags != null) && v.flags[_this.dLevelCells.FLAG_LEVEL_LOADED] === true;
+          return (v.extraData != null) && v.extraData[_this.dLevelCells.FLAG_LEVEL_LOADED] === true;
         };
       })(this)).onValue(this.redrawLevel);
     };

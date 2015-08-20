@@ -64,7 +64,7 @@ class levelEditor.view.Cells extends levelEditor.Object
 
     $(@dLevelCells)
       .asEventStream(@dLevelCells.s.I_DATA_CHANGED)
-      .filter((v)=> v.flags? && v.flags[@dLevelCells.FLAG_LEVEL_LOADED] == true)
+      .filter((v)=> v.extraData? && v.extraData[@dLevelCells.FLAG_LEVEL_LOADED] == true)
       .onValue @redrawLevel
 
 
