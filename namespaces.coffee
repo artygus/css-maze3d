@@ -1,5 +1,5 @@
 ###
-  Namespaces
+  Global namespaces
 ###
 
 window.levelEditor = {
@@ -9,3 +9,8 @@ window.levelEditor = {
   serializers: {}
   helpers: {}
 }
+
+window.gameLogic =
+  data: {}
+  modules: {}
+  entities: {}
