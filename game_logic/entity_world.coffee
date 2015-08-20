@@ -19,6 +19,7 @@ class gameLogic.entities.World extends gameLogic.Object
   # Load given level into game
   # @param {Level} level
   load: (level)=>
+    level = utils.serializers.Level.serializeObjectToWorldTree level
     @data.set "level", level
 
 

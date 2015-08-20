@@ -52,6 +52,28 @@ utils.serializers.Level =
     serialized = JSON.parse serialized
     return utils.serializers.Level.parseSerialized(serialized)
 
+  # Serialize from object to world tree
+  # @param {levelObj} levelObj Serialized level object
+  # @return {Object}
+  serializeObjectToWorldTree: (levelObj)->
+    serialized = {}
+    for id, cell of levelObj
+
+      unless serialized[cell.x]?
+        serialized[cell.x] = {}
+
+      serialized[cell.x][cell.y] =
+        n: cell["n"]
+        s: cell["s"]
+        w: cell["w"]
+        e: cell["e"]
+
+    return serialized
+
+
+
+
+
 
 
 

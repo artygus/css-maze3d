@@ -46,6 +46,23 @@
     parseSerializedFromString: function(serialized) {
       serialized = JSON.parse(serialized);
       return utils.serializers.Level.parseSerialized(serialized);
+    },
+    serializeObjectToWorldTree: function(levelObj) {
+      var cell, id, serialized;
+      serialized = {};
+      for (id in levelObj) {
+        cell = levelObj[id];
+        if (serialized[cell.x] == null) {
+          serialized[cell.x] = {};
+        }
+        serialized[cell.x][cell.y] = {
+          n: cell["n"],
+          s: cell["s"],
+          w: cell["w"],
+          e: cell["e"]
+        };
+      }
+      return serialized;
     }
   };
 
