@@ -14,6 +14,8 @@
 
     LevelCells.prototype.DT = "levelEditor.data.LevelCells";
 
+    LevelCells.prototype.FLAG_LEVEL_LOADED = "level-loaded";
+
     function LevelCells() {
       this.getCellIndex = __bind(this.getCellIndex, this);
       this.isCellBelongs = __bind(this.isCellBelongs, this);

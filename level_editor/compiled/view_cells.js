@@ -17,6 +17,7 @@
     function Cells(grid, app) {
       this.grid = grid;
       this.app = app;
+      this.redrawLevel = __bind(this.redrawLevel, this);
       this.drawCellState = __bind(this.drawCellState, this);
       this.initRender = __bind(this.initRender, this);
       this.interactionGridClick = __bind(this.interactionGridClick, this);
@@ -84,12 +85,11 @@
     };
 
     Cells.prototype.initRender = function() {
-      var imp, _i, _len, _ref, _results;
+      var imp, _i, _len, _ref;
       _ref = [this.dLevelCells.tarray.s.I_DATA_INSERTED, this.dLevelCells.tarray.s.I_DATA_DELETED];
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         imp = _ref[_i];
-        _results.push($(this.dLevelCells).asEventStream(imp).filter((function(_this) {
+        $(this.dLevelCells).asEventStream(imp).filter((function(_this) {
           return function(v) {
             return v.key === "levelCells";
           };
@@ -101,9 +101,13 @@
               return _this.drawCellState(v.deleted);
             }
           };
-        })(this)));
+        })(this));
       }
-      return _results;
+      return $(this.dLevelCells).asEventStream(this.dLevelCells.s.I_DATA_CHANGED).filter((function(_this) {
+        return function(v) {
+          return (v.flags != null) && v.flags[_this.dLevelCells.FLAG_LEVEL_LOADED] === true;
+        };
+      })(this)).onValue(this.redrawLevel);
     };
 
     Cells.prototype.drawCellState = function(cell) {
@@ -117,8 +121,20 @@
       }
     };
 
+    Cells.prototype.redrawLevel = function() {
+      var cell, _i, _len, _ref, _results;
+      this.grid.find("[cell].level-cell").removeClass("level-cell");
+      _ref = this.dLevelCells.get("levelCells");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cell = _ref[_i];
+        _results.push(this.drawCellState(cell));
+      }
+      return _results;
+    };
+
     Cells.getCellXYByEl = function(el) {
-      return [el.attr("x"), el.attr("y")];
+      return [parseInt(el.attr("x")), parseInt(el.attr("y"))];
     };
 
     Cells.getCellByXY = function(cell, grid) {

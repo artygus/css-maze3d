@@ -61,5 +61,10 @@ FreeCamera.prototype = {
         that.camera.update();
       });
     }, false);
+  },
+
+  move: function(x, y) {
+    this.camera.move.apply(this.camera, arguments);
+    this.camera.update();
   }
 }

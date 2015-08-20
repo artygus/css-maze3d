@@ -109,6 +109,17 @@ body {
 
 }
 
+/* Menu bar */
+#menu-bar {
+  top: 30px;
+  left: 30px;
+}
+
+#menu-bar .btn-group {
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
 /* Helpers */
 
 .-rounded {
