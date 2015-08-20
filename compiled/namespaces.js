@@ -19,8 +19,6 @@
     entities: {}
   };
 
-  window.serializers = {};
-
   window.utils = {
     serializers: {},
     helpers: {}

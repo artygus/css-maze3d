@@ -16,8 +16,6 @@ window.gameLogic = {
   entities: {}
 }
 
-window.serializers = {}
-
 window.utils = {
   serializers: {}
   helpers: {}
