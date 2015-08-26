@@ -24,4 +24,6 @@
     helpers: {}
   };
 
+  window.dataTypes = {};
+
 }).call(this);
