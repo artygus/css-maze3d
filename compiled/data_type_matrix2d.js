@@ -15,7 +15,12 @@
     Matrix2d.prototype.DT = "dataTypes.Matrix2d";
 
     function Matrix2d(data) {
+      if (data == null) {
+        data = {};
+      }
+      this.getFlatCellCoords = __bind(this.getFlatCellCoords, this);
       this.isCellContainsData = __bind(this.isCellContainsData, this);
+      this.getData = __bind(this.getData, this);
       this.removeData = __bind(this.removeData, this);
       this.putData = __bind(this.putData, this);
       this.init = __bind(this.init, this);
@@ -28,9 +33,17 @@
       return this.set("mdata", null);
     };
 
-    Matrix2d.prototype.putData = function(cell) {};
+    Matrix2d.prototype.putData = function(cell, data) {
+      return this.tobject.set("mdata", "" + cell[0] + "." + cell[1], data);
+    };
 
-    Matrix2d.prototype.removeData = function(cell) {};
+    Matrix2d.prototype.removeData = function(cell) {
+      return this.tobject.set("mdata", "" + cell[0] + "." + cell[1], void 0);
+    };
+
+    Matrix2d.prototype.getData = function(cell) {
+      return this.tobject.get("mdata", "" + cell[0] + "." + cell[1]);
+    };
 
     Matrix2d.prototype.isCellContainsData = function(cell) {
       var x;
@@ -40,6 +53,20 @@
       } else {
         return false;
       }
+    };
+
+    Matrix2d.prototype.getFlatCellCoords = function() {
+      var cells, col, mdata, row, x, y;
+      cells = [];
+      mdata = this.get("mdata");
+      for (x in mdata) {
+        row = mdata[x];
+        for (y in row) {
+          col = row[y];
+          cells.push([x, y]);
+        }
+      }
+      return cells;
     };
 
     Matrix2d.createFromLevelObject = function(lobj) {

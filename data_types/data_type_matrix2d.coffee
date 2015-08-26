@@ -7,7 +7,7 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
   DT: "dataTypes.Matrix2d"
 
   # @param {Object} data Matrix data
-  constructor: (data)->
+  constructor: (data={})->
     super
 
     @set "mdata", data
@@ -21,15 +21,22 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
 
   # section: Cells
 
-  # Puts data to a given cell
+  # Put data to a given cell
   # @param {Cell} cell
-  putData: (cell)=>
-    # TODO: pending
+  # @param {*} data
+  putData: (cell, data)=>
+    @tobject.set "mdata", "#{cell[0]}.#{cell[1]}", data
 
   # Remove data from a given cell
   # @param {Cell} cell
   removeData: (cell)=>
-    # TODO: pending
+    @tobject.set "mdata", "#{cell[0]}.#{cell[1]}", undefined
+
+  # Get data from a given cell
+  # @param {Cell} cell
+  # @return {*}
+  getData: (cell)=>
+    @tobject.get "mdata", "#{cell[0]}.#{cell[1]}"
 
   # Checks whatever given cell contains data or not
   # @param {Cell} cell
@@ -41,6 +48,21 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
       return x[cell[1]]?
     else
       return false
+
+
+  # section: Helpers
+
+  # Get flat cell coords
+  # @return {Array.<Cell>}
+  getFlatCellCoords: =>
+    cells = []
+    mdata = @get("mdata")
+
+    for x, row of mdata
+      for y, col of row
+        cells.push [x, y]
+
+    return cells
 
 
   # section: Static
