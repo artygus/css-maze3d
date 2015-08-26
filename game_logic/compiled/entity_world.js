@@ -23,7 +23,7 @@
     }
 
     World.prototype.load = function(level) {
-      return this.data.set("level", dataTypes.Level.createFromLevelObject(level));
+      return this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
     };
 
     return World;

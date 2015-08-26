@@ -19,7 +19,7 @@ class gameLogic.entities.World extends gameLogic.Object
   # Load given level into game
   # @param {Level} level
   load: (level)=>
-    @data.set "level", dataTypes.Level.createFromLevelObject(level)
+    @data.set "level", dataTypes.Matrix2d.createFromLevelObject(level)
 
 
 
