@@ -23,8 +23,7 @@
     }
 
     World.prototype.load = function(level) {
-      level = utils.serializers.Level.serializeObjectToWorldTree(level);
-      return this.data.set("level", level);
+      return this.data.set("level", dataTypes.Level.createFromLevelObject(level));
     };
 
     return World;

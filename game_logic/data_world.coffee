@@ -14,5 +14,5 @@ class gameLogic.data.World extends chms.ard.AbstractReactiveData
   init: =>
     super
 
-    # {Object}
+    # {dataTypes.Level}
     @set "level", null
