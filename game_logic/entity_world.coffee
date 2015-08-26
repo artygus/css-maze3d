@@ -20,6 +20,13 @@ class gameLogic.entities.World extends gameLogic.Object
   # @param {Level} level
   load: (level)=>
     @data.set "level", dataTypes.Matrix2d.createFromLevelObject(level)
+    @data.set "entities", new dataTypes.Matrix2d()
+
+    # Set player to initial position
+    # TODO: debug
+    icell = @data.get("level").getFlatCellCoords()[0]
+    @data.get("entities").putData icell, @app.player
+
 
 
 

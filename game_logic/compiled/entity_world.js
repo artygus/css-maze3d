@@ -23,7 +23,11 @@
     }
 
     World.prototype.load = function(level) {
-      return this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
+      var icell;
+      this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
+      this.data.set("entities", new dataTypes.Matrix2d());
+      icell = this.data.get("level").getFlatCellCoords()[0];
+      return this.data.get("entities").putData(icell, this.app.player);
     };
 
     return World;
