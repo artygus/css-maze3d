@@ -45,7 +45,12 @@
       return this.data.get("entities").putData(cell, entity);
     };
 
-    World.prototype.moveEntity = function(fromCell, toCell, entity) {};
+    World.prototype.moveEntity = function(fromCell, toCell, entity) {
+      this.assureCellExistance(toCell);
+      this.assureCellEmpty(toCell);
+      this.data.get("entities").removeData(fromCell);
+      return this.data.get("entities").putData(toCell, entity);
+    };
 
     World.prototype.removeEntity = function(cell, entity) {
       this.assureCellExistance(cell);
@@ -54,19 +59,19 @@
     };
 
     World.prototype.assureCellExistance = function(cell) {
-      if (this.data.get("level").getData(cell) == null) {
+      if (!this.data.get("level").isCellContainsData(cell)) {
         throw this.s.E_NONEXISTENT_CELL;
       }
     };
 
     World.prototype.assureCellEmpty = function(cell) {
-      if (this.data.get("entities").getData(cell) != null) {
+      if (this.data.get("entities").isCellContainsData(cell)) {
         throw this.s.E_NON_EMPTY_CELL;
       }
     };
 
     World.prototype.assureCellNonEmpty = function(cell) {
-      if (this.data.get("entities").getData(cell) == null) {
+      if (!this.data.get("entities").isCellContainsData(cell)) {
         throw this.s.E_EMPTY_CELL;
       }
     };

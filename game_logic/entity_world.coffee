@@ -39,6 +39,11 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Move entity from cell to cell
   moveEntity: (fromCell, toCell, entity)=>
+    @assureCellExistance toCell
+    @assureCellEmpty toCell
+
+    @data.get("entities").removeData fromCell
+    @data.get("entities").putData toCell, entity
 
   # Remove entity from a given cell
   removeEntity: (cell, entity)=>
@@ -52,17 +57,17 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Checks whether given cell exist on the level
   assureCellExistance: (cell)=>
-    unless @data.get("level").getData(cell)?
+    unless @data.get("level").isCellContainsData(cell)
       throw @s.E_NONEXISTENT_CELL
 
   # Checks whether given cell is non empty
   assureCellEmpty: (cell)=>
-    if @data.get("entities").getData(cell)?
+    if @data.get("entities").isCellContainsData(cell)
       throw @s.E_NON_EMPTY_CELL
 
   # Checks whether given cell is empty
   assureCellNonEmpty: (cell)=>
-    unless @data.get("entities").getData(cell)?
+    unless @data.get("entities").isCellContainsData(cell)
       throw @s.E_EMPTY_CELL
 
 
