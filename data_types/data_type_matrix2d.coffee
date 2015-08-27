@@ -36,7 +36,6 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
   # @param {Cell} cell
   # @return {*}
   getData: (cell)=>
-    console.log "LAM", "Get data", "#{cell[0]}.#{cell[1]}"
     @tobject.get "mdata", "#{cell[0]}.#{cell[1]}"
 
   # Checks whatever given cell contains data or not

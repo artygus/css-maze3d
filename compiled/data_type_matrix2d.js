@@ -42,7 +42,6 @@
     };
 
     Matrix2d.prototype.getData = function(cell) {
-      console.log("LAM", "Get data", "" + cell[0] + "." + cell[1]);
       return this.tobject.get("mdata", "" + cell[0] + "." + cell[1]);
     };
 
