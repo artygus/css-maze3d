@@ -42,17 +42,12 @@
     };
 
     Matrix2d.prototype.getData = function(cell) {
+      console.log("LAM", "Get data", "" + cell[0] + "." + cell[1]);
       return this.tobject.get("mdata", "" + cell[0] + "." + cell[1]);
     };
 
     Matrix2d.prototype.isCellContainsData = function(cell) {
-      var x;
-      x = this.get("mdata")[cell[0]];
-      if (x != null) {
-        return x[cell[1]] != null;
-      } else {
-        return false;
-      }
+      return this.getData(cell) != null;
     };
 
     Matrix2d.prototype.getFlatCellCoords = function() {
