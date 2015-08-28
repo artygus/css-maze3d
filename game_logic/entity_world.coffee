@@ -20,9 +20,9 @@ class gameLogic.entities.World extends gameLogic.Object
   # @param {Level} level
   load: (level)=>
     @data.set "level", dataTypes.Matrix2d.createFromLevelObject(level)
-    @data.set "entities", new dataTypes.Matrix2d()
+    @data.set "characters", new dataTypes.Matrix2d()
 
-  # Section: Entities moving
+  # Section: Characters positioning
 
   @E_NON_EMPTY_CELL: new Error("You are trying perform action on non empty cell!")
 
@@ -31,26 +31,26 @@ class gameLogic.entities.World extends gameLogic.Object
   @E_NONEXISTENT_CELL: new Error("Cell does not exists at the given level!")
 
   # Place entity at a given cell
-  placeEntity: (cell, entity)=>
+  placeCharacter: (cell, char)=>
     @assureCellExistance cell
     @assureCellEmpty cell
 
-    @data.get("entities").putData(cell, entity)
+    @data.get("characters").putData(cell, char)
 
   # Move entity from cell to cell
-  moveEntity: (fromCell, toCell, entity)=>
+  moveCharacter: (fromCell, toCell, char)=>
     @assureCellExistance toCell
     @assureCellEmpty toCell
 
-    @data.get("entities").removeData fromCell
-    @data.get("entities").putData toCell, entity
+    @data.get("characters").removeData fromCell
+    @data.get("characters").putData toCell, char
 
   # Remove entity from a given cell
-  removeEntity: (cell, entity)=>
+  removeCharacter: (cell, char)=>
     @assureCellExistance cell
     @assureCellNonEmpty cell
 
-    @data.get("entities").removeData cell
+    @data.get("characters").removeData cell
 
 
   # section: Helpers
@@ -62,12 +62,12 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Checks whether given cell is non empty
   assureCellEmpty: (cell)=>
-    if @data.get("entities").isCellContainsData(cell)
+    if @data.get("characters").isCellContainsData(cell)
       throw @s.E_NON_EMPTY_CELL
 
   # Checks whether given cell is empty
   assureCellNonEmpty: (cell)=>
-    unless @data.get("entities").isCellContainsData(cell)
+    unless @data.get("characters").isCellContainsData(cell)
       throw @s.E_EMPTY_CELL
 
 

@@ -11,6 +11,6 @@ class gameLogic.App extends gameLogic.Object
 
     # Entities
     @world = new gameLogic.entities.World @
-    @player = new gameLogic.entities.Player @
+    @player = new gameLogic.characters.Player @
 
 

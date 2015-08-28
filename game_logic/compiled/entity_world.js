@@ -19,9 +19,9 @@
       this.assureCellNonEmpty = __bind(this.assureCellNonEmpty, this);
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
-      this.removeEntity = __bind(this.removeEntity, this);
-      this.moveEntity = __bind(this.moveEntity, this);
-      this.placeEntity = __bind(this.placeEntity, this);
+      this.removeCharacter = __bind(this.removeCharacter, this);
+      this.moveCharacter = __bind(this.moveCharacter, this);
+      this.placeCharacter = __bind(this.placeCharacter, this);
       this.load = __bind(this.load, this);
       World.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init world.");
@@ -30,7 +30,7 @@
 
     World.prototype.load = function(level) {
       this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
-      return this.data.set("entities", new dataTypes.Matrix2d());
+      return this.data.set("characters", new dataTypes.Matrix2d());
     };
 
     World.E_NON_EMPTY_CELL = new Error("You are trying perform action on non empty cell!");
@@ -39,23 +39,23 @@
 
     World.E_NONEXISTENT_CELL = new Error("Cell does not exists at the given level!");
 
-    World.prototype.placeEntity = function(cell, entity) {
+    World.prototype.placeCharacter = function(cell, char) {
       this.assureCellExistance(cell);
       this.assureCellEmpty(cell);
-      return this.data.get("entities").putData(cell, entity);
+      return this.data.get("characters").putData(cell, char);
     };
 
-    World.prototype.moveEntity = function(fromCell, toCell, entity) {
+    World.prototype.moveCharacter = function(fromCell, toCell, char) {
       this.assureCellExistance(toCell);
       this.assureCellEmpty(toCell);
-      this.data.get("entities").removeData(fromCell);
-      return this.data.get("entities").putData(toCell, entity);
+      this.data.get("characters").removeData(fromCell);
+      return this.data.get("characters").putData(toCell, char);
     };
 
-    World.prototype.removeEntity = function(cell, entity) {
+    World.prototype.removeCharacter = function(cell, char) {
       this.assureCellExistance(cell);
       this.assureCellNonEmpty(cell);
-      return this.data.get("entities").removeData(cell);
+      return this.data.get("characters").removeData(cell);
     };
 
     World.prototype.assureCellExistance = function(cell) {
@@ -65,13 +65,13 @@
     };
 
     World.prototype.assureCellEmpty = function(cell) {
-      if (this.data.get("entities").isCellContainsData(cell)) {
+      if (this.data.get("characters").isCellContainsData(cell)) {
         throw this.s.E_NON_EMPTY_CELL;
       }
     };
 
     World.prototype.assureCellNonEmpty = function(cell) {
-      if (!this.data.get("entities").isCellContainsData(cell)) {
+      if (!this.data.get("characters").isCellContainsData(cell)) {
         throw this.s.E_EMPTY_CELL;
       }
     };

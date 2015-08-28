@@ -16,7 +16,8 @@
   window.gameLogic = {
     data: {},
     modules: {},
-    entities: {}
+    entities: {},
+    characters: {}
   };
 
   window.utils = {

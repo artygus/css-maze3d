@@ -23,7 +23,7 @@
     World.prototype.init = function() {
       World.__super__.init.apply(this, arguments);
       this.set("level", null);
-      return this.set("entities", null);
+      return this.set("characters", null);
     };
 
     return World;
