@@ -9,4 +9,4 @@ class gameLogic.characters.AbstractCharacter extends gameLogic.Object
   constructor: ->
     super
 
-    @uid = chms.utils.Uniq.gen @s.UID_KEY
+    @id = chms.utils.Uniq.gen @s.UID_KEY

@@ -15,7 +15,7 @@
 
     function AbstractCharacter() {
       AbstractCharacter.__super__.constructor.apply(this, arguments);
-      this.uid = chms.utils.Uniq.gen(this.s.UID_KEY);
+      this.id = chms.utils.Uniq.gen(this.s.UID_KEY);
     }
 
     return AbstractCharacter;
