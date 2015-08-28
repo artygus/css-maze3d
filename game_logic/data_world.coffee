@@ -17,5 +17,5 @@ class gameLogic.data.World extends chms.ard.AbstractReactiveData
     # {dataTypes.Matrix2d}
     @set "level", null
 
-    # {dataTypes.Matrix2d} Characters position
+    # {dataTypes.EntityMatrix2d} Characters position
     @set "characters", null

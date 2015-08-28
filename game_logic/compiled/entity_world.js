@@ -30,7 +30,7 @@
 
     World.prototype.load = function(level) {
       this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
-      return this.data.set("characters", new dataTypes.Matrix2d());
+      return this.data.set("characters", new dataTypes.EntityMatrix2d());
     };
 
     World.E_NON_EMPTY_CELL = new Error("You are trying perform action on non empty cell!");

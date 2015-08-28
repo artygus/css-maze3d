@@ -20,7 +20,7 @@ class gameLogic.entities.World extends gameLogic.Object
   # @param {Level} level
   load: (level)=>
     @data.set "level", dataTypes.Matrix2d.createFromLevelObject(level)
-    @data.set "characters", new dataTypes.Matrix2d()
+    @data.set "characters", new dataTypes.EntityMatrix2d()
 
   # Section: Characters positioning
 
