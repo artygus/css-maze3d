@@ -26,6 +26,7 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
   putData: (cell, entity)=>
     super
 
+    console.log "LAM", "Put data", cell, entity
     @tobject.set "entityToCoords", entity.id.toString(), entity
 
 
@@ -38,10 +39,16 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
 
     super
 
+  # Get data by entity
+  # @param {*} entity
+  # @return {*}
+  getDataByEntity: (entity)=>
+    @tobject.get "entityToCoords", entity.id.toString()
+
   # section: Static
 
-  # Serializes level object to martix2d and return dataTypes.Matrix2d
+  # Nullified method
   # @param {Object} lobj
-  # @return {dataTypes.Matrix2d}
+  # @return {Null}
   @createFromLevelObject: (lobj)=> null
 

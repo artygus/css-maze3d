@@ -17,6 +17,7 @@
     EntityMatrix2d.prototype.DT = "dataTypes.EntityMatrix2d";
 
     function EntityMatrix2d() {
+      this.getDataByEntity = __bind(this.getDataByEntity, this);
       this.removeData = __bind(this.removeData, this);
       this.putData = __bind(this.putData, this);
       this.init = __bind(this.init, this);
@@ -30,6 +31,7 @@
 
     EntityMatrix2d.prototype.putData = function(cell, entity) {
       EntityMatrix2d.__super__.putData.apply(this, arguments);
+      console.log("LAM", "Put data", cell, entity);
       return this.tobject.set("entityToCoords", entity.id.toString(), entity);
     };
 
@@ -38,6 +40,10 @@
       d = this.getData(cell);
       this.tobject.set("entityToCoords", d.id.toString(), void 0);
       return EntityMatrix2d.__super__.removeData.apply(this, arguments);
+    };
+
+    EntityMatrix2d.prototype.getDataByEntity = function(entity) {
+      return this.tobject.get("entityToCoords", entity.id.toString());
     };
 
     EntityMatrix2d.createFromLevelObject = function(lobj) {

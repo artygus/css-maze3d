@@ -30,20 +30,26 @@ class gameLogic.entities.World extends gameLogic.Object
 
   @E_NONEXISTENT_CELL: new Error("Cell does not exists at the given level!")
 
+  @E_CHAR_NOT_EXISTS: new Error("Given character does not exists!")
+
   # Place entity at a given cell
-  placeCharacter: (cell, char)=>
+  placeCharacter: (cell, char, dir)=>
     @assureCellExistance cell
     @assureCellEmpty cell
 
-    @data.get("characters").putData(cell, char)
+    dir = dataTypes.WorldDirection.N unless dir?
+    ccp = dataTypes.CharacterPosition.get char, cell, dir
+    @data.get("characters").putData(cell, ccp)
 
   # Move entity from cell to cell
   moveCharacter: (fromCell, toCell, char)=>
     @assureCellExistance toCell
     @assureCellEmpty toCell
 
+    ccp = @getCharacterPosition(char)
+
     @data.get("characters").removeData fromCell
-    @data.get("characters").putData toCell, char
+    @data.get("characters").putData toCell, ccp
 
   # Remove entity from a given cell
   removeCharacter: (cell, char)=>
@@ -51,6 +57,23 @@ class gameLogic.entities.World extends gameLogic.Object
     @assureCellNonEmpty cell
 
     @data.get("characters").removeData cell
+
+  # Change character direction
+  # @param {gameLogic.characters.AbstractCharacter} char
+  # @param {dataTypes.WorldDirection} dir
+  changeCharacterDirection: (char, dir)=>
+    @assureCharExists char
+
+    cd = @data.get("characters")
+    ccp = cd.getDataByEntity(char)
+    ccp.dir = dir
+    cd.putData ccp.cell, ccp
+
+  # Gets character position
+  # @param {gameLogic.characters.AbstractCharacter} char
+  # @return {dataTypes.CharacterPosition}
+  getCharacterPosition: (char)=>
+    @data.get("characters").getDataByEntity char
 
 
   # section: Helpers
@@ -69,6 +92,13 @@ class gameLogic.entities.World extends gameLogic.Object
   assureCellNonEmpty: (cell)=>
     unless @data.get("characters").isCellContainsData(cell)
       throw @s.E_EMPTY_CELL
+
+  # Checks whether given character exists on the level
+  # @param {gameLogic.characters.AbstractCharacter} char
+  assureCharExists: (char)=>
+    unless @data.get("characters").getDataByEntity(char)
+      throw @s.E_CHAR_NOT_EXISTS
+
 
 
 

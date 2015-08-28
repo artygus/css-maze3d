@@ -16,9 +16,12 @@
 
     function World(app) {
       this.app = app;
+      this.assureCharExists = __bind(this.assureCharExists, this);
       this.assureCellNonEmpty = __bind(this.assureCellNonEmpty, this);
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
+      this.getCharacterPosition = __bind(this.getCharacterPosition, this);
+      this.changeCharacterDirection = __bind(this.changeCharacterDirection, this);
       this.removeCharacter = __bind(this.removeCharacter, this);
       this.moveCharacter = __bind(this.moveCharacter, this);
       this.placeCharacter = __bind(this.placeCharacter, this);
@@ -39,23 +42,45 @@
 
     World.E_NONEXISTENT_CELL = new Error("Cell does not exists at the given level!");
 
-    World.prototype.placeCharacter = function(cell, char) {
+    World.E_CHAR_NOT_EXISTS = new Error("Given character does not exists!");
+
+    World.prototype.placeCharacter = function(cell, char, dir) {
+      var ccp;
       this.assureCellExistance(cell);
       this.assureCellEmpty(cell);
-      return this.data.get("characters").putData(cell, char);
+      if (dir == null) {
+        dir = dataTypes.WorldDirection.N;
+      }
+      ccp = dataTypes.CharacterPosition.get(char, cell, dir);
+      return this.data.get("characters").putData(cell, ccp);
     };
 
     World.prototype.moveCharacter = function(fromCell, toCell, char) {
+      var ccp;
       this.assureCellExistance(toCell);
       this.assureCellEmpty(toCell);
+      ccp = this.getCharacterPosition(char);
       this.data.get("characters").removeData(fromCell);
-      return this.data.get("characters").putData(toCell, char);
+      return this.data.get("characters").putData(toCell, ccp);
     };
 
     World.prototype.removeCharacter = function(cell, char) {
       this.assureCellExistance(cell);
       this.assureCellNonEmpty(cell);
       return this.data.get("characters").removeData(cell);
+    };
+
+    World.prototype.changeCharacterDirection = function(char, dir) {
+      var ccp, cd;
+      this.assureCharExists(char);
+      cd = this.data.get("characters");
+      ccp = cd.getDataByEntity(char);
+      ccp.dir = dir;
+      return cd.putData(ccp.cell, ccp);
+    };
+
+    World.prototype.getCharacterPosition = function(char) {
+      return this.data.get("characters").getDataByEntity(char);
     };
 
     World.prototype.assureCellExistance = function(cell) {
@@ -73,6 +98,12 @@
     World.prototype.assureCellNonEmpty = function(cell) {
       if (!this.data.get("characters").isCellContainsData(cell)) {
         throw this.s.E_EMPTY_CELL;
+      }
+    };
+
+    World.prototype.assureCharExists = function(char) {
+      if (!this.data.get("characters").getDataByEntity(char)) {
+        throw this.s.E_CHAR_NOT_EXISTS;
       }
     };
 

@@ -21,7 +21,7 @@ describe("Entities positions", function(){
 
     it("If I place entity it should be at a given position", function(){
       cgame.world.placeCharacter(icell, character1);
-      expect(cgame.world.data.get("characters").getData(icell)).toEqual(character1);
+      expect(cgame.world.data.get("characters").getData(icell).character).toEqual(character1);
     });
 
     it("If I place entity at non empty cell it should give an error", function(){
@@ -51,7 +51,7 @@ describe("Entities positions", function(){
       cgame.world.moveCharacter(mfrom, mto, character1);
 
       expect(cgame.world.data.get("characters").getData(mfrom)).toEqual(undefined);
-      expect(cgame.world.data.get("characters").getData(mto)).toEqual(character1);
+      expect(cgame.world.data.get("characters").getData(mto).character).toEqual(character1);
     });
 
     it("I can't move entity to non-level cell", function(){
@@ -84,11 +84,10 @@ describe("Entities positions", function(){
   describe("Changing directions", function(){
 
     it("Changes direction if I changed it", function(){
-      expect(false).toEqual(true);
-//      cgame.world.placeCharacter(icell, character1);
-//      cgame.world.changeEntityDirection(character1, dataTypes.WorldDirection.E);
-//
-//      expect(cgame.world.getEntityPosition(character1).dir).toEqual(dataTypes.WorldDirection.E);
+      cgame.world.placeCharacter(icell, character1);
+      cgame.world.changeCharacterDirection(character1, dataTypes.WorldDirection.E);
+
+      expect(cgame.world.getCharacterPosition(character1).dir).toEqual(dataTypes.WorldDirection.E);
     });
 
   });
