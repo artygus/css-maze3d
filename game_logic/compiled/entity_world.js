@@ -20,6 +20,8 @@
       this.assureCellNonEmpty = __bind(this.assureCellNonEmpty, this);
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
+      this.getActors = __bind(this.getActors, this);
+      this.getActorsPositions = __bind(this.getActorsPositions, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
       this.changeActorDirection = __bind(this.changeActorDirection, this);
       this.removeActor = __bind(this.removeActor, this);
@@ -81,6 +83,18 @@
 
     World.prototype.getActorPosition = function(actor) {
       return this.data.get("actors").getDataByEntity(actor);
+    };
+
+    World.prototype.getActorsPositions = function() {
+      return this.data.get("actors").getEntities();
+    };
+
+    World.prototype.getActors = function() {
+      return this.getActorsPositions().map((function(_this) {
+        return function(a) {
+          return a.actor;
+        };
+      })(this));
     };
 
     World.prototype.assureCellExistance = function(cell) {

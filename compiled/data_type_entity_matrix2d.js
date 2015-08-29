@@ -17,6 +17,7 @@
     EntityMatrix2d.prototype.DT = "dataTypes.EntityMatrix2d";
 
     function EntityMatrix2d() {
+      this.getEntities = __bind(this.getEntities, this);
       this.getDataByEntity = __bind(this.getDataByEntity, this);
       this.removeData = __bind(this.removeData, this);
       this.putData = __bind(this.putData, this);
@@ -44,6 +45,17 @@
 
     EntityMatrix2d.prototype.getDataByEntity = function(entity) {
       return this.tobject.get("entityToCoords", entity.id.toString());
+    };
+
+    EntityMatrix2d.prototype.getEntities = function() {
+      var collection, entity, id, _ref;
+      collection = [];
+      _ref = this.get("entityToCoords");
+      for (id in _ref) {
+        entity = _ref[id];
+        collection.push(entity);
+      }
+      return collection;
     };
 
     EntityMatrix2d.createFromLevelObject = function(lobj) {
