@@ -16,7 +16,7 @@
     function App() {
       App.__super__.constructor.apply(this, arguments);
       this.world = new gameLogic.entities.World(this);
-      this.player = new gameLogic.characters.Player(this);
+      this.player = new gameLogic.actors.Player(this);
     }
 
     return App;

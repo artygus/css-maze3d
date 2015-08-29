@@ -20,9 +20,9 @@ class gameLogic.entities.World extends gameLogic.Object
   # @param {Level} level
   load: (level)=>
     @data.set "level", dataTypes.Matrix2d.createFromLevelObject(level)
-    @data.set "characters", new dataTypes.EntityMatrix2d()
+    @data.set "actors", new dataTypes.EntityMatrix2d()
 
-  # Section: Characters positioning
+  # Section: actors positioning
 
   @E_NON_EMPTY_CELL: new Error("You are trying perform action on non empty cell!")
 
@@ -30,50 +30,50 @@ class gameLogic.entities.World extends gameLogic.Object
 
   @E_NONEXISTENT_CELL: new Error("Cell does not exists at the given level!")
 
-  @E_CHAR_NOT_EXISTS: new Error("Given character does not exists!")
+  @E_ACTOR_NOT_EXISTS: new Error("Given actor does not exists!")
 
   # Place entity at a given cell
-  placeCharacter: (cell, char, dir)=>
+  placeActor: (cell, actor, dir)=>
     @assureCellExistance cell
     @assureCellEmpty cell
 
     dir = dataTypes.WorldDirection.N unless dir?
-    ccp = dataTypes.CharacterPosition.get char, cell, dir
-    @data.get("characters").putData(cell, ccp)
+    ccp = dataTypes.ActorPosition.get actor, cell, dir
+    @data.get("actors").putData(cell, ccp)
 
   # Move entity from cell to cell
-  moveCharacter: (fromCell, toCell, char)=>
+  moveActor: (fromCell, toCell, actor)=>
     @assureCellExistance toCell
     @assureCellEmpty toCell
 
-    ccp = @getCharacterPosition(char)
+    ccp = @getActorPosition(actor)
 
-    @data.get("characters").removeData fromCell
-    @data.get("characters").putData toCell, ccp
+    @data.get("actors").removeData fromCell
+    @data.get("actors").putData toCell, ccp
 
   # Remove entity from a given cell
-  removeCharacter: (cell, char)=>
+  removeActor: (cell, actor)=>
     @assureCellExistance cell
     @assureCellNonEmpty cell
 
-    @data.get("characters").removeData cell
+    @data.get("actors").removeData cell
 
-  # Change character direction
-  # @param {gameLogic.characters.AbstractCharacter} char
+  # Change actoracter direction
+  # @param {gameLogic.actors.Abstractactoracter} actor
   # @param {dataTypes.WorldDirection} dir
-  changeCharacterDirection: (char, dir)=>
-    @assureCharExists char
+  changeActorDirection: (actor, dir)=>
+    @assureactorExists actor
 
-    cd = @data.get("characters")
-    ccp = cd.getDataByEntity(char)
+    cd = @data.get("actors")
+    ccp = cd.getDataByEntity(actor)
     ccp.dir = dir
     cd.putData ccp.cell, ccp
 
-  # Gets character position
-  # @param {gameLogic.characters.AbstractCharacter} char
-  # @return {dataTypes.CharacterPosition}
-  getCharacterPosition: (char)=>
-    @data.get("characters").getDataByEntity char
+  # Gets actoracter position
+  # @param {gameLogic.actors.Abstractactoracter} actor
+  # @return {dataTypes.ActorPosition}
+  getActorPosition: (actor)=>
+    @data.get("actors").getDataByEntity actor
 
 
   # section: Helpers
@@ -85,19 +85,19 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Checks whether given cell is non empty
   assureCellEmpty: (cell)=>
-    if @data.get("characters").isCellContainsData(cell)
+    if @data.get("actors").isCellContainsData(cell)
       throw @s.E_NON_EMPTY_CELL
 
   # Checks whether given cell is empty
   assureCellNonEmpty: (cell)=>
-    unless @data.get("characters").isCellContainsData(cell)
+    unless @data.get("actors").isCellContainsData(cell)
       throw @s.E_EMPTY_CELL
 
-  # Checks whether given character exists on the level
-  # @param {gameLogic.characters.AbstractCharacter} char
-  assureCharExists: (char)=>
-    unless @data.get("characters").getDataByEntity(char)
-      throw @s.E_CHAR_NOT_EXISTS
+  # Checks whether given actoracter exists on the level
+  # @param {gameLogic.actors.Abstractactoracter} actor
+  assureactorExists: (actor)=>
+    unless @data.get("actors").getDataByEntity(actor)
+      throw @s.E_ACTOR_NOT_EXISTS
 
 
 

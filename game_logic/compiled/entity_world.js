@@ -16,15 +16,15 @@
 
     function World(app) {
       this.app = app;
-      this.assureCharExists = __bind(this.assureCharExists, this);
+      this.assureactorExists = __bind(this.assureactorExists, this);
       this.assureCellNonEmpty = __bind(this.assureCellNonEmpty, this);
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
-      this.getCharacterPosition = __bind(this.getCharacterPosition, this);
-      this.changeCharacterDirection = __bind(this.changeCharacterDirection, this);
-      this.removeCharacter = __bind(this.removeCharacter, this);
-      this.moveCharacter = __bind(this.moveCharacter, this);
-      this.placeCharacter = __bind(this.placeCharacter, this);
+      this.getActorPosition = __bind(this.getActorPosition, this);
+      this.changeActorDirection = __bind(this.changeActorDirection, this);
+      this.removeActor = __bind(this.removeActor, this);
+      this.moveActor = __bind(this.moveActor, this);
+      this.placeActor = __bind(this.placeActor, this);
       this.load = __bind(this.load, this);
       World.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init world.");
@@ -33,7 +33,7 @@
 
     World.prototype.load = function(level) {
       this.data.set("level", dataTypes.Matrix2d.createFromLevelObject(level));
-      return this.data.set("characters", new dataTypes.EntityMatrix2d());
+      return this.data.set("actors", new dataTypes.EntityMatrix2d());
     };
 
     World.E_NON_EMPTY_CELL = new Error("You are trying perform action on non empty cell!");
@@ -42,45 +42,45 @@
 
     World.E_NONEXISTENT_CELL = new Error("Cell does not exists at the given level!");
 
-    World.E_CHAR_NOT_EXISTS = new Error("Given character does not exists!");
+    World.E_ACTOR_NOT_EXISTS = new Error("Given actor does not exists!");
 
-    World.prototype.placeCharacter = function(cell, char, dir) {
+    World.prototype.placeActor = function(cell, actor, dir) {
       var ccp;
       this.assureCellExistance(cell);
       this.assureCellEmpty(cell);
       if (dir == null) {
         dir = dataTypes.WorldDirection.N;
       }
-      ccp = dataTypes.CharacterPosition.get(char, cell, dir);
-      return this.data.get("characters").putData(cell, ccp);
+      ccp = dataTypes.ActorPosition.get(actor, cell, dir);
+      return this.data.get("actors").putData(cell, ccp);
     };
 
-    World.prototype.moveCharacter = function(fromCell, toCell, char) {
+    World.prototype.moveActor = function(fromCell, toCell, actor) {
       var ccp;
       this.assureCellExistance(toCell);
       this.assureCellEmpty(toCell);
-      ccp = this.getCharacterPosition(char);
-      this.data.get("characters").removeData(fromCell);
-      return this.data.get("characters").putData(toCell, ccp);
+      ccp = this.getActorPosition(actor);
+      this.data.get("actors").removeData(fromCell);
+      return this.data.get("actors").putData(toCell, ccp);
     };
 
-    World.prototype.removeCharacter = function(cell, char) {
+    World.prototype.removeActor = function(cell, actor) {
       this.assureCellExistance(cell);
       this.assureCellNonEmpty(cell);
-      return this.data.get("characters").removeData(cell);
+      return this.data.get("actors").removeData(cell);
     };
 
-    World.prototype.changeCharacterDirection = function(char, dir) {
+    World.prototype.changeActorDirection = function(actor, dir) {
       var ccp, cd;
-      this.assureCharExists(char);
-      cd = this.data.get("characters");
-      ccp = cd.getDataByEntity(char);
+      this.assureactorExists(actor);
+      cd = this.data.get("actors");
+      ccp = cd.getDataByEntity(actor);
       ccp.dir = dir;
       return cd.putData(ccp.cell, ccp);
     };
 
-    World.prototype.getCharacterPosition = function(char) {
-      return this.data.get("characters").getDataByEntity(char);
+    World.prototype.getActorPosition = function(actor) {
+      return this.data.get("actors").getDataByEntity(actor);
     };
 
     World.prototype.assureCellExistance = function(cell) {
@@ -90,20 +90,20 @@
     };
 
     World.prototype.assureCellEmpty = function(cell) {
-      if (this.data.get("characters").isCellContainsData(cell)) {
+      if (this.data.get("actors").isCellContainsData(cell)) {
         throw this.s.E_NON_EMPTY_CELL;
       }
     };
 
     World.prototype.assureCellNonEmpty = function(cell) {
-      if (!this.data.get("characters").isCellContainsData(cell)) {
+      if (!this.data.get("actors").isCellContainsData(cell)) {
         throw this.s.E_EMPTY_CELL;
       }
     };
 
-    World.prototype.assureCharExists = function(char) {
-      if (!this.data.get("characters").getDataByEntity(char)) {
-        throw this.s.E_CHAR_NOT_EXISTS;
+    World.prototype.assureactorExists = function(actor) {
+      if (!this.data.get("actors").getDataByEntity(actor)) {
+        throw this.s.E_ACTOR_NOT_EXISTS;
       }
     };
 

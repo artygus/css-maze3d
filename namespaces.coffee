@@ -14,7 +14,7 @@ window.gameLogic = {
   data: {}
   modules: {}
   entities: {}
-  characters: {}
+  actors: {}
 }
 
 window.utils = {
