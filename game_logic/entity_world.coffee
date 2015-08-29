@@ -58,8 +58,8 @@ class gameLogic.entities.World extends gameLogic.Object
 
     @data.get("actors").removeData cell
 
-  # Change actoracter direction
-  # @param {gameLogic.actors.Abstractactoracter} actor
+  # Change Actor direction
+  # @param {gameLogic.actors.AbstractActor} actor
   # @param {dataTypes.WorldDirection} dir
   changeActorDirection: (actor, dir)=>
     @assureactorExists actor
@@ -69,12 +69,18 @@ class gameLogic.entities.World extends gameLogic.Object
     ccp.dir = dir
     cd.putData ccp.cell, ccp
 
-  # Gets actoracter position
-  # @param {gameLogic.actors.Abstractactoracter} actor
+  # Gets actor position
+  # @param {gameLogic.actors.AbstractActor} actor
   # @return {dataTypes.ActorPosition}
   getActorPosition: (actor)=>
     @data.get("actors").getDataByEntity actor
 
+  # Get all actors positions on the level
+  # @return {Array.<dataTypes.ActorPosition>} actor
+  getActorsPositions: => @data.get("actors").getEntities()
+
+  # Get all actors on the level
+  getActors: => @getActorsPositions().map((a)=> a.actor)
 
   # section: Helpers
 
@@ -93,8 +99,8 @@ class gameLogic.entities.World extends gameLogic.Object
     unless @data.get("actors").isCellContainsData(cell)
       throw @s.E_EMPTY_CELL
 
-  # Checks whether given actoracter exists on the level
-  # @param {gameLogic.actors.Abstractactoracter} actor
+  # Checks whether given Actor exists on the level
+  # @param {gameLogic.actors.AbstractActor} actor
   assureactorExists: (actor)=>
     unless @data.get("actors").getDataByEntity(actor)
       throw @s.E_ACTOR_NOT_EXISTS

@@ -45,6 +45,16 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
   getDataByEntity: (entity)=>
     @tobject.get "entityToCoords", entity.id.toString()
 
+  # Get all entities in the matrix
+  # @return {Array.<*>}
+  getEntities: =>
+    collection = []
+
+    for id, entity of @get("entityToCoords")
+      collection.push entity
+
+    return collection
+
   # section: Static
 
   # Nullified method
