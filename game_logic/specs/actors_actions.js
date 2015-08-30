@@ -106,28 +106,46 @@ describe("Actors actions", function(){
       expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Strafes left N S", function(){
-      expect(false).toEqual(true);
+    it("Strafes left N W", function(){
+      actor.actionStrafeLeft();
+
+      var nc = [icell[0]-1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Strafes left E W", function(){
-      expect(false).toEqual(true);
+    it("Strafes left S E", function(){
+      cgame.world.changeActorDirection(actor, wd.S);
+      actor.actionStrafeLeft();
+
+      var nc = [icell[0]+1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Strafes right N S", function(){
-      expect(false).toEqual(true);
+    it("Strafes right N W", function(){
+      actor.actionStrafeRight();
+
+      var nc = [icell[0]+1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Strafes right E W", function(){
-      expect(false).toEqual(true);
+    it("Strafes right S E", function(){
+      cgame.world.changeActorDirection(actor, wd.S);
+      actor.actionStrafeRight();
+
+      var nc = [icell[0]-1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Turns clockwise", function(){
-      expect(false).toEqual(true);
+      actor.actionTurnClockwise();
+
+      expect(actor.getActorPosition().dir).toEqual(dataTypes.WorldDirection.E);
     });
 
     it("Turns anticlockwise", function(){
-      expect(false).toEqual(true);
+      actor.actionTurnAntiClockwise();
+
+      expect(actor.getActorPosition().dir).toEqual(dataTypes.WorldDirection.W);
     });
 
   });

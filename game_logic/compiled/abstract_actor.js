@@ -16,6 +16,8 @@
 
     function AbstractActor(app) {
       this.app = app;
+      this.getNextDirection = __bind(this.getNextDirection, this);
+      this.getStrafeDimensionAndVector = __bind(this.getStrafeDimensionAndVector, this);
       this.getMoveDimensionAndVector = __bind(this.getMoveDimensionAndVector, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
       this.assureActorExists = __bind(this.assureActorExists, this);
@@ -23,8 +25,10 @@
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
       this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
       this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
+      this.actionTurn = __bind(this.actionTurn, this);
       this.actionStrafeRight = __bind(this.actionStrafeRight, this);
       this.actionStrafeLeft = __bind(this.actionStrafeLeft, this);
+      this.actionStrafe = __bind(this.actionStrafe, this);
       this.actionMoveBackward = __bind(this.actionMoveBackward, this);
       this.actionMoveForward = __bind(this.actionMoveForward, this);
       this.actionMove = __bind(this.actionMove, this);
@@ -92,28 +96,47 @@
       return this.actionMove(false);
     };
 
-    AbstractActor.prototype.actionStrafeLeft = function() {
+    AbstractActor.prototype.actionStrafe = function(right) {
+      if (right == null) {
+        right = true;
+      }
       return this.performMove((function(_this) {
-        return function() {};
+        return function() {
+          var dv, newPos, pos;
+          pos = _this.getActorPosition();
+          dv = _this.getStrafeDimensionAndVector(pos.cell, pos.dir, right);
+          newPos = [pos.cell[0], pos.cell[1]];
+          newPos[dv.dim] += dv.vector;
+          return _this.app.world.moveActor(_this, newPos);
+        };
       })(this));
+    };
+
+    AbstractActor.prototype.actionStrafeLeft = function() {
+      return this.actionStrafe(false);
     };
 
     AbstractActor.prototype.actionStrafeRight = function() {
-      return this.performMove((function(_this) {
-        return function() {};
-      })(this));
+      return this.actionStrafe();
+    };
+
+    AbstractActor.prototype.actionTurn = function(clockwise) {
+      var nd, pos;
+      if (clockwise == null) {
+        clockwise = true;
+      }
+      this.assureActorExists();
+      pos = this.getActorPosition();
+      nd = this.getNextDirection(pos.dir, clockwise);
+      return this.app.world.changeActorDirection(this, nd);
     };
 
     AbstractActor.prototype.actionTurnClockwise = function() {
-      return this.performMove((function(_this) {
-        return function() {};
-      })(this));
+      return this.actionTurn();
     };
 
     AbstractActor.prototype.actionTurnAntiClockwise = function() {
-      return this.performMove((function(_this) {
-        return function() {};
-      })(this));
+      return this.actionTurn(false);
     };
 
     AbstractActor.I_ACTION_COMPLETED = "action_completed";
@@ -161,6 +184,52 @@
         dim: dim,
         vector: vector
       };
+    };
+
+    AbstractActor.prototype.getStrafeDimensionAndVector = function(cell, direction, right) {
+      var dim, vector, wd;
+      if (right == null) {
+        right = true;
+      }
+      wd = dataTypes.WorldDirection;
+      if (direction === wd.N || direction === wd.S) {
+        dim = 0;
+      } else {
+        dim = 1;
+      }
+      if (direction === wd.N || direction === wd.W) {
+        vector = +1;
+      } else {
+        vector = -1;
+      }
+      if (!right) {
+        vector *= -1;
+      }
+      return {
+        dim: dim,
+        vector: vector
+      };
+    };
+
+    AbstractActor.prototype.getNextDirection = function(direction, clockwise) {
+      var directions, i, nexti, wd;
+      if (clockwise == null) {
+        clockwise = true;
+      }
+      wd = dataTypes.WorldDirection;
+      directions = [wd.N, wd.E, wd.S, wd.W];
+      if (!clockwise) {
+        directions.reverse();
+      }
+      i = directions.indexOf(direction);
+      nexti = i + 1;
+      if (nexti > (directions.length - 1)) {
+        return directions[0];
+      } else if (nexti < 0) {
+        return directions[directions.length - 1];
+      } else {
+        return directions[nexti];
+      }
     };
 
     return AbstractActor;

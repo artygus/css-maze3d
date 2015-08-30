@@ -65,17 +65,37 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   actionMoveBackward: => @actionMove(false)
 
-  actionStrafeLeft: =>
-    @performMove =>
 
-  actionStrafeRight: =>
-    @performMove =>
+  # section: Strafe
 
-  actionTurnClockwise: =>
+  actionStrafe: (right=true)=>
     @performMove =>
+      pos = @getActorPosition()
+      dv = @getStrafeDimensionAndVector(pos.cell, pos.dir, right)
 
-  actionTurnAntiClockwise: =>
-    @performMove =>
+      newPos = [pos.cell[0], pos.cell[1]]
+      newPos[dv.dim] += dv.vector
+
+      @app.world.moveActor(@, newPos)
+
+  actionStrafeLeft: => @actionStrafe(false)
+
+  actionStrafeRight: => @actionStrafe()
+
+
+  # section: Turns
+
+  actionTurn: (clockwise=true)=>
+    @assureActorExists()
+
+    pos = @getActorPosition()
+    nd =  @getNextDirection(pos.dir, clockwise)
+
+    @app.world.changeActorDirection(@, nd)
+
+  actionTurnClockwise: => @actionTurn()
+
+  actionTurnAntiClockwise: => @actionTurn false
 
 
   # section: Reactions
@@ -118,5 +138,43 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
     vector *= -1 unless forward
 
     return {dim: dim, vector: vector}
+
+  getStrafeDimensionAndVector: (cell, direction, right=true)=>
+    wd = dataTypes.WorldDirection
+
+    if direction in [wd.N, wd.S]
+      dim = 0
+    else
+      dim = 1
+
+    if direction in [wd.N, wd.W]
+      vector = +1
+    else
+      vector = -1
+
+    vector *= -1 unless right
+
+    return dim: dim, vector: vector
+
+  getNextDirection: (direction, clockwise=true)=>
+    wd = dataTypes.WorldDirection
+    directions = [wd.N, wd.E, wd.S, wd.W]
+
+    directions.reverse() unless clockwise
+
+    i = directions.indexOf direction
+    nexti = i+1
+
+    if nexti > (directions.length - 1)
+      return directions[0]
+    else if nexti < 0
+      return directions[directions.length - 1]
+    else
+      return directions[nexti]
+
+
+
+
+
 
 
