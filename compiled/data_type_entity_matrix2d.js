@@ -32,7 +32,6 @@
 
     EntityMatrix2d.prototype.putData = function(cell, entity) {
       EntityMatrix2d.__super__.putData.apply(this, arguments);
-      console.log("LAM", "Put data", cell, entity);
       return this.tobject.set("entityToCoords", entity.id.toString(), entity);
     };
 

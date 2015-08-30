@@ -42,17 +42,19 @@ class gameLogic.entities.World extends gameLogic.Object
     @data.get("actors").putData(cell, ccp)
 
   # Move entity from cell to cell
-  moveActor: (fromCell, toCell, actor)=>
-    @assureCellExistance toCell
-    @assureCellEmpty toCell
+  moveActor: (actor, cell)=>
+    @assureCellExistance cell
+    @assureCellEmpty cell
 
     ccp = @getActorPosition(actor)
-    ccp = dataTypes.ActorPosition.get actor, toCell, ccp.dir
+    fromCell = ccp.cell
+    toPos = dataTypes.ActorPosition.get actor, cell, ccp.dir
 
     @data.get("actors").removeData fromCell
-    @data.get("actors").putData toCell, ccp
+    @data.get("actors").putData cell, toPos
 
   # Remove entity from a given cell
+  # TODO: refactoring actor
   removeActor: (cell, actor)=>
     @assureCellExistance cell
     @assureCellNonEmpty cell

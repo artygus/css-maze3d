@@ -73,7 +73,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
         else
           newPos[0]--;
 
-      return @app.world.moveActor(pos.cell, newPos, @)
+      return @app.world.moveActor(@, newPos)
 
 
   actionMoveBackward: =>

@@ -57,14 +57,15 @@
       return this.data.get("actors").putData(cell, ccp);
     };
 
-    World.prototype.moveActor = function(fromCell, toCell, actor) {
-      var ccp;
-      this.assureCellExistance(toCell);
-      this.assureCellEmpty(toCell);
+    World.prototype.moveActor = function(actor, cell) {
+      var ccp, fromCell, toPos;
+      this.assureCellExistance(cell);
+      this.assureCellEmpty(cell);
       ccp = this.getActorPosition(actor);
-      ccp = dataTypes.ActorPosition.get(actor, toCell, ccp.dir);
+      fromCell = ccp.cell;
+      toPos = dataTypes.ActorPosition.get(actor, cell, ccp.dir);
       this.data.get("actors").removeData(fromCell);
-      return this.data.get("actors").putData(toCell, ccp);
+      return this.data.get("actors").putData(cell, toPos);
     };
 
     World.prototype.removeActor = function(cell, actor) {

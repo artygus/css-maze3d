@@ -86,7 +86,7 @@
               newPos[0]--;
             }
           }
-          return _this.app.world.moveActor(pos.cell, newPos, _this);
+          return _this.app.world.moveActor(_this, newPos);
         };
       })(this));
     };
