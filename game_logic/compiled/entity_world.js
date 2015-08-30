@@ -16,7 +16,7 @@
 
     function World(app) {
       this.app = app;
-      this.assureactorExists = __bind(this.assureactorExists, this);
+      this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureCellNonEmpty = __bind(this.assureCellNonEmpty, this);
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
@@ -62,6 +62,7 @@
       this.assureCellExistance(toCell);
       this.assureCellEmpty(toCell);
       ccp = this.getActorPosition(actor);
+      ccp = dataTypes.ActorPosition.get(actor, toCell, ccp.dir);
       this.data.get("actors").removeData(fromCell);
       return this.data.get("actors").putData(toCell, ccp);
     };
@@ -74,7 +75,7 @@
 
     World.prototype.changeActorDirection = function(actor, dir) {
       var ccp, cd;
-      this.assureactorExists(actor);
+      this.assureActorExists(actor);
       cd = this.data.get("actors");
       ccp = cd.getDataByEntity(actor);
       ccp.dir = dir;
@@ -115,7 +116,7 @@
       }
     };
 
-    World.prototype.assureactorExists = function(actor) {
+    World.prototype.assureActorExists = function(actor) {
       if (!this.data.get("actors").getDataByEntity(actor)) {
         throw this.s.E_ACTOR_NOT_EXISTS;
       }

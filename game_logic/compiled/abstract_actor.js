@@ -14,9 +14,19 @@
 
     AbstractActor.UID_KEY = "actor";
 
-    function AbstractActor() {
+    function AbstractActor(app) {
+      this.app = app;
+      this.getActorPosition = __bind(this.getActorPosition, this);
+      this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
+      this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
+      this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
+      this.actionStrafeRight = __bind(this.actionStrafeRight, this);
+      this.actionStrafeLeft = __bind(this.actionStrafeLeft, this);
+      this.actionMoveBackward = __bind(this.actionMoveBackward, this);
+      this.actionMoveForward = __bind(this.actionMoveForward, this);
+      this.performMove = __bind(this.performMove, this);
       this.act = __bind(this.act, this);
       this.actionNoop = __bind(this.actionNoop, this);
       this.performAction = __bind(this.performAction, this);
@@ -51,6 +61,66 @@
 
     AbstractActor.prototype.act = function() {};
 
+    AbstractActor.prototype.performMove = function(move) {
+      this.assureActorExists();
+      return this.performAction(move);
+    };
+
+    AbstractActor.prototype.actionMoveForward = function() {
+      return this.performMove((function(_this) {
+        return function() {
+          var newPos, pos, wd, _ref;
+          pos = _this.getActorPosition();
+          wd = dataTypes.WorldDirection;
+          newPos = [pos.cell[0], pos.cell[1]];
+          if ((_ref = pos.dir) === wd.N || _ref === wd.S) {
+            if (pos.dir === wd.N) {
+              newPos[1]++;
+            } else {
+              newPos[1]--;
+            }
+          } else {
+            if (pos.dir === wd.E) {
+              newPos[0]++;
+            } else {
+              newPos[0]--;
+            }
+          }
+          return _this.app.world.moveActor(pos.cell, newPos, _this);
+        };
+      })(this));
+    };
+
+    AbstractActor.prototype.actionMoveBackward = function() {
+      return this.performMove((function(_this) {
+        return function() {};
+      })(this));
+    };
+
+    AbstractActor.prototype.actionStrafeLeft = function() {
+      return this.performMove((function(_this) {
+        return function() {};
+      })(this));
+    };
+
+    AbstractActor.prototype.actionStrafeRight = function() {
+      return this.performMove((function(_this) {
+        return function() {};
+      })(this));
+    };
+
+    AbstractActor.prototype.actionTurnClockwise = function() {
+      return this.performMove((function(_this) {
+        return function() {};
+      })(this));
+    };
+
+    AbstractActor.prototype.actionTurnAntiClockwise = function() {
+      return this.performMove((function(_this) {
+        return function() {};
+      })(this));
+    };
+
     AbstractActor.I_ACTION_COMPLETED = "action_completed";
 
     AbstractActor.prototype.reactActionCompleted = function() {
@@ -63,6 +133,14 @@
       if (!this.data.get("inCharge")) {
         throw this.s.E_ACTOR_NOT_IN_CHARGE;
       }
+    };
+
+    AbstractActor.prototype.assureActorExists = function() {
+      return this.app.world.assureActorExists(this);
+    };
+
+    AbstractActor.prototype.getActorPosition = function() {
+      return this.app.world.getActorPosition(this);
     };
 
     return AbstractActor;

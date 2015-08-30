@@ -6,7 +6,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   @UID_KEY: "actor"
 
-  constructor: ->
+  constructor: (@app)->
     super
 
     @id = chms.utils.Uniq.gen @s.UID_KEY
@@ -31,15 +31,65 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   # section: Acting
 
+  # Perform given action
   performAction: (action)=>
     @assureActorInCharge()
 
     action()
 
+  # No operation
   actionNoop: =>
     @performAction @reactActionCompleted
 
   act: =>
+
+
+  # section: Moving
+
+  performMove: (move)=>
+    @assureActorExists()
+
+    @performAction move
+
+  actionMoveForward: =>
+    @performMove =>
+      pos = @getActorPosition()
+
+      wd = dataTypes.WorldDirection
+
+      newPos = [pos.cell[0], pos.cell[1]]
+
+      if pos.dir in [wd.N, wd.S]
+
+        if pos.dir == wd.N
+          newPos[1]++;
+        else
+          newPos[1]--;
+
+      else
+
+        if pos.dir == wd.E
+          newPos[0]++;
+        else
+          newPos[0]--;
+
+      return @app.world.moveActor(pos.cell, newPos, @)
+
+
+  actionMoveBackward: =>
+    @performMove =>
+
+  actionStrafeLeft: =>
+    @performMove =>
+
+  actionStrafeRight: =>
+    @performMove =>
+
+  actionTurnClockwise: =>
+    @performMove =>
+
+  actionTurnAntiClockwise: =>
+    @performMove =>
 
 
   # section: Reactions
@@ -58,5 +108,11 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   assureActorInCharge: =>
     unless @data.get "inCharge"
       throw @s.E_ACTOR_NOT_IN_CHARGE
+
+  assureActorExists: =>
+    @app.world.assureActorExists @
+
+  getActorPosition: =>
+    @app.world.getActorPosition @
 
 

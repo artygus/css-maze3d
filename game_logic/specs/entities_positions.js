@@ -4,17 +4,12 @@
 
 describe("Entities positions", function(){
 
-  var cgame = null,
-    actor1 = null,
-    actor2 = null,
-    icell = null;
+  var actor1 = null,
+    actor2 = null;
 
   beforeEach(function(){
-    cgame = new gameLogic.App();
-    cgame.world.load({"219x207":{"x":219,"y":207,"n":{"face":"black-wall","type":"wall"},"w":{"face":"black-wall","type":"wall"},"e":{"face":"black-wall","type":"wall"}},"219x208":{"x":219,"y":208},"219x209":{"x":219,"y":209,"s":{"face":"black-wall","type":"wall"},"w":{"face":"black-wall","type":"wall"},"e":{"face":"black-wall","type":"wall"}},"220x208":{"x":220,"y":208,"n":{"face":"black-wall","type":"wall"},"s":{"face":"black-wall","type":"wall"},"e":{"face":"black-wall","type":"wall"}},"218x208":{"x":218,"y":208,"n":{"face":"black-wall","type":"wall"},"s":{"face":"black-wall","type":"wall"},"w":{"face":"black-wall","type":"wall"}}});
     actor1 = new gameLogic.actors.Player();
     actor2 = new gameLogic.actors.Player();
-    icell = cgame.world.data.get("level").getFlatCellCoords()[0];
   });
 
   describe("Placing entities", function(){
@@ -52,6 +47,7 @@ describe("Entities positions", function(){
 
       expect(cgame.world.data.get("actors").getData(mfrom)).toEqual(undefined);
       expect(cgame.world.data.get("actors").getData(mto).actor).toEqual(actor1);
+      expect(cgame.world.data.get("actors").getData(mto).cell.toString()).toEqual(mto.toString());
     });
 
     it("I can't move entity to non-level cell", function(){

@@ -3,7 +3,14 @@
  */
 
 describe("Actors actions", function(){
-  var actor = new gameLogic.actors.AbstractActor();
+
+  var actor = null;
+  var wd = dataTypes.WorldDirection;
+
+  beforeEach(function(){
+    actor = new gameLogic.actors.AbstractActor(cgame);
+    cgame.world.placeActor(icell, actor, wd.N);
+  });
 
   describe("In charge", function(){
 
@@ -27,6 +34,69 @@ describe("Actors actions", function(){
 
       actor.actionNoop();
     });
+
+  });
+
+  describe("Moving", function(){
+
+    beforeEach(function(){
+      actor.turnStart();
+    });
+
+    it("Moves forward N", function(){
+      actor.actionMoveForward();
+
+      var nc = [icell[0], icell[1]+1];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves forward S", function(){
+      cgame.world.changeActorDirection(actor, wd.S);
+      actor.actionMoveForward();
+
+      var nc = [icell[0], icell[1]-1];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves forward W", function(){
+      cgame.world.changeActorDirection(actor, wd.W);
+      actor.actionMoveForward();
+
+      var nc = [icell[0]-1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves forward E", function(){
+      cgame.world.changeActorDirection(actor, wd.E);
+      actor.actionMoveForward();
+
+      var nc = [icell[0]+1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves backwards", function(){
+      expect(false).toEqual(true);
+    });
+
+    it("Strafes left", function(){
+      expect(false).toEqual(true);
+    });
+
+    it("Strafes right", function(){
+      expect(false).toEqual(true);
+    });
+
+    it("Turns clockwise", function(){
+      expect(false).toEqual(true);
+    });
+
+    it("Turns anticlockwise", function(){
+      expect(false).toEqual(true);
+    });
+
+  });
+
+  describe("Moving restrictions", function(){
 
   });
 

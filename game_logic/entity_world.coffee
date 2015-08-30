@@ -47,6 +47,7 @@ class gameLogic.entities.World extends gameLogic.Object
     @assureCellEmpty toCell
 
     ccp = @getActorPosition(actor)
+    ccp = dataTypes.ActorPosition.get actor, toCell, ccp.dir
 
     @data.get("actors").removeData fromCell
     @data.get("actors").putData toCell, ccp
@@ -62,7 +63,7 @@ class gameLogic.entities.World extends gameLogic.Object
   # @param {gameLogic.actors.AbstractActor} actor
   # @param {dataTypes.WorldDirection} dir
   changeActorDirection: (actor, dir)=>
-    @assureactorExists actor
+    @assureActorExists actor
 
     cd = @data.get("actors")
     ccp = cd.getDataByEntity(actor)
@@ -101,7 +102,7 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Checks whether given Actor exists on the level
   # @param {gameLogic.actors.AbstractActor} actor
-  assureactorExists: (actor)=>
+  assureActorExists: (actor)=>
     unless @data.get("actors").getDataByEntity(actor)
       throw @s.E_ACTOR_NOT_EXISTS
 

@@ -26,7 +26,6 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
   putData: (cell, entity)=>
     super
 
-    console.log "LAM", "Put data", cell, entity
     @tobject.set "entityToCoords", entity.id.toString(), entity
 
 
