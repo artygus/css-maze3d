@@ -43,6 +43,7 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # Move entity from cell to cell
   moveActor: (actor, cell)=>
+    @assureActorExists actor
     @assureCellExistance cell
     @assureCellEmpty cell
 
@@ -54,8 +55,11 @@ class gameLogic.entities.World extends gameLogic.Object
     @data.get("actors").putData cell, toPos
 
   # Remove entity from a given cell
-  # TODO: refactoring actor
-  removeActor: (cell, actor)=>
+  removeActor: (actor)=>
+    @assureActorExists actor
+
+    cell = @getActorPosition(actor).cell
+
     @assureCellExistance cell
     @assureCellNonEmpty cell
 

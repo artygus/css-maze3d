@@ -59,6 +59,7 @@
 
     World.prototype.moveActor = function(actor, cell) {
       var ccp, fromCell, toPos;
+      this.assureActorExists(actor);
       this.assureCellExistance(cell);
       this.assureCellEmpty(cell);
       ccp = this.getActorPosition(actor);
@@ -68,7 +69,10 @@
       return this.data.get("actors").putData(cell, toPos);
     };
 
-    World.prototype.removeActor = function(cell, actor) {
+    World.prototype.removeActor = function(actor) {
+      var cell;
+      this.assureActorExists(actor);
+      cell = this.getActorPosition(actor).cell;
       this.assureCellExistance(cell);
       this.assureCellNonEmpty(cell);
       return this.data.get("actors").removeData(cell);

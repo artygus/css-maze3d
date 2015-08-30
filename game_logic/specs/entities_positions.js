@@ -70,7 +70,7 @@ describe("Entities positions", function(){
 
     it("If I removed entity it shouldn't belongs to level anymore", function(){
       cgame.world.placeActor(icell, actor1);
-      cgame.world.removeActor(icell, actor2);
+      cgame.world.removeActor(actor1);
 
       expect(cgame.world.data.get("actors").getData(icell)).toEqual(undefined);
     });
