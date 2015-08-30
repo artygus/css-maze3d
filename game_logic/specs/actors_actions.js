@@ -58,14 +58,6 @@ describe("Actors actions", function(){
       expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Moves forward W", function(){
-      cgame.world.changeActorDirection(actor, wd.W);
-      actor.actionMoveForward();
-
-      var nc = [icell[0]-1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
-    });
-
     it("Moves forward E", function(){
       cgame.world.changeActorDirection(actor, wd.E);
       actor.actionMoveForward();
@@ -74,15 +66,59 @@ describe("Actors actions", function(){
       expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
     });
 
-    it("Moves backwards", function(){
+    it("Moves forward W", function(){
+      cgame.world.changeActorDirection(actor, wd.W);
+      actor.actionMoveForward();
+
+      var nc = [icell[0]-1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves backwards N", function(){
+      cgame.world.changeActorDirection(actor, wd.N);
+      actor.actionMoveBackward();
+
+      var nc = [icell[0], icell[1]-1];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves backwards S", function(){
+      cgame.world.changeActorDirection(actor, wd.S);
+      actor.actionMoveBackward();
+
+      var nc = [icell[0], icell[1]+1];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves backwards E", function(){
+      cgame.world.changeActorDirection(actor, wd.E);
+      actor.actionMoveBackward();
+
+      var nc = [icell[0]-1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Moves backwards W", function(){
+      cgame.world.changeActorDirection(actor, wd.W);
+      actor.actionMoveBackward();
+
+      var nc = [icell[0]+1, icell[1]];
+      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+    });
+
+    it("Strafes left N S", function(){
       expect(false).toEqual(true);
     });
 
-    it("Strafes left", function(){
+    it("Strafes left E W", function(){
       expect(false).toEqual(true);
     });
 
-    it("Strafes right", function(){
+    it("Strafes right N S", function(){
+      expect(false).toEqual(true);
+    });
+
+    it("Strafes right E W", function(){
       expect(false).toEqual(true);
     });
 

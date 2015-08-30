@@ -51,33 +51,19 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
     @performAction move
 
-  actionMoveForward: =>
+  actionMove: (forward=true)=>
     @performMove =>
       pos = @getActorPosition()
-
-      wd = dataTypes.WorldDirection
+      dv = @getMoveDimensionAndVector(pos.cell, pos.dir, forward)
 
       newPos = [pos.cell[0], pos.cell[1]]
+      newPos[dv.dim] += dv.vector
 
-      if pos.dir in [wd.N, wd.S]
+      @app.world.moveActor(@, newPos)
 
-        if pos.dir == wd.N
-          newPos[1]++;
-        else
-          newPos[1]--;
+  actionMoveForward: => @actionMove()
 
-      else
-
-        if pos.dir == wd.E
-          newPos[0]++;
-        else
-          newPos[0]--;
-
-      return @app.world.moveActor(@, newPos)
-
-
-  actionMoveBackward: =>
-    @performMove =>
+  actionMoveBackward: => @actionMove(false)
 
   actionStrafeLeft: =>
     @performMove =>
@@ -114,5 +100,23 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   getActorPosition: =>
     @app.world.getActorPosition @
+
+  # @return {Object}
+  getMoveDimensionAndVector: (cell, direction, forward=true)=>
+    wd = dataTypes.WorldDirection
+
+    if direction in [wd.N, wd.S]
+      dim = 1 # y
+    else
+      dim = 0 # x
+
+    if direction in [wd.N, wd.E]
+      vector = +1
+    else
+      vector = -1
+
+    vector *= -1 unless forward
+
+    return {dim: dim, vector: vector}
 
 

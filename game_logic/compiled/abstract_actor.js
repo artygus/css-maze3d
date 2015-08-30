@@ -16,6 +16,7 @@
 
     function AbstractActor(app) {
       this.app = app;
+      this.getMoveDimensionAndVector = __bind(this.getMoveDimensionAndVector, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
       this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
@@ -26,6 +27,7 @@
       this.actionStrafeLeft = __bind(this.actionStrafeLeft, this);
       this.actionMoveBackward = __bind(this.actionMoveBackward, this);
       this.actionMoveForward = __bind(this.actionMoveForward, this);
+      this.actionMove = __bind(this.actionMove, this);
       this.performMove = __bind(this.performMove, this);
       this.act = __bind(this.act, this);
       this.actionNoop = __bind(this.actionNoop, this);
@@ -66,35 +68,28 @@
       return this.performAction(move);
     };
 
-    AbstractActor.prototype.actionMoveForward = function() {
+    AbstractActor.prototype.actionMove = function(forward) {
+      if (forward == null) {
+        forward = true;
+      }
       return this.performMove((function(_this) {
         return function() {
-          var newPos, pos, wd, _ref;
+          var dv, newPos, pos;
           pos = _this.getActorPosition();
-          wd = dataTypes.WorldDirection;
+          dv = _this.getMoveDimensionAndVector(pos.cell, pos.dir, forward);
           newPos = [pos.cell[0], pos.cell[1]];
-          if ((_ref = pos.dir) === wd.N || _ref === wd.S) {
-            if (pos.dir === wd.N) {
-              newPos[1]++;
-            } else {
-              newPos[1]--;
-            }
-          } else {
-            if (pos.dir === wd.E) {
-              newPos[0]++;
-            } else {
-              newPos[0]--;
-            }
-          }
+          newPos[dv.dim] += dv.vector;
           return _this.app.world.moveActor(_this, newPos);
         };
       })(this));
     };
 
+    AbstractActor.prototype.actionMoveForward = function() {
+      return this.actionMove();
+    };
+
     AbstractActor.prototype.actionMoveBackward = function() {
-      return this.performMove((function(_this) {
-        return function() {};
-      })(this));
+      return this.actionMove(false);
     };
 
     AbstractActor.prototype.actionStrafeLeft = function() {
@@ -141,6 +136,31 @@
 
     AbstractActor.prototype.getActorPosition = function() {
       return this.app.world.getActorPosition(this);
+    };
+
+    AbstractActor.prototype.getMoveDimensionAndVector = function(cell, direction, forward) {
+      var dim, vector, wd;
+      if (forward == null) {
+        forward = true;
+      }
+      wd = dataTypes.WorldDirection;
+      if (direction === wd.N || direction === wd.S) {
+        dim = 1;
+      } else {
+        dim = 0;
+      }
+      if (direction === wd.N || direction === wd.E) {
+        vector = +1;
+      } else {
+        vector = -1;
+      }
+      if (!forward) {
+        vector *= -1;
+      }
+      return {
+        dim: dim,
+        vector: vector
+      };
     };
 
     return AbstractActor;
