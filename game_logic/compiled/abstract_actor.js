@@ -19,7 +19,7 @@
       this.getNextDirection = __bind(this.getNextDirection, this);
       this.getStrafeDimensionAndVector = __bind(this.getStrafeDimensionAndVector, this);
       this.getMoveDimensionAndVector = __bind(this.getMoveDimensionAndVector, this);
-      this.getActorPosition = __bind(this.getActorPosition, this);
+      this.getPosition = __bind(this.getPosition, this);
       this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
@@ -79,7 +79,7 @@
       return this.performMove((function(_this) {
         return function() {
           var dv, newPos, pos;
-          pos = _this.getActorPosition();
+          pos = _this.getPosition();
           dv = _this.getMoveDimensionAndVector(pos.cell, pos.dir, forward);
           newPos = [pos.cell[0], pos.cell[1]];
           newPos[dv.dim] += dv.vector;
@@ -103,7 +103,7 @@
       return this.performMove((function(_this) {
         return function() {
           var dv, newPos, pos;
-          pos = _this.getActorPosition();
+          pos = _this.getPosition();
           dv = _this.getStrafeDimensionAndVector(pos.cell, pos.dir, right);
           newPos = [pos.cell[0], pos.cell[1]];
           newPos[dv.dim] += dv.vector;
@@ -126,7 +126,7 @@
         clockwise = true;
       }
       this.assureActorExists();
-      pos = this.getActorPosition();
+      pos = this.getPosition();
       nd = this.getNextDirection(pos.dir, clockwise);
       return this.app.world.changeActorDirection(this, nd);
     };
@@ -157,7 +157,7 @@
       return this.app.world.assureActorExists(this);
     };
 
-    AbstractActor.prototype.getActorPosition = function() {
+    AbstractActor.prototype.getPosition = function() {
       return this.app.world.getActorPosition(this);
     };
 

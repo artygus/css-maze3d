@@ -53,7 +53,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   actionMove: (forward=true)=>
     @performMove =>
-      pos = @getActorPosition()
+      pos = @getPosition()
       dv = @getMoveDimensionAndVector(pos.cell, pos.dir, forward)
 
       newPos = [pos.cell[0], pos.cell[1]]
@@ -70,7 +70,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   actionStrafe: (right=true)=>
     @performMove =>
-      pos = @getActorPosition()
+      pos = @getPosition()
       dv = @getStrafeDimensionAndVector(pos.cell, pos.dir, right)
 
       newPos = [pos.cell[0], pos.cell[1]]
@@ -88,7 +88,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   actionTurn: (clockwise=true)=>
     @assureActorExists()
 
-    pos = @getActorPosition()
+    pos = @getPosition()
     nd =  @getNextDirection(pos.dir, clockwise)
 
     @app.world.changeActorDirection(@, nd)
@@ -118,7 +118,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   assureActorExists: =>
     @app.world.assureActorExists @
 
-  getActorPosition: =>
+  getPosition: =>
     @app.world.getActorPosition @
 
   # @return {Object}

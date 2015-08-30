@@ -47,7 +47,7 @@ describe("Actors actions", function(){
       actor.actionMoveForward();
 
       var nc = [icell[0], icell[1]+1];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves forward S", function(){
@@ -55,7 +55,7 @@ describe("Actors actions", function(){
       actor.actionMoveForward();
 
       var nc = [icell[0], icell[1]-1];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves forward E", function(){
@@ -63,7 +63,7 @@ describe("Actors actions", function(){
       actor.actionMoveForward();
 
       var nc = [icell[0]+1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves forward W", function(){
@@ -71,7 +71,7 @@ describe("Actors actions", function(){
       actor.actionMoveForward();
 
       var nc = [icell[0]-1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves backwards N", function(){
@@ -79,7 +79,7 @@ describe("Actors actions", function(){
       actor.actionMoveBackward();
 
       var nc = [icell[0], icell[1]-1];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves backwards S", function(){
@@ -87,7 +87,7 @@ describe("Actors actions", function(){
       actor.actionMoveBackward();
 
       var nc = [icell[0], icell[1]+1];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves backwards E", function(){
@@ -95,7 +95,7 @@ describe("Actors actions", function(){
       actor.actionMoveBackward();
 
       var nc = [icell[0]-1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Moves backwards W", function(){
@@ -103,14 +103,14 @@ describe("Actors actions", function(){
       actor.actionMoveBackward();
 
       var nc = [icell[0]+1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Strafes left N W", function(){
       actor.actionStrafeLeft();
 
       var nc = [icell[0]-1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Strafes left S E", function(){
@@ -118,14 +118,14 @@ describe("Actors actions", function(){
       actor.actionStrafeLeft();
 
       var nc = [icell[0]+1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Strafes right N W", function(){
       actor.actionStrafeRight();
 
       var nc = [icell[0]+1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Strafes right S E", function(){
@@ -133,19 +133,19 @@ describe("Actors actions", function(){
       actor.actionStrafeRight();
 
       var nc = [icell[0]-1, icell[1]];
-      expect(actor.getActorPosition().cell.toString()).toEqual(nc.toString());
+      expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
     it("Turns clockwise", function(){
       actor.actionTurnClockwise();
 
-      expect(actor.getActorPosition().dir).toEqual(dataTypes.WorldDirection.E);
+      expect(actor.getPosition().dir).toEqual(dataTypes.WorldDirection.E);
     });
 
     it("Turns anticlockwise", function(){
       actor.actionTurnAntiClockwise();
 
-      expect(actor.getActorPosition().dir).toEqual(dataTypes.WorldDirection.W);
+      expect(actor.getPosition().dir).toEqual(dataTypes.WorldDirection.W);
     });
 
   });
