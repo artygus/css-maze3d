@@ -64,7 +64,6 @@ class gameLogic.entities.Time extends gameLogic.Object
 
   create: =>
     @data.setInitialValues()
-    @stateUpdated()
 
 
 
