@@ -73,8 +73,7 @@
     };
 
     Time.prototype.create = function() {
-      this.data.setInitialValues();
-      return this.stateUpdated();
+      return this.data.setInitialValues();
     };
 
     return Time;
