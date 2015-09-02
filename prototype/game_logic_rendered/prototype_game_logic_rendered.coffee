@@ -19,7 +19,7 @@ class window.PrototypeGameLogicRendered
 
     renderGod.cells @getTestLevel()
 
-    @camera = new GameCamera(viewportEl, worldEl, cameraEl, unit)
+    @camera = new Player(new GameCamera(viewportEl, worldEl, cameraEl, unit))
 
     @dactors = gl.world.data.get("actors")
     sActorsChanged = $(@dactors)

@@ -20,7 +20,7 @@
       viewportEl = document.getElementById('viewport');
       renderGod = new Renderer(worldEl, unit);
       renderGod.cells(this.getTestLevel());
-      this.camera = new GameCamera(viewportEl, worldEl, cameraEl, unit);
+      this.camera = new Player(new GameCamera(viewportEl, worldEl, cameraEl, unit));
       this.dactors = gl.world.data.get("actors");
       sActorsChanged = $(this.dactors).asEventStream(this.dactors.s.I_DATA_CHANGED);
       sActorsChanged.filter((function(_this) {
