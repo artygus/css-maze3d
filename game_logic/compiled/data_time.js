@@ -14,7 +14,15 @@
 
     Time.prototype.DT = "gameLogic.data.Time";
 
+    Time.ROUND_STATE_START = "start";
+
+    Time.ROUND_STATE_TURN = "turn";
+
+    Time.ROUND_STATE_END = "end";
+
     function Time() {
+      this.set = __bind(this.set, this);
+      this.setInitialValues = __bind(this.setInitialValues, this);
       this.init = __bind(this.init, this);
       Time.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
@@ -23,7 +31,22 @@
     Time.prototype.init = function() {
       Time.__super__.init.apply(this, arguments);
       this.set("state", null);
-      return this.set("roundNumber", 0);
+      this.set("roundNumber", 0);
+      return this.set("actorsMoveQueue", []);
+    };
+
+    Time.prototype.setInitialValues = function() {
+      this.set("state", this.s.ROUND_STATE_START);
+      return this.set("roundNumber", 1);
+    };
+
+    Time.E_NOT_ALL_ACTORS_PERFOMED_ACTION = "Some actors does not perform action in a given round.";
+
+    Time.prototype.set = function(key) {
+      if (key === "state" && (this.get("actorsMoveQueue") != null) && this.get("actorsMoveQueue").length > 0) {
+        throw this.s.E_NOT_ALL_ACTORS_PERFOMED_ACTION;
+      }
+      return Time.__super__.set.apply(this, arguments);
     };
 
     return Time;

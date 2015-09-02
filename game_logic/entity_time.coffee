@@ -13,6 +13,9 @@ class gameLogic.entities.Time extends gameLogic.Object
 
     @data = new gameLogic.data.Time()
 
+    $(@data).asEventStream(@data.s.I_DATA_CHANGED)
+      .filter((v)=> v.key == "state")
+      .onValue @stateUpdated
 
   # section: State machine
   @TURN_TIME: 5000
@@ -28,13 +31,16 @@ class gameLogic.entities.Time extends gameLogic.Object
         @stateUpdated()
 
       when @data.s.ROUND_STATE_TURN
-        @stateTurn @app.world.getActors()
+        @data.set "actorsMoveQueue", @app.world.getActors()
+        @stateTurn()
 
       when @data.s.ROUND_STATE_END
         @data.set "state", @data.s.ROUND_STATE_START
         @stateUpdated()
 
-  stateTurn: (actors)=>
+  stateTurn: =>
+    actors = @data.get("actorsMoveQueue")
+
     if actors.length == 0
       setTimeout (
         =>
@@ -46,7 +52,8 @@ class gameLogic.entities.Time extends gameLogic.Object
       completed = =>
         p.turnEnded()
         clearTimeout turnTimeout
-        @stateTurn actors.slice 1
+        @data.tarray.delete "actorsMoveQueue", 0
+        @stateTurn()
 
       turnTimeout = setTimeout p.noop, @s.TURN_TIME
       $(p).one p.I_ACTION_COMPLETED, completed

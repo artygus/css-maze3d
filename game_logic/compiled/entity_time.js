@@ -16,18 +16,18 @@
 
     function Time(app) {
       this.app = app;
+      this.create = __bind(this.create, this);
       this.stateTurn = __bind(this.stateTurn, this);
       this.stateUpdated = __bind(this.stateUpdated, this);
       Time.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.data = new gameLogic.data.Time();
+      $(this.data).asEventStream(this.data.s.I_DATA_CHANGED).filter((function(_this) {
+        return function(v) {
+          return v.key === "state";
+        };
+      })(this)).onValue(this.stateUpdated);
     }
-
-    Time.ROUND_STATE_START = "start";
-
-    Time.ROUND_STATE_TURN = "turn";
-
-    Time.ROUND_STATE_END = "end";
 
     Time.TURN_TIME = 5000;
 
@@ -35,23 +35,25 @@
 
     Time.prototype.stateUpdated = function() {
       switch (this.data.get("state")) {
-        case this.s.ROUND_STATE_START:
-          this.data.set("state", this.s.ROUND_STATE_TURN);
+        case this.data.s.ROUND_STATE_START:
+          this.data.set("state", this.data.s.ROUND_STATE_TURN);
           return this.stateUpdated();
-        case this.s.ROUND_STATE_TURN:
-          return this.stateTurn(this.app.world.getActors());
-        case this.s.ROUND_STATE_END:
-          this.data.set("state", this.s.ROUND_STATE_START);
+        case this.data.s.ROUND_STATE_TURN:
+          this.data.set("actorsMoveQueue", this.app.world.getActors());
+          return this.stateTurn();
+        case this.data.s.ROUND_STATE_END:
+          this.data.set("state", this.data.s.ROUND_STATE_START);
           return this.stateUpdated();
       }
     };
 
-    Time.prototype.stateTurn = function(actors) {
-      var completed, p, turnTimeout;
+    Time.prototype.stateTurn = function() {
+      var actors, completed, p, turnTimeout;
+      actors = this.data.get("actorsMoveQueue");
       if (actors.length === 0) {
         return setTimeout(((function(_this) {
           return function() {
-            return _this.data.set("state", _this.s.ROUND_STATE_END);
+            return _this.data.set("state", _this.data.s.ROUND_STATE_END);
           };
         })(this)), this.TURN_AFTERTIME);
       } else {
@@ -60,13 +62,19 @@
           return function() {
             p.turnEnded();
             clearTimeout(turnTimeout);
-            return _this.stateTurn(actors.slice(1));
+            _this.data.tarray["delete"]("actorsMoveQueue", 0);
+            return _this.stateTurn();
           };
         })(this);
         turnTimeout = setTimeout(p.noop, this.s.TURN_TIME);
         $(p).one(p.I_ACTION_COMPLETED, completed);
         return p.turnStart();
       }
+    };
+
+    Time.prototype.create = function() {
+      this.data.setInitialValues();
+      return this.stateUpdated();
     };
 
     return Time;
