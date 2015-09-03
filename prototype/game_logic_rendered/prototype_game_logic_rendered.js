@@ -6,6 +6,7 @@
     PrototypeGameLogicRendered.prototype.DT = "PrototypeGameLogicRendered";
 
     function PrototypeGameLogicRendered() {
+      this.initkeyboard = __bind(this.initkeyboard, this);
       this.updatePlayerPosition = __bind(this.updatePlayerPosition, this);
       this.getTestLevel = __bind(this.getTestLevel, this);
       var cameraEl, icell, renderGod, sActorsChanged, unit, viewportEl, worldEl;
@@ -20,7 +21,7 @@
       viewportEl = document.getElementById('viewport');
       renderGod = new Renderer(worldEl, unit);
       renderGod.cells(this.getTestLevel());
-      this.camera = new Player(new GameCamera(viewportEl, worldEl, cameraEl, unit));
+      this.camera = new GameCamera(viewportEl, worldEl, cameraEl, unit);
       this.dactors = gl.world.data.get("actors");
       sActorsChanged = $(this.dactors).asEventStream(this.dactors.s.I_DATA_CHANGED);
       sActorsChanged.filter((function(_this) {
@@ -37,6 +38,7 @@
           return _this.updatePlayerPosition();
         };
       })(this)), 2000);
+      this.initkeyboard();
     }
 
     PrototypeGameLogicRendered.prototype.getTestLevel = function() {
@@ -1689,6 +1691,39 @@
       pos = this.dactors.getDataByEntity(gl.player);
       this.camera.setCell(pos.cell[0], pos.cell[1]);
       return this.camera.setDirection(pos.dir);
+    };
+
+    PrototypeGameLogicRendered.prototype.initkeyboard = function() {
+      keyboardJS.bind("w", (function(_this) {
+        return function(e) {
+          return gl.player.actionMoveBackward();
+        };
+      })(this));
+      keyboardJS.bind("s", (function(_this) {
+        return function(e) {
+          return gl.player.actionMoveForward();
+        };
+      })(this));
+      keyboardJS.bind("a", (function(_this) {
+        return function(e) {
+          return gl.player.actionStrafeLeft();
+        };
+      })(this));
+      keyboardJS.bind("d", (function(_this) {
+        return function(e) {
+          return gl.player.actionStrafeRight();
+        };
+      })(this));
+      keyboardJS.bind("q", (function(_this) {
+        return function(e) {
+          return gl.player.actionTurnAntiClockwise();
+        };
+      })(this));
+      return keyboardJS.bind("e", (function(_this) {
+        return function(e) {
+          return gl.player.actionTurnClockwise();
+        };
+      })(this));
     };
 
     return PrototypeGameLogicRendered;
