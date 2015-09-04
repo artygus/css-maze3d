@@ -28,55 +28,16 @@ Player.prototype = {
     this.camera.setDirection(dir);
   },
 
-  centerLook: function() {
-    var closestDirection = this.camera.getDirection();
-    this.camera.setTransition(0.3);
-    this.direction = closestDirection;
-    this.setDirection(closestDirection);
-  },
-
   _bindLookControls: function() {
     var that = this,
-        mouseLookTimeout,
-        mx = my = 0,
         directions = ['n', 'e', 's', 'w'];
 
-    // mouse
-    document.addEventListener('mouseover', function(e) {
-      mx = e.pageX;
-      my = e.pageY;
-      document.removeEventListener('mouseover', arguments.callee)
-    }, false);
-
-    document.addEventListener('mousemove', function(e) {
-      if (!e.ctrlKey && !e.metaKey) {
-        mx = e.pageX;
-        my = e.pageY;
-
-        return;
-      }
-
-      clearTimeout(mouseLookTimeout);
-      that.camera.setTransition(0.1);
-      that.camera.rotateDelta(-(e.pageY - my) / 10, -(e.pageX - mx) / 10);
-
-      mx = e.pageX;
-      my = e.pageY;
-    }, false);
-
-    document.addEventListener('keyup', function(e) {
-      if (e.which === 91 || e.which === 17) {
-        mouseLookTimeout = setTimeout(that.centerLook.bind(that), 100);
-      } 
-    }, false);
-
-    // keyboard
     document.addEventListener('keyup', function(e) {
       var inc = 0;
 
       switch (e.keyCode) {
         case 81:
-          inc = 1; 
+          inc = 1;
           break;
         case 69:
           inc = -1;
