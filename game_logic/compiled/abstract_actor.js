@@ -58,17 +58,23 @@
 
     AbstractActor.prototype.performAction = function(action) {
       this.assureActorInCharge();
-      return action();
+      action();
+      return this.reactActionCompleted();
     };
 
     AbstractActor.prototype.actionNoop = function() {
-      return this.performAction(this.reactActionCompleted);
+      return this.performAction((function(_this) {
+        return function() {
+          return null;
+        };
+      })(this));
     };
 
     AbstractActor.prototype.act = function() {};
 
     AbstractActor.prototype.performMove = function(move) {
       this.assureActorExists();
+      this.assureActorInCharge();
       return this.performAction(move);
     };
 

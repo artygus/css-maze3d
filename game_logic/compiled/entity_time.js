@@ -36,14 +36,12 @@
     Time.prototype.stateUpdated = function() {
       switch (this.data.get("state")) {
         case this.data.s.ROUND_STATE_START:
-          this.data.set("state", this.data.s.ROUND_STATE_TURN);
-          return this.stateUpdated();
+          return this.data.set("state", this.data.s.ROUND_STATE_TURN);
         case this.data.s.ROUND_STATE_TURN:
           this.data.set("actorsMoveQueue", this.app.world.getActors());
           return this.stateTurn();
         case this.data.s.ROUND_STATE_END:
-          this.data.set("state", this.data.s.ROUND_STATE_START);
-          return this.stateUpdated();
+          return this.data.set("state", this.data.s.ROUND_STATE_START);
       }
     };
 
@@ -55,7 +53,7 @@
           return function() {
             return _this.data.set("state", _this.data.s.ROUND_STATE_END);
           };
-        })(this)), this.TURN_AFTERTIME);
+        })(this)), this.s.TURN_AFTERTIME);
       } else {
         p = actors[0];
         completed = (function(_this) {
@@ -66,8 +64,8 @@
             return _this.stateTurn();
           };
         })(this);
-        turnTimeout = setTimeout(p.noop, this.s.TURN_TIME);
-        $(p).one(p.I_ACTION_COMPLETED, completed);
+        turnTimeout = setTimeout(p.actionNoop, this.s.TURN_TIME);
+        $(p).one(p.s.I_ACTION_COMPLETED, completed);
         return p.turnStart();
       }
     };

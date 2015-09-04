@@ -28,7 +28,6 @@ class gameLogic.entities.Time extends gameLogic.Object
 
       when @data.s.ROUND_STATE_START
         @data.set "state", @data.s.ROUND_STATE_TURN
-        @stateUpdated()
 
       when @data.s.ROUND_STATE_TURN
         @data.set "actorsMoveQueue", @app.world.getActors()
@@ -36,7 +35,6 @@ class gameLogic.entities.Time extends gameLogic.Object
 
       when @data.s.ROUND_STATE_END
         @data.set "state", @data.s.ROUND_STATE_START
-        @stateUpdated()
 
   stateTurn: =>
     actors = @data.get("actorsMoveQueue")
@@ -45,7 +43,7 @@ class gameLogic.entities.Time extends gameLogic.Object
       setTimeout (
         =>
           @data.set "state", @data.s.ROUND_STATE_END
-      ), @TURN_AFTERTIME
+      ), @s.TURN_AFTERTIME
     else
       p = actors[0]
 
@@ -55,8 +53,8 @@ class gameLogic.entities.Time extends gameLogic.Object
         @data.tarray.delete "actorsMoveQueue", 0
         @stateTurn()
 
-      turnTimeout = setTimeout p.noop, @s.TURN_TIME
-      $(p).one p.I_ACTION_COMPLETED, completed
+      turnTimeout = setTimeout p.actionNoop, @s.TURN_TIME
+      $(p).one p.s.I_ACTION_COMPLETED, completed
 
       p.turnStart()
 

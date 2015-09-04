@@ -37,9 +37,11 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
     action()
 
+    @reactActionCompleted()
+
   # No operation
   actionNoop: =>
-    @performAction @reactActionCompleted
+    @performAction => null
 
   act: =>
 
@@ -48,6 +50,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   performMove: (move)=>
     @assureActorExists()
+    @assureActorInCharge()
 
     @performAction move
 
