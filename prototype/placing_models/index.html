@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+
+  <script src="../../lib/jquery-1.11.3.min.js"></script>
+  <script src="../../lib/ard.js"></script>
+  <script src="../../lib/chms_utils/chms.utils.js"></script>
+  <script src="../../lib/Bacon.js"></script>
+  <script src="../../lib/keyboard.js"></script>
+
+  <script src="../../compiled/namespaces.js"></script>
+  <script src="../../game_logic/compiled/object.js"></script>
+
+  <script src="../../compiled/helper_level.js"></script>
+  <script src="../../compiled/serializer_level.js"></script>
+
+  <script src="../../compiled/data_type_matrix2d.js"></script>
+  <script src="../../compiled/data_type_entity_matrix2d.js"></script>
+  <script src="../../compiled/data_type_world_directions.js"></script>
+  <script src="../../compiled/data_type_actor_position.js"></script>
+
+  <script src="../../game_logic/compiled/app_game_logic.js"></script>
+
+  <script src="../../game_logic/compiled/data_world.js"></script>
+  <script src="../../game_logic/compiled/data_actor.js"></script>
+  <script src="../../game_logic/compiled/data_time.js"></script>
+
+  <script src="../../game_logic/compiled/entity_world.js"></script>
+  <script src="../../game_logic/compiled/entity_time.js"></script>
+
+  <script src="../../game_logic/compiled/abstract_actor.js"></script>
+  <script src="../../game_logic/compiled/actor_player.js"></script>
+
+  <script src="lib/camera.js"></script>
+  <script src="lib/free_camera.js"></script>
+  <script src="lib/game_camera.js"></script>
+  <script src="lib/player.js"></script>
+  <script src="lib/renderer.js"></script>
+
+  <script src="dummy_model.js"></script>
+
+  <script src="prototype_placing_models.js"></script>
+
+  <link rel="stylesheet" href="../renderer/textures.css" />
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="dummy_model.css"/>
+
+  <style>
+    #viewport {
+      background: #000;
+      position: relative;
+    }
+  </style>
+</head>
+<body style="margin:0">
+<div id="viewport">
+  <div id="camera">
+    <div id="world"></div>
+  </div>
+</div>
+
+<script>
+  $(function(){
+    new PrototypeGameLogicRendered()
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+/* Sample model */
+
+.model-cl {
+  position: absolute;
+}
+
+.model-sample {
+  transform: translateY(-150px);
+}
+
+.planes-container {
+  transform-style: preserve-3d;
+}
+
+.plane {
+  border: 2px solid white;
+  position: absolute;
+
+  box-sizing: border-box;
+  background: black;
+}
+
+.model-sample__head > .plane {
+  width: 50px;
+  height: 50px;
+}
+
+.model-sample__head .plane-front {
+  transform: rotateY(0deg) translateZ(25px);
+}
+
+.model-sample__head .plane-back {
+  transform: rotateX( 180deg ) translateZ(25px);
+}
+
+.model-sample__head .plane-top {
+  transform: rotateX(  90deg ) translateZ(25px);
+}
+
+.model-sample__head .plane-bottom {
+  transform: rotateX( -90deg ) translateZ(25px);
+}
+
+.model-sample__head .plane-right {
+  transform: rotateY(  90deg ) translateZ(25px);
+}
+
+.model-sample__head .plane-left {
+  transform: rotateY( -90deg ) translateZ(25px);
+}
+
+.model-sample__body {
+  transform: translateY(50px);
+}
+
+.model-sample__body > .plane {
+}
+
+.model-sample__body .-big {
+  width: 150px;
+  height: 150px;
+}
+
+.model-sample__body .-small {
+  width: 150px;
+  height: 50px;
+}
+
+.model-sample__body .-side {
+  height: 150px;
+  width: 50px;
+}
+
+.model-sample__body .plane-front {
+  transform: rotateY(0deg) translateZ(25px) translateX(-50px);
+}
+
+.model-sample__body .plane-back {
+  transform: rotateX( 180deg ) translateZ(25px) translateX(-50px);
+}
+
+.model-sample__body .plane-top {
+  transform: rotateX(  90deg ) translateZ(25px) translateX(-50px);
+}
+
+.model-sample__body .plane-bottom {
+  transform: rotateX( -90deg ) translateZ(125px) translateX(-50px);
+}
+
+.model-sample__body .plane-right {
+  transform: rotateY(  90deg ) translateZ(75px);
+}
+
+.model-sample__body .plane-left {
+  transform: rotateY( -90deg ) translateZ(75px);
+}
+
+/* Hand */
+
+.model-sample__hand .plane.-big {
+  width: 30px;
+  height: 175px;
+}
+
+.model-sample__hand .plane.-small {
+  width: 30px;
+  height: 30px;
+}
+
+.model-sample__hand .plane-front {
+  transform: rotateY(0deg) translateZ(15px) translateX(0px);
+}
+
+.model-sample__hand .plane-back {
+  transform: rotateX( 180deg ) translateZ(15px) translateX(0px);
+}
+
+.model-sample__hand .plane-top {
+  transform: rotateX(  90deg ) translateZ(15px) translateX(0px);
+}
+
+.model-sample__hand .plane-bottom {
+  transform: rotateX( -90deg ) translateZ(160px) translateX(0px);
+}
+
+.model-sample__hand .plane-right {
+  transform: rotateY(  90deg ) translateZ(15px);
+}
+
+.model-sample__hand .plane-left {
+  transform: rotateY( -90deg ) translateZ(15px);
+}
+
+.model-sample__hand.-left {
+  transform: translateX(-80px) translateY(60px);
+}
+
+.model-sample__hand.-right {
+  transform: translateX(100px) translateY(60px);
+}
+
+/* Leg */
+
+.model-sample__leg .plane.-big {
+  width: 50px;
+  height: 175px;
+}
+
+.model-sample__leg .plane.-small {
+  width: 50px;
+  height: 50px;
+}
+
+.model-sample__leg .plane-front {
+  transform: rotateY(0deg) translateZ(25px) translateX(0px);
+}
+
+.model-sample__leg .plane-back {
+  transform: rotateX( 180deg ) translateZ(25px) translateX(0px);
+}
+
+.model-sample__leg .plane-top {
+  transform: rotateX(  90deg ) translateZ(25px) translateX(0px);
+}
+
+.model-sample__leg .plane-bottom {
+  transform: rotateX( -90deg ) translateZ(150px) translateX(0px);
+}
+
+.model-sample__leg .plane-right {
+  transform: rotateY(  90deg ) translateZ(25px);
+}
+
+.model-sample__leg .plane-left {
+  transform: rotateY( -90deg ) translateZ(25px);
+}
+
+.model-sample__leg.-left {
+  transform: translateX(-35px) translateY(200px);
+}
+
+.model-sample__leg.-right {
+  transform: translateX(35px) translateY(200px);
+}
+
+
+
