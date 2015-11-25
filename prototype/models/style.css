@@ -129,6 +129,10 @@
 
 }
 
+.model-cl__inner {
+  transform-style: preserve-3d;
+}
+
 .model-sample {
   transform: translateY(-150px);
 }
@@ -354,7 +358,31 @@
 
 /* Struck animation */
 
+@-webkit-keyframes model-sample-animation-struck {
+  0% {
+    transform: translateY(0px);
+  }
 
+  10%, 30%, 50%, 70% {
+    transform: translateY(-10px) rotateZ(-5deg);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translateY(-10px) rotateZ(5deg);
+  }
+
+  90% {
+    transform: translateY(-10px) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.model-sample.-animate-struck .model-cl__inner {
+  animation: model-sample-animation-struck 1.1s;
+}
 
 
 
