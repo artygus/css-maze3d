@@ -430,7 +430,7 @@
 
 .model-sample.-animate-death .model-cl__inner {
   transform-origin: 0px 350px 0px;
-  animation: model-sample-animation-death 2s infinite;
+  animation: model-sample-animation-death 2s;
 }
 
 .model-sample.-animate-death .model-sample__leg.-right {
