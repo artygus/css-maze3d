@@ -13,7 +13,7 @@
   left: 50%;
   top: 50%;
 
-  transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(410deg) rotateZ(0deg);
+  transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 }
 
 .model {
@@ -48,7 +48,6 @@
 }
 
 .model__hand {
-
 }
 
 .model__hand > * {
@@ -223,6 +222,10 @@
 
 /* Hand */
 
+.model-sample__hand {
+  transform-origin: 20px 20px 0;
+}
+
 .model-sample__hand .plane.-big {
   width: 30px;
   height: 175px;
@@ -258,11 +261,11 @@
 }
 
 .model-sample__hand.-left {
-  transform: translateX(-80px) translateY(60px);
+  transform: translateX(100px) translateY(60px);
 }
 
 .model-sample__hand.-right {
-  transform: translateX(100px) translateY(60px);
+  transform: translateX(-80px) translateY(60px);
 }
 
 /* Leg */
@@ -308,6 +311,50 @@
 .model-sample__leg.-right {
   transform: translateX(35px) translateY(200px);
 }
+
+/* Hit animation */
+
+@-webkit-keyframes model-sample-animation-hit-right-hand {
+  0% {
+    transform: translateX(-80px) translateY(60px);
+  }
+
+  30% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg);
+  }
+
+  37% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg);
+  }
+
+  40% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg) rotateX(-10deg);
+  }
+
+  55% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg) rotateX(140deg);
+  }
+
+  65% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg) rotateX(130deg);
+  }
+
+  85% {
+    transform: translateX(-80px) translateY(60px) rotateZ(100deg);
+  }
+
+  100% {
+    transform: translateX(-80px) translateY(60px);
+  }
+}
+
+.model-sample.-animate-hit .model-sample__hand.-right {
+  animation: model-sample-animation-hit-right-hand 2s;
+}
+
+/* Struck animation */
+
+
 
 
 
