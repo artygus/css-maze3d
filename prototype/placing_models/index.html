@@ -39,7 +39,7 @@
 
   <script src="dummy_model.js"></script>
 
-  <script src="prototype_placing_models.js"></script>
+  <script src="game_prototype.js"></script>
 
   <link rel="stylesheet" href="../renderer/textures.css" />
   <link rel="stylesheet" href="style.css"/>
@@ -61,7 +61,9 @@
 
 <script>
   $(function(){
-    new PrototypeGameLogicRendered()
+    window.game = new GamePrototype();
+    game.loadLevel(game.getTestLevelContainer());
+    game.start();
   });
 </script>
 </body>
