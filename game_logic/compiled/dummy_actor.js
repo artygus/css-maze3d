@@ -14,6 +14,7 @@
     __extends(DummyActor, _super);
 
     function DummyActor() {
+      this.calcDmg = __bind(this.calcDmg, this);
       this.act = __bind(this.act, this);
       this.initState = __bind(this.initState, this);
       return DummyActor.__super__.constructor.apply(this, arguments);
@@ -26,6 +27,10 @@
 
     DummyActor.prototype.act = function() {
       return this.actionNoop();
+    };
+
+    DummyActor.prototype.calcDmg = function(diceValue) {
+      return 10;
     };
 
     return DummyActor;

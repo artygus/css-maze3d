@@ -16,6 +16,7 @@
 
     function AbstractActor(app) {
       this.app = app;
+      this.getNextViewpointCell = __bind(this.getNextViewpointCell, this);
       this.getNextDirection = __bind(this.getNextDirection, this);
       this.getStrafeDimensionAndVector = __bind(this.getStrafeDimensionAndVector, this);
       this.getMoveDimensionAndVector = __bind(this.getMoveDimensionAndVector, this);
@@ -26,6 +27,8 @@
       this.reactUpdated = __bind(this.reactUpdated, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
       this.receiveDmg = __bind(this.receiveDmg, this);
+      this.actionAttack = __bind(this.actionAttack, this);
+      this.calcDmg = __bind(this.calcDmg, this);
       this.isDead = __bind(this.isDead, this);
       this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
       this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
@@ -157,6 +160,26 @@
       return this.data.get("currentHealth") < 1;
     };
 
+    AbstractActor.prototype.calcDmg = function(diceValue) {
+      return 0;
+    };
+
+    AbstractActor.prototype.actionAttack = function() {
+      return this.performMove((function(_this) {
+        return function() {
+          var dmg, nc, victim;
+          nc = _this.getNextViewpointCell();
+          _this.app.world.assureCellExistance(nc);
+          _this.app.world.assureCellNonEmpty(nc);
+          dmg = _this.calcDmg();
+          victim = _this.app.world.getActorByCell(nc);
+          victim.receiveDmg(_this, dmg);
+          _this.reactActionCompleted();
+          return _this.reactUpdated();
+        };
+      })(this));
+    };
+
     AbstractActor.prototype.receiveDmg = function(from, damage) {
       this.assureActorExists();
       this.data.set("currentHealth", this.data.get("currentHealth") - damage);
@@ -268,6 +291,18 @@
         return directions[directions.length - 1];
       } else {
         return directions[nexti];
+      }
+    };
+
+    AbstractActor.prototype.getNextViewpointCell = function() {
+      var cp, md, pos;
+      pos = this.getPosition();
+      cp = pos.cell;
+      md = this.getMoveDimensionAndVector(cp, pos.dir);
+      if (md.dim === 0) {
+        return dataTypes.WorldCell.get(cp[0] + md.vector, cp[1]);
+      } else {
+        return dataTypes.WorldCell.get(cp[0], cp[1] + md.vector);
       }
     };
 

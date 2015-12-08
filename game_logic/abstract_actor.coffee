@@ -117,6 +117,24 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   # section: Combat
 
+  # @param {Integer} diceValue d100 dice value
+  # @return {Integer}
+  calcDmg: (diceValue)=> 0
+
+  actionAttack: =>
+    @performMove =>
+      nc = @getNextViewpointCell()
+
+      @app.world.assureCellExistance(nc)
+      @app.world.assureCellNonEmpty(nc)
+
+      dmg = @calcDmg()
+
+      victim = @app.world.getActorByCell(nc)
+      victim.receiveDmg(@, dmg)
+      @reactActionCompleted()
+      @reactUpdated()
+
   # @param {gameLogic.actors.AbstractActor} from
   # @param {Integer} damage
   receiveDmg: (from, damage)=>
@@ -209,6 +227,19 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
       return directions[directions.length - 1]
     else
       return directions[nexti]
+
+  # @return {dataTypes.WorldCell}
+  getNextViewpointCell: =>
+    pos = @getPosition()
+    cp = pos.cell
+    md = @getMoveDimensionAndVector(cp, pos.dir)
+
+    if md.dim == 0
+      return dataTypes.WorldCell.get cp[0] + md.vector, cp[1]
+    else
+      return dataTypes.WorldCell.get cp[0], cp[1] + md.vector
+
+
 
 
 

@@ -11,7 +11,8 @@ describe("Combat system", function(){
   beforeEach(function(){
     actor1 = new gameLogic.actors.DummyActor(cgame);
     actor2 = new gameLogic.actors.DummyActor(cgame);
-    cgame.world.placeActor(icell, actor1, wd.N);
+    cgame.world.placeActor(icell, actor1, wd.S);
+    cgame.world.placeActor(icell2, actor2, wd.N);
   });
 
   describe("Attack", function(){
@@ -20,7 +21,11 @@ describe("Combat system", function(){
     });
 
     it("If I attack actor it gets damage", function(){
-      expect(false).toEqual(true);
+      var start = actor2.data.get("currentHealth");
+
+      actor1.turnStart();
+      actor1.actionAttack();
+      expect(actor2.data.get("currentHealth")).not.toEqual(start);
     });
 
   });

@@ -11,3 +11,7 @@ class gameLogic.actors.DummyActor extends gameLogic.actors.AbstractActor
 
   act: =>
     @actionNoop()
+
+  # @param {Integer} diceValue d100 dice value
+  # @return {Integer}
+  calcDmg: (diceValue)=> 10
