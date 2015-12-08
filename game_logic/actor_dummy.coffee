@@ -10,7 +10,15 @@ class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
     @data.set "currentHealth", 50
 
   act: =>
-    @actionNoop()
+    super
+
+    victim = @app.world.getActorByCell(@getNextViewpointCell())
+    console.log "LAM", "Victim is", victim
+
+    if victim?
+      @actionAttack()
+    else
+      @actionNoop()
 
   # @param {Integer} diceValue d100 dice value
   # @return {Integer}
