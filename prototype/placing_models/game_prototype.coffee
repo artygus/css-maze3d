@@ -46,6 +46,9 @@ class window.GamePrototype
       # TODO: bug somewhere
       @gl.player.actionTurnClockwise()
 
+    keyboardJS.bind "space", (e)=>
+      @gl.player.actionAttack()
+
 
   # section: Loaders
 

@@ -10,5 +10,9 @@ class gameLogic.actors.Player extends gameLogic.actors.AbstractActor
     @data.set "maxHealth", 200
     @data.set "currentHealth", 200
 
+  # @param {Integer} diceValue d100 dice value
+  # @return {Integer}
+  calcDmg: (diceValue)=> 15
+
 
 

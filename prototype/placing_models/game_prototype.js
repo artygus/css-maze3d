@@ -65,9 +65,14 @@
           return _this.gl.player.actionTurnAntiClockwise();
         };
       })(this));
-      return keyboardJS.bind("e", (function(_this) {
+      keyboardJS.bind("e", (function(_this) {
         return function(e) {
           return _this.gl.player.actionTurnClockwise();
+        };
+      })(this));
+      return keyboardJS.bind("space", (function(_this) {
+        return function(e) {
+          return _this.gl.player.actionAttack();
         };
       })(this));
     };

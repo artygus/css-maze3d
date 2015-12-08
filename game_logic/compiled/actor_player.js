@@ -13,6 +13,7 @@
     __extends(Player, _super);
 
     function Player() {
+      this.calcDmg = __bind(this.calcDmg, this);
       this.initState = __bind(this.initState, this);
       return Player.__super__.constructor.apply(this, arguments);
     }
@@ -22,6 +23,10 @@
     Player.prototype.initState = function() {
       this.data.set("maxHealth", 200);
       return this.data.set("currentHealth", 200);
+    };
+
+    Player.prototype.calcDmg = function(diceValue) {
+      return 15;
     };
 
     return Player;
