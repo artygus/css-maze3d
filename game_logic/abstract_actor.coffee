@@ -115,13 +115,33 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   isDead: => @data.get("currentHealth") < 1
 
 
+  # section: Combat
+
+  # @param {gameLogic.actors.AbstractActor} from
+  # @param {Integer} damage
+  receiveDmg: (from, damage)=>
+    @data.set "currentHealth", (@data.get("currentHealth") - damage)
+    @reactUpdated()
+    @reactDead() if @isDead()
+
+
   # section: Reactions
 
   @I_ACTION_COMPLETED: "action_completed"
 
+  @I_UPDATED: "updated"
+
+  @I_DEAD: "dead"
+
   # Action completed
   reactActionCompleted: =>
     $(@).trigger @s.I_ACTION_COMPLETED
+
+  reactUpdated: =>
+    $(@).trigger @s.I_UPDATED
+
+  reactDead: =>
+    $(@).trigger @s.I_DEAD
 
 
   # section: Helpers

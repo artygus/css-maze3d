@@ -22,7 +22,10 @@
       this.getPosition = __bind(this.getPosition, this);
       this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
+      this.reactDead = __bind(this.reactDead, this);
+      this.reactUpdated = __bind(this.reactUpdated, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
+      this.receiveDmg = __bind(this.receiveDmg, this);
       this.isDead = __bind(this.isDead, this);
       this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
       this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
@@ -154,10 +157,30 @@
       return this.data.get("currentHealth") < 1;
     };
 
+    AbstractActor.prototype.receiveDmg = function(from, damage) {
+      this.data.set("currentHealth", this.data.get("currentHealth") - damage);
+      this.reactUpdated();
+      if (this.isDead()) {
+        return this.reactDead();
+      }
+    };
+
     AbstractActor.I_ACTION_COMPLETED = "action_completed";
+
+    AbstractActor.I_UPDATED = "updated";
+
+    AbstractActor.I_DEAD = "dead";
 
     AbstractActor.prototype.reactActionCompleted = function() {
       return $(this).trigger(this.s.I_ACTION_COMPLETED);
+    };
+
+    AbstractActor.prototype.reactUpdated = function() {
+      return $(this).trigger(this.s.I_UPDATED);
+    };
+
+    AbstractActor.prototype.reactDead = function() {
+      return $(this).trigger(this.s.I_DEAD);
     };
 
     AbstractActor.E_ACTOR_NOT_IN_CHARGE = new Error("Actor does not in charge!");
