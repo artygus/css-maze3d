@@ -120,6 +120,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   # @param {gameLogic.actors.AbstractActor} from
   # @param {Integer} damage
   receiveDmg: (from, damage)=>
+    @assureActorExists()
     @data.set "currentHealth", (@data.get("currentHealth") - damage)
     @reactUpdated()
     @reactDead() if @isDead()

@@ -6,9 +6,12 @@ describe("Combat system", function(){
   var actor1 = null,
       actor2 = null;
 
+  var wd = dataTypes.WorldDirection;
+
   beforeEach(function(){
-    actor1 = new gameLogic.actors.DummyActor();
-    actor2 = new gameLogic.actors.DummyActor();
+    actor1 = new gameLogic.actors.DummyActor(cgame);
+    actor2 = new gameLogic.actors.DummyActor(cgame);
+    cgame.world.placeActor(icell, actor1, wd.N);
   });
 
   describe("Attack", function(){

@@ -158,6 +158,7 @@
     };
 
     AbstractActor.prototype.receiveDmg = function(from, damage) {
+      this.assureActorExists();
       this.data.set("currentHealth", this.data.get("currentHealth") - damage);
       this.reactUpdated();
       if (this.isDead()) {
