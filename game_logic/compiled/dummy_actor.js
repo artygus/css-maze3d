@@ -15,8 +15,14 @@
 
     function DummyActor() {
       this.act = __bind(this.act, this);
+      this.initState = __bind(this.initState, this);
       return DummyActor.__super__.constructor.apply(this, arguments);
     }
+
+    DummyActor.prototype.initState = function() {
+      this.set("maxHealth", 50);
+      return this.set("currentHealth", 50);
+    };
 
     DummyActor.prototype.act = function() {
       return this.actionNoop();

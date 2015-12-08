@@ -13,9 +13,16 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
     @data = new gameLogic.data.Actor()
 
+    @initState()
+
     $(@data).asEventStream(@data.s.I_DATA_CHANGED)
       .filter((v)=> v.key == "inCharge" && v.value)
       .onValue @act
+
+
+  # section: Initialization
+
+  initState: =>
 
 
   # section: Turns

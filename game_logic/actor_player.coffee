@@ -6,9 +6,9 @@ class gameLogic.actors.Player extends gameLogic.actors.AbstractActor
 
   DT: "gameLogic.actors.Player"
 
-  constructor: (@app)->
-    super
+  initState: =>
+    @set "maxHealth", 200
+    @set "currentHealth", 200
 
-    console.log @DT, "Init."
 
 

@@ -39,15 +39,19 @@
       this.performAction = __bind(this.performAction, this);
       this.turnEnded = __bind(this.turnEnded, this);
       this.turnStart = __bind(this.turnStart, this);
+      this.initState = __bind(this.initState, this);
       AbstractActor.__super__.constructor.apply(this, arguments);
       this.id = chms.utils.Uniq.gen(this.s.UID_KEY);
       this.data = new gameLogic.data.Actor();
+      this.initState();
       $(this.data).asEventStream(this.data.s.I_DATA_CHANGED).filter((function(_this) {
         return function(v) {
           return v.key === "inCharge" && v.value;
         };
       })(this)).onValue(this.act);
     }
+
+    AbstractActor.prototype.initState = function() {};
 
     AbstractActor.prototype.turnStart = function() {
       return this.data.set("inCharge", true);
