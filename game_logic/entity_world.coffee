@@ -91,6 +91,11 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # section: Helpers
 
+  # @param {dataTypes.WorldCell} cell
+  # @return {gameLogic.actors.AbstractActor|undefined}
+  getActorByCell: (cell)=>
+    @data.get("actors").getData(cell)
+
   # Checks whether given cell exist on the level
   assureCellExistance: (cell)=>
     unless @data.get("level").isCellContainsData(cell)
