@@ -101,6 +101,13 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   actionTurnAntiClockwise: => @actionTurn false
 
 
+  # section: Life/death
+
+  # Let's ask actor: are you dead, buddy?
+  # @return {Boolean}
+  isDead: => @data.get("currentHealth") < 1
+
+
   # section: Reactions
 
   @I_ACTION_COMPLETED: "action_completed"

@@ -17,3 +17,9 @@ class gameLogic.data.Actor extends chms.ard.AbstractReactiveData
     # {Boolean} Is actor can perform action?
     @set "inCharge", false
 
+    # {Integer} Max actor health
+    @set "maxHealth", 0
+
+    # {Integer} Current actor health
+    @set "currentHealth", 0
+

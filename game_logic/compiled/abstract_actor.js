@@ -23,6 +23,7 @@
       this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
+      this.isDead = __bind(this.isDead, this);
       this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
       this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
       this.actionTurn = __bind(this.actionTurn, this);
@@ -143,6 +144,10 @@
 
     AbstractActor.prototype.actionTurnAntiClockwise = function() {
       return this.actionTurn(false);
+    };
+
+    AbstractActor.prototype.isDead = function() {
+      return this.data.get("currentHealth") < 1;
     };
 
     AbstractActor.I_ACTION_COMPLETED = "action_completed";

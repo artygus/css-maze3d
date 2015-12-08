@@ -22,7 +22,9 @@
 
     Actor.prototype.init = function() {
       Actor.__super__.init.apply(this, arguments);
-      return this.set("inCharge", false);
+      this.set("inCharge", false);
+      this.set("maxHealth", 0);
+      return this.set("currentHealth", 0);
     };
 
     return Actor;
