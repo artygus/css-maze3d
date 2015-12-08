@@ -20,8 +20,8 @@
     Player.prototype.DT = "gameLogic.actors.Player";
 
     Player.prototype.initState = function() {
-      this.set("maxHealth", 200);
-      return this.set("currentHealth", 200);
+      this.data.set("maxHealth", 200);
+      return this.data.set("currentHealth", 200);
     };
 
     return Player;

@@ -20,8 +20,8 @@
     }
 
     DummyActor.prototype.initState = function() {
-      this.set("maxHealth", 50);
-      return this.set("currentHealth", 50);
+      this.data.set("maxHealth", 50);
+      return this.data.set("currentHealth", 50);
     };
 
     DummyActor.prototype.act = function() {
