@@ -43,7 +43,7 @@
       this.data = new gameLogic.data.Actor();
       $(this.data).asEventStream(this.data.s.I_DATA_CHANGED).filter((function(_this) {
         return function(v) {
-          return v.key === "inCharge";
+          return v.key === "inCharge" && v.value;
         };
       })(this)).onValue(this.act);
     }
