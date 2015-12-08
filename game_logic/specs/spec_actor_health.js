@@ -5,7 +5,7 @@
 describe("Actor health system", function(){
 
     it("If health goes below one then actor is dead", function(){
-      var actor = new gameLogic.actors.DummyActor();
+      var actor = new gameLogic.actors.Dummy();
       actor.data.set("currentHealth", 0);
       expect(actor.isDead()).toEqual(true);
     });

@@ -10,30 +10,30 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  gameLogic.actors.DummyActor = (function(_super) {
-    __extends(DummyActor, _super);
+  gameLogic.actors.Dummy = (function(_super) {
+    __extends(Dummy, _super);
 
-    function DummyActor() {
+    function Dummy() {
       this.calcDmg = __bind(this.calcDmg, this);
       this.act = __bind(this.act, this);
       this.initState = __bind(this.initState, this);
-      return DummyActor.__super__.constructor.apply(this, arguments);
+      return Dummy.__super__.constructor.apply(this, arguments);
     }
 
-    DummyActor.prototype.initState = function() {
+    Dummy.prototype.initState = function() {
       this.data.set("maxHealth", 50);
       return this.data.set("currentHealth", 50);
     };
 
-    DummyActor.prototype.act = function() {
+    Dummy.prototype.act = function() {
       return this.actionNoop();
     };
 
-    DummyActor.prototype.calcDmg = function(diceValue) {
+    Dummy.prototype.calcDmg = function(diceValue) {
       return 10;
     };
 
-    return DummyActor;
+    return Dummy;
 
   })(gameLogic.actors.AbstractActor);
 

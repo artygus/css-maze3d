@@ -3,7 +3,7 @@
   Most of the times do nothing
 ###
 
-class gameLogic.actors.DummyActor extends gameLogic.actors.AbstractActor
+class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
 
   initState: =>
     @data.set "maxHealth", 50
