@@ -105,7 +105,13 @@
     };
 
     World.prototype.getActorByCell = function(cell) {
-      return this.data.get("actors").getData(cell);
+      var pos;
+      pos = this.data.get("actors").getData(cell);
+      if (pos != null) {
+        return pos.actor;
+      } else {
+        return void 0;
+      }
     };
 
     World.prototype.assureCellExistance = function(cell) {
