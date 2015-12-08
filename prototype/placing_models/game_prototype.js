@@ -1786,7 +1786,7 @@
     };
 
     GamePrototype.prototype.getTestActorCollection = function() {
-      return [dataTypes.ActorPosition.get(this.gl.player, [222, 208], dataTypes.WorldDirection.S), dataTypes.ActorPosition.get(new gameLogic.actors.AbstractActor(this.gl), [222, 210], dataTypes.WorldDirection.N)];
+      return [dataTypes.ActorPosition.get(this.gl.player, [222, 208], dataTypes.WorldDirection.S), dataTypes.ActorPosition.get(new gameLogic.actors.DummyActor(this.gl), [222, 210], dataTypes.WorldDirection.N)];
     };
 
     GamePrototype.prototype.getTestLevelContainer = function() {

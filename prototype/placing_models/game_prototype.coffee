@@ -120,7 +120,7 @@ class window.GamePrototype
   getTestActorCollection: =>
     [
       dataTypes.ActorPosition.get(@gl.player, [222, 208], dataTypes.WorldDirection.S)
-      dataTypes.ActorPosition.get(new gameLogic.actors.AbstractActor(@gl), [222, 210], dataTypes.WorldDirection.N)
+      dataTypes.ActorPosition.get(new gameLogic.actors.DummyActor(@gl), [222, 210], dataTypes.WorldDirection.N)
     ]
 
   getTestLevelContainer: =>
