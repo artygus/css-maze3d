@@ -64,13 +64,13 @@ GameCamera.prototype = {
         rotZ = 0;
         break;
       case 'e':
-        rotZ = 90;
+        rotZ = 270;
         break;
       case 's':
         rotZ = 180;
         break;
       case 'w':
-        rotZ = 270;
+        rotZ = 90;
     }
 
     this.direction = dir;
