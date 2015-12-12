@@ -216,7 +216,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
     wd = dataTypes.WorldDirection
     directions = [wd.N, wd.E, wd.S, wd.W]
 
-    directions.reverse() unless clockwise
+    directions.reverse() if not clockwise
 
     i = directions.indexOf direction
     nexti = i+1
