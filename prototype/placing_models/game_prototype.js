@@ -42,12 +42,12 @@
     GamePrototype.prototype.initKeyboard = function() {
       keyboardJS.bind("w", (function(_this) {
         return function(e) {
-          return _this.gl.player.actionMoveBackward();
+          return _this.gl.player.actionMoveForward();
         };
       })(this));
       keyboardJS.bind("s", (function(_this) {
         return function(e) {
-          return _this.gl.player.actionMoveForward();
+          return _this.gl.player.actionMoveBackward();
         };
       })(this));
       keyboardJS.bind("a", (function(_this) {
@@ -1791,7 +1791,7 @@
     };
 
     GamePrototype.prototype.getTestActorCollection = function() {
-      return [dataTypes.ActorPosition.get(this.gl.player, [222, 208], dataTypes.WorldDirection.S), dataTypes.ActorPosition.get(new gameLogic.actors.Dummy(this.gl), [222, 210], dataTypes.WorldDirection.N)];
+      return [dataTypes.ActorPosition.get(this.gl.player, [222, 209], dataTypes.WorldDirection.S), dataTypes.ActorPosition.get(new gameLogic.actors.Dummy(this.gl), [222, 210], dataTypes.WorldDirection.N)];
     };
 
     GamePrototype.prototype.getTestLevelContainer = function() {

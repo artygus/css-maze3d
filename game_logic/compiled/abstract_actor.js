@@ -234,7 +234,7 @@
       } else {
         dim = 0;
       }
-      if (direction === wd.N || direction === wd.E) {
+      if (direction === wd.S || direction === wd.E) {
         vector = +1;
       } else {
         vector = -1;

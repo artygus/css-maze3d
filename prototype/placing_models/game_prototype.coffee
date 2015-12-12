@@ -26,11 +26,11 @@ class window.GamePrototype
   initKeyboard: =>
     keyboardJS.bind "w", (e)=>
       # TODO: bug somewhere
-      @gl.player.actionMoveBackward()
+      @gl.player.actionMoveForward()
 
     keyboardJS.bind "s", (e)=>
       # TODO: bug somewhere
-      @gl.player.actionMoveForward()
+      @gl.player.actionMoveBackward()
 
     keyboardJS.bind "a", (e)=>
       @gl.player.actionStrafeLeft()
@@ -122,7 +122,7 @@ class window.GamePrototype
 
   getTestActorCollection: =>
     [
-      dataTypes.ActorPosition.get(@gl.player, [222, 208], dataTypes.WorldDirection.S)
+      dataTypes.ActorPosition.get(@gl.player, [222, 209], dataTypes.WorldDirection.S)
       dataTypes.ActorPosition.get(new gameLogic.actors.Dummy(@gl), [222, 210], dataTypes.WorldDirection.N)
     ]
 

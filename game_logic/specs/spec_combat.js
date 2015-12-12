@@ -11,8 +11,8 @@ describe("Combat system", function(){
   beforeEach(function(){
     actor1 = new gameLogic.actors.Dummy(cgame);
     actor2 = new gameLogic.actors.Dummy(cgame);
-    cgame.world.placeActor(icell, actor1, wd.S);
-    cgame.world.placeActor(icell2, actor2, wd.N);
+    cgame.world.placeActor(icell, actor1, wd.N);
+    cgame.world.placeActor(icell2, actor2, wd.S);
   });
 
   describe("Attack", function(){

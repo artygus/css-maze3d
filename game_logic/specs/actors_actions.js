@@ -46,7 +46,7 @@ describe("Actors actions", function(){
     it("Moves forward N", function(){
       actor.actionMoveForward();
 
-      var nc = [icell[0], icell[1]+1];
+      var nc = [icell[0], icell[1]-1];
       expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
@@ -54,7 +54,7 @@ describe("Actors actions", function(){
       cgame.world.changeActorDirection(actor, wd.S);
       actor.actionMoveForward();
 
-      var nc = [icell[0], icell[1]-1];
+      var nc = [icell[0], icell[1]+1];
       expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
@@ -78,7 +78,7 @@ describe("Actors actions", function(){
       cgame.world.changeActorDirection(actor, wd.N);
       actor.actionMoveBackward();
 
-      var nc = [icell[0], icell[1]-1];
+      var nc = [icell[0], icell[1]+1];
       expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
@@ -86,7 +86,7 @@ describe("Actors actions", function(){
       cgame.world.changeActorDirection(actor, wd.S);
       actor.actionMoveBackward();
 
-      var nc = [icell[0], icell[1]+1];
+      var nc = [icell[0], icell[1]-1];
       expect(actor.getPosition().cell.toString()).toEqual(nc.toString());
     });
 
