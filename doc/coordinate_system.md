@@ -1,3 +1,3 @@
-#Level data type
+#Coordinate system
 
 ![Coordinate system](img/coordinate_system.gif)
