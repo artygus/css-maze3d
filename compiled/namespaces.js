@@ -22,7 +22,8 @@
 
   window.utils = {
     serializers: {},
-    helpers: {}
+    helpers: {},
+    lib: {}
   };
 
   window.dataTypes = {};
