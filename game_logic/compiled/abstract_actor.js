@@ -38,6 +38,7 @@
       this.receiveDmg = __bind(this.receiveDmg, this);
       this.actionAttack = __bind(this.actionAttack, this);
       this.calcDmg = __bind(this.calcDmg, this);
+      this.isAlive = __bind(this.isAlive, this);
       this.isDead = __bind(this.isDead, this);
       this.actionTurnAntiClockwise = __bind(this.actionTurnAntiClockwise, this);
       this.actionTurnClockwise = __bind(this.actionTurnClockwise, this);
@@ -167,6 +168,10 @@
 
     AbstractActor.prototype.isDead = function() {
       return this.data.get("currentHealth") < 1;
+    };
+
+    AbstractActor.prototype.isAlive = function() {
+      return !this.isDead();
     };
 
     AbstractActor.prototype.calcDmg = function(diceValue) {

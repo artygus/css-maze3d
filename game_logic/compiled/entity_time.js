@@ -43,7 +43,7 @@
         case this.data.s.ROUND_STATE_START:
           return this.data.set("state", this.data.s.ROUND_STATE_TURN);
         case this.data.s.ROUND_STATE_TURN:
-          this.data.set("actorsMoveQueue", this.app.world.getActors());
+          this.data.set("actorsMoveQueue", this.app.world.getAliveActors());
           return this.stateTurn();
         case this.data.s.ROUND_STATE_END:
           return this.data.set("state", this.data.s.ROUND_STATE_START);

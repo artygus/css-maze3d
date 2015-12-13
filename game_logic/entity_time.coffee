@@ -32,7 +32,7 @@ class gameLogic.entities.Time extends gameLogic.Object
         @data.set "state", @data.s.ROUND_STATE_TURN
 
       when @data.s.ROUND_STATE_TURN
-        @data.set "actorsMoveQueue", @app.world.getActors()
+        @data.set "actorsMoveQueue", @app.world.getAliveActors()
         @stateTurn()
 
       when @data.s.ROUND_STATE_END
