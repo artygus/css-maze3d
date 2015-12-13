@@ -22,11 +22,13 @@
       this.assureCellExistance = __bind(this.assureCellExistance, this);
       this.getActorByCell = __bind(this.getActorByCell, this);
       this.animationTakesPlace = __bind(this.animationTakesPlace, this);
+      this.getDeadActors = __bind(this.getDeadActors, this);
       this.getAliveActors = __bind(this.getAliveActors, this);
       this.getActors = __bind(this.getActors, this);
       this.getActorsPositions = __bind(this.getActorsPositions, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
       this.changeActorDirection = __bind(this.changeActorDirection, this);
+      this.removeDeadActors = __bind(this.removeDeadActors, this);
       this.removeActor = __bind(this.removeActor, this);
       this.moveActor = __bind(this.moveActor, this);
       this.placeActor = __bind(this.placeActor, this);
@@ -81,6 +83,17 @@
       return this.data.get("actors").removeData(cell);
     };
 
+    World.prototype.removeDeadActors = function() {
+      var actor, _i, _len, _ref, _results;
+      _ref = this.getDeadActors();
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        actor = _ref[_i];
+        _results.push(this.removeActor(actor));
+      }
+      return _results;
+    };
+
     World.prototype.changeActorDirection = function(actor, dir) {
       var ccp, cd;
       this.assureActorExists(actor);
@@ -100,6 +113,7 @@
 
     World.prototype.getActors = function() {
       return this.getActorsPositions().map(function(a) {
+        console.log("LAM", "A is", a);
         return a.actor;
       });
     };
@@ -107,6 +121,12 @@
     World.prototype.getAliveActors = function() {
       return this.getActors().filter(function(a) {
         return a.isAlive();
+      });
+    };
+
+    World.prototype.getDeadActors = function() {
+      return this.getActors().filter(function(a) {
+        return a.isDead();
       });
     };
 

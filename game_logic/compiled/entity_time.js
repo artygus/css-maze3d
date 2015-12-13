@@ -16,6 +16,7 @@
 
     function Time(app) {
       this.app = app;
+      this.removeFirstActorFromQueue = __bind(this.removeFirstActorFromQueue, this);
       this.maxTurnDelay = __bind(this.maxTurnDelay, this);
       this.clearTurnDelay = __bind(this.clearTurnDelay, this);
       this.getTurnDelay = __bind(this.getTurnDelay, this);
@@ -61,12 +62,21 @@
         })(this)), this.s.TURN_AFTERTIME);
       } else {
         p = actors[0];
+        if (p.isDead()) {
+          this.removeFirstActorFromQueue();
+          this.stateTurn();
+          return;
+        }
         completed = (function(_this) {
           return function() {
             p.turnEnded();
             clearTimeout(turnTimeout);
-            _this.data.tarray["delete"]("actorsMoveQueue", 0);
-            return setTimeout(_this.stateTurn, _this.getTurnDelay());
+            _this.removeFirstActorFromQueue();
+            return setTimeout((function() {
+              _this.app.world.removeDeadActors();
+              _this.clearTurnDelay();
+              return _this.stateTurn();
+            }), _this.getTurnDelay());
           };
         })(this);
         turnTimeout = setTimeout(p.actionNoop, this.s.TURN_TIME);
@@ -93,6 +103,10 @@
 
     Time.prototype.maxTurnDelay = function(ms) {
       return this.setTurnDelay(Math.max(this.getTurnDelay(), ms));
+    };
+
+    Time.prototype.removeFirstActorFromQueue = function() {
+      return this.data.tarray["delete"]("actorsMoveQueue", 0);
     };
 
     return Time;

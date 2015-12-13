@@ -49,16 +49,27 @@ class gameLogic.entities.Time extends gameLogic.Object
     else
       p = actors[0]
 
+      if p.isDead()
+        @removeFirstActorFromQueue()
+        @stateTurn()
+        return
+
       completed = =>
         p.turnEnded()
         clearTimeout turnTimeout
-        @data.tarray.delete "actorsMoveQueue", 0
-        setTimeout @stateTurn, @getTurnDelay()
+        @removeFirstActorFromQueue()
+        setTimeout (
+          =>
+            @app.world.removeDeadActors()
+            @clearTurnDelay()
+            @stateTurn()
+        ), @getTurnDelay()
 
       turnTimeout = setTimeout p.actionNoop, @s.TURN_TIME
       $(p).one p.s.I_ACTION_COMPLETED, completed
 
       p.turnStart()
+
 
   # section: Start & pause
 
@@ -84,6 +95,13 @@ class gameLogic.entities.Time extends gameLogic.Object
     @setTurnDelay(
       Math.max @getTurnDelay(), ms
     )
+
+
+  # section: Helpers
+
+  removeFirstActorFromQueue: =>
+    @data.tarray.delete "actorsMoveQueue", 0
+
 
 
 

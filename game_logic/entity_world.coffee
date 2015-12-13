@@ -65,6 +65,11 @@ class gameLogic.entities.World extends gameLogic.Object
 
     @data.get("actors").removeData cell
 
+  # Remove all dead actors from the level
+  removeDeadActors: =>
+    for actor in @getDeadActors()
+      @removeActor(actor)
+
   # Change Actor direction
   # @param {gameLogic.actors.AbstractActor} actor
   # @param {dataTypes.WorldDirection} dir
@@ -87,10 +92,13 @@ class gameLogic.entities.World extends gameLogic.Object
   getActorsPositions: => @data.get("actors").getEntities()
 
   # Get all actors on the level
-  getActors: => @getActorsPositions().map((a)-> a.actor)
+  getActors: => @getActorsPositions().map((a)-> console.log("LAM", "A is", a); a.actor)
 
   # Get all alive actors on the level
   getAliveActors: => @getActors().filter (a)-> a.isAlive()
+
+  # Get all dead actors on the level
+  getDeadActors: => @getActors().filter (a)-> a.isDead()
 
 
   # TODO: refactor?
