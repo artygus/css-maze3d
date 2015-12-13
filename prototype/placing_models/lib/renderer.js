@@ -1,6 +1,8 @@
 function Renderer(el, unit) {
   this.node = el;
   this.unit = unit; // unit vector in px
+
+  window.checkMe = this.node;
 }
 
 Renderer.prototype = {
@@ -88,11 +90,7 @@ Renderer.prototype = {
   modelPlace: function(model, cell, direction) {
     var t = model;
 
-    console.log("LAM", "T is", t);
-
     var coords = this.getCellCoords(cell);
-
-
 
     var rotate3 = [0, 0, 0];
     var translate3 = [0, 0, this.unit / 2];
@@ -136,6 +134,15 @@ Renderer.prototype = {
     $(this.node).append(t);
   },
 
+  // Removes model by a given modelId
+  removeModel: function(model) {
+    try {
+      this.node.removeChild(model);
+    } catch(e) {
+      console.error("You are trying to remove model which is not rendered!");
+    }
+
+  },
 
   // Section: Helpers
 
