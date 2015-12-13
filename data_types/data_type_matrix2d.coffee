@@ -30,7 +30,7 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
   # Remove data from a given cell
   # @param {Cell} cell
   removeData: (cell)=>
-    @tobject.set "mdata", "#{cell[0]}.#{cell[1]}", undefined
+    @tobject.delete "mdata", "#{cell[0]}.#{cell[1]}"
 
   # Get data from a given cell
   # @param {Cell} cell

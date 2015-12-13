@@ -34,7 +34,7 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
   removeData: (cell)=>
     d = @getData cell
 
-    @tobject.set "entityToCoords", d.id.toString(), undefined
+    @tobject.delete "entityToCoords", d.id.toString()
 
     super
 

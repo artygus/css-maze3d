@@ -38,7 +38,7 @@
     };
 
     Matrix2d.prototype.removeData = function(cell) {
-      return this.tobject.set("mdata", "" + cell[0] + "." + cell[1], void 0);
+      return this.tobject["delete"]("mdata", "" + cell[0] + "." + cell[1]);
     };
 
     Matrix2d.prototype.getData = function(cell) {

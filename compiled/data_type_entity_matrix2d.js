@@ -38,7 +38,7 @@
     EntityMatrix2d.prototype.removeData = function(cell) {
       var d;
       d = this.getData(cell);
-      this.tobject.set("entityToCoords", d.id.toString(), void 0);
+      this.tobject["delete"]("entityToCoords", d.id.toString());
       return EntityMatrix2d.__super__.removeData.apply(this, arguments);
     };
 
