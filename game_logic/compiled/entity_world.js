@@ -21,6 +21,7 @@
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
       this.getActorByCell = __bind(this.getActorByCell, this);
+      this.animationTakesPlace = __bind(this.animationTakesPlace, this);
       this.getActors = __bind(this.getActors, this);
       this.getActorsPositions = __bind(this.getActorsPositions, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
@@ -102,6 +103,12 @@
           return a.actor;
         };
       })(this));
+    };
+
+    World.prototype.animationTakesPlace = function(actor, animationId) {
+      var timeout;
+      console.log("LAM", "Animation takes place", actor, animationId);
+      return timeout = actor.getModel().animate(animationId);
     };
 
     World.prototype.getActorByCell = function(cell) {

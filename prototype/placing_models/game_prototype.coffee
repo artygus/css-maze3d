@@ -76,7 +76,7 @@ class window.GamePrototype
   renderActorsModels: =>
     for actor in @gl.world.getActors()
       pos = actor.getPosition()
-      model = @getModelForActor(actor)
+      model = actor.getModel().get()
 
       if model?
         @render.modelPlace model, pos.cell, pos.dir

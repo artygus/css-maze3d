@@ -27,4 +27,8 @@
 
   window.dataTypes = {};
 
+  window.models = {
+    actors: {}
+  };
+
 }).call(this);

@@ -14,6 +14,14 @@
 
     AbstractActor.UID_KEY = "actor";
 
+    AbstractActor.AID_ATTACK = "attack";
+
+    AbstractActor.AID_RECEIVE_DMG = "receive_dmg";
+
+    AbstractActor.AID_DEAD = "dead";
+
+    AbstractActor.prototype.MODEL = models.actors.Empty;
+
     function AbstractActor(app) {
       this.app = app;
       this.getNextViewpointCell = __bind(this.getNextViewpointCell, this);
@@ -23,6 +31,7 @@
       this.getPosition = __bind(this.getPosition, this);
       this.assureActorExists = __bind(this.assureActorExists, this);
       this.assureActorInCharge = __bind(this.assureActorInCharge, this);
+      this.getModel = __bind(this.getModel, this);
       this.reactDead = __bind(this.reactDead, this);
       this.reactUpdated = __bind(this.reactUpdated, this);
       this.reactActionCompleted = __bind(this.reactActionCompleted, this);
@@ -175,7 +184,8 @@
           victim = _this.app.world.getActorByCell(nc);
           victim.receiveDmg(_this, dmg);
           _this.reactActionCompleted();
-          return _this.reactUpdated();
+          _this.reactUpdated();
+          return _this.app.world.animationTakesPlace(_this, _this.s.AID_ATTACK);
         };
       })(this));
     };
@@ -185,7 +195,10 @@
       this.data.set("currentHealth", this.data.get("currentHealth") - damage);
       this.reactUpdated();
       if (this.isDead()) {
-        return this.reactDead();
+        this.reactDead();
+        return this.app.world.animationTakesPlace(this, this.s.AID_DEAD);
+      } else {
+        return this.app.world.animationTakesPlace(this, this.s.AID_RECEIVE_DMG);
       }
     };
 
@@ -205,6 +218,13 @@
 
     AbstractActor.prototype.reactDead = function() {
       return $(this).trigger(this.s.I_DEAD);
+    };
+
+    AbstractActor.prototype.getModel = function() {
+      if (this._model == null) {
+        this._model = new this.MODEL();
+      }
+      return this._model;
     };
 
     AbstractActor.E_ACTOR_NOT_IN_CHARGE = new Error("Actor does not in charge!");

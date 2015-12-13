@@ -23,3 +23,7 @@ window.utils = {
 }
 
 window.dataTypes = {}
+
+window.models = {
+  actors: {}
+}

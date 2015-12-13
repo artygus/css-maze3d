@@ -307,7 +307,7 @@
 }
 
 .model-sample.-animate-death .model-sample__leg.-right {
-  animation: model-sample-animation-death-leg 2s infinite;
+  animation: model-sample-animation-death-leg 2s;
 }
 
 

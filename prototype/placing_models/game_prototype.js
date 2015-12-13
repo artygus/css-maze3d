@@ -107,7 +107,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         actor = _ref[_i];
         pos = actor.getPosition();
-        model = this.getModelForActor(actor);
+        model = actor.getModel().get();
         if (model != null) {
           _results.push(this.render.modelPlace(model, pos.cell, pos.dir));
         } else {

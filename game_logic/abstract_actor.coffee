@@ -6,6 +6,12 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   @UID_KEY: "actor"
 
+  @AID_ATTACK: "attack"
+  @AID_RECEIVE_DMG: "receive_dmg"
+  @AID_DEAD: "dead"
+
+  MODEL: models.actors.Empty
+
   constructor: (@app)->
     super
 
@@ -135,13 +141,20 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
       @reactActionCompleted()
       @reactUpdated()
 
+      @app.world.animationTakesPlace(@, @s.AID_ATTACK)
+
   # @param {gameLogic.actors.AbstractActor} from
   # @param {Integer} damage
   receiveDmg: (from, damage)=>
     @assureActorExists()
     @data.set "currentHealth", (@data.get("currentHealth") - damage)
     @reactUpdated()
-    @reactDead() if @isDead()
+
+    if @isDead()
+      @reactDead()
+      @app.world.animationTakesPlace(@, @s.AID_DEAD)
+    else
+      @app.world.animationTakesPlace(@, @s.AID_RECEIVE_DMG)
 
 
   # section: Reactions
@@ -161,6 +174,15 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   reactDead: =>
     $(@).trigger @s.I_DEAD
+
+
+  # section: Model
+
+  getModel: =>
+    unless @_model?
+      @_model = new @MODEL()
+
+    return @_model
 
 
   # section: Helpers

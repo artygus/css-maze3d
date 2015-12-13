@@ -86,7 +86,9 @@ Renderer.prototype = {
   // Section: Models
 
   modelPlace: function(model, cell, direction) {
-    var t = $(model.getTemplate());
+    var t = model;
+
+    console.log("LAM", "T is", t);
 
     var coords = this.getCellCoords(cell);
 

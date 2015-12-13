@@ -89,6 +89,17 @@ class gameLogic.entities.World extends gameLogic.Object
   # Get all actors on the level
   getActors: => @getActorsPositions().map((a)=> a.actor)
 
+
+  # TODO: refactor?
+  # section: Animation
+
+  # @param {gameLogic.actors.AbstractActor} actor
+  # @param {String} animationId
+  animationTakesPlace: (actor, animationId)=>
+    console.log "LAM", "Animation takes place", actor, animationId
+    timeout = actor.getModel().animate(animationId)
+#    @app.time.setPauseFor(timeout)
+
   # section: Helpers
 
   # @param {dataTypes.WorldCell} cell

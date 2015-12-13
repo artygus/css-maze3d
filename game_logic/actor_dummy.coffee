@@ -5,6 +5,8 @@
 
 class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
 
+  MODEL: models.actors.Dummy
+
   initState: =>
     @data.set "maxHealth", 50
     @data.set "currentHealth", 50
