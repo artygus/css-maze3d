@@ -114,6 +114,9 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   # @return {Boolean}
   isDead: => @data.get("currentHealth") < 1
 
+  # Is actor alive?
+  # @return {Boolean}
+  isAlive: => not @isDead()
 
   # section: Combat
 

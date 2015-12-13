@@ -87,7 +87,10 @@ class gameLogic.entities.World extends gameLogic.Object
   getActorsPositions: => @data.get("actors").getEntities()
 
   # Get all actors on the level
-  getActors: => @getActorsPositions().map((a)=> a.actor)
+  getActors: => @getActorsPositions().map((a)-> a.actor)
+
+  # Get all alive actors on the level
+  getAliveActors: => @getActors().filter (a)-> a.isAlive()
 
   # section: Helpers
 

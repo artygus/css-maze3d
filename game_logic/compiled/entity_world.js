@@ -21,6 +21,7 @@
       this.assureCellEmpty = __bind(this.assureCellEmpty, this);
       this.assureCellExistance = __bind(this.assureCellExistance, this);
       this.getActorByCell = __bind(this.getActorByCell, this);
+      this.getAliveActors = __bind(this.getAliveActors, this);
       this.getActors = __bind(this.getActors, this);
       this.getActorsPositions = __bind(this.getActorsPositions, this);
       this.getActorPosition = __bind(this.getActorPosition, this);
@@ -97,11 +98,15 @@
     };
 
     World.prototype.getActors = function() {
-      return this.getActorsPositions().map((function(_this) {
-        return function(a) {
-          return a.actor;
-        };
-      })(this));
+      return this.getActorsPositions().map(function(a) {
+        return a.actor;
+      });
+    };
+
+    World.prototype.getAliveActors = function() {
+      return this.getActors().filter(function(a) {
+        return a.isAlive();
+      });
     };
 
     World.prototype.getActorByCell = function(cell) {
