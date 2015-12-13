@@ -113,7 +113,6 @@
 
     World.prototype.getActors = function() {
       return this.getActorsPositions().map(function(a) {
-        console.log("LAM", "A is", a);
         return a.actor;
       });
     };
@@ -132,7 +131,6 @@
 
     World.prototype.animationTakesPlace = function(actor, animationId) {
       var timeout;
-      console.log("LAM", "Animation takes place", actor, animationId);
       timeout = actor.getModel().animate(animationId);
       return this.app.time.maxTurnDelay(timeout);
     };
