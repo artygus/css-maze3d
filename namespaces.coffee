@@ -20,6 +20,7 @@ window.gameLogic = {
 window.utils = {
   serializers: {}
   helpers: {}
+  lib: {}
 }
 
 window.dataTypes = {}
