@@ -134,13 +134,18 @@
       this.initKeyboard();
       actors = this.gl.world.data.get("actors");
       sActorsChanged = $(actors).asEventStream(actors.s.I_DATA_CHANGED);
-      return sActorsChanged.filter((function(_this) {
+      sActorsChanged.filter((function(_this) {
         return function(v) {
           return v.key === "mdata";
         };
       })(this)).onValue((function(_this) {
         return function() {
           return setTimeout(_this.cameraUpdate, 1);
+        };
+      })(this));
+      return $(actors).asEventStream(actors.tobject.s.I_DATA_DELETED).onValue((function(_this) {
+        return function(v) {
+          return _this.render.removeModel(v.deleted.actor.getModel().get()[0]);
         };
       })(this));
     };
