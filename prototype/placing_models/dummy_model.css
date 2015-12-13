@@ -281,6 +281,20 @@
   90% {
     transform: rotateX(90deg) translateY(0px) translateZ(-25px) rotateY(0);
   }
+
+  100% {
+    transform: rotateX(90deg) translateY(0px) translateZ(-25px) rotateY(0);
+  }
+}
+
+@-webkit-keyframes model-sample-animation-death-opacity {
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @-webkit-keyframes model-sample-animation-death-leg {
@@ -299,11 +313,19 @@
   85% {
     transform: translateX(-35px) translateY(200px) rotateX(0deg);
   }
+
+  100% {
+    transform: translateX(-35px) translateY(200px) rotateX(0deg);
+  }
 }
 
 .model-sample.-animate-death .model-cl__inner {
   transform-origin: 0px 350px 0px;
-  animation: model-sample-animation-death 2s;
+  animation: model-sample-animation-death 2s forwards;
+}
+
+.model-sample.-animate-death {
+  animation: model-sample-animation-death-opacity 2s forwards;
 }
 
 .model-sample.-animate-death .model-sample__leg.-right {
