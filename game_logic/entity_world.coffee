@@ -98,7 +98,7 @@ class gameLogic.entities.World extends gameLogic.Object
   animationTakesPlace: (actor, animationId)=>
     console.log "LAM", "Animation takes place", actor, animationId
     timeout = actor.getModel().animate(animationId)
-#    @app.time.setPauseFor(timeout)
+    @app.time.maxTurnDelay(timeout)
 
   # section: Helpers
 

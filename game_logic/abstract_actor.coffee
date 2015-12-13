@@ -138,10 +138,12 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
       victim = @app.world.getActorByCell(nc)
       victim.receiveDmg(@, dmg)
+
+      @app.world.animationTakesPlace(@, @s.AID_ATTACK)
+
       @reactActionCompleted()
       @reactUpdated()
 
-      @app.world.animationTakesPlace(@, @s.AID_ATTACK)
 
   # @param {gameLogic.actors.AbstractActor} from
   # @param {Integer} damage

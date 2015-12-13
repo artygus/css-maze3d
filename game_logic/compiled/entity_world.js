@@ -108,7 +108,8 @@
     World.prototype.animationTakesPlace = function(actor, animationId) {
       var timeout;
       console.log("LAM", "Animation takes place", actor, animationId);
-      return timeout = actor.getModel().animate(animationId);
+      timeout = actor.getModel().animate(animationId);
+      return this.app.time.maxTurnDelay(timeout);
     };
 
     World.prototype.getActorByCell = function(cell) {

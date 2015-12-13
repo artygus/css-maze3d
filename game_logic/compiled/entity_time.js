@@ -16,12 +16,17 @@
 
     function Time(app) {
       this.app = app;
+      this.maxTurnDelay = __bind(this.maxTurnDelay, this);
+      this.clearTurnDelay = __bind(this.clearTurnDelay, this);
+      this.getTurnDelay = __bind(this.getTurnDelay, this);
+      this.setTurnDelay = __bind(this.setTurnDelay, this);
       this.create = __bind(this.create, this);
       this.stateTurn = __bind(this.stateTurn, this);
       this.stateUpdated = __bind(this.stateUpdated, this);
       Time.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
       this.data = new gameLogic.data.Time();
+      this.clearTurnDelay();
       $(this.data).asEventStream(this.data.s.I_DATA_CHANGED).filter((function(_this) {
         return function(v) {
           return v.key === "state";
@@ -61,7 +66,7 @@
             p.turnEnded();
             clearTimeout(turnTimeout);
             _this.data.tarray["delete"]("actorsMoveQueue", 0);
-            return _this.stateTurn();
+            return setTimeout(_this.stateTurn, _this.getTurnDelay());
           };
         })(this);
         turnTimeout = setTimeout(p.actionNoop, this.s.TURN_TIME);
@@ -72,6 +77,22 @@
 
     Time.prototype.create = function() {
       return this.data.setInitialValues();
+    };
+
+    Time.prototype.setTurnDelay = function(ms) {
+      return this._turnDelay = ms;
+    };
+
+    Time.prototype.getTurnDelay = function() {
+      return this._turnDelay;
+    };
+
+    Time.prototype.clearTurnDelay = function() {
+      return this.setTurnDelay(0);
+    };
+
+    Time.prototype.maxTurnDelay = function(ms) {
+      return this.setTurnDelay(Math.max(this.getTurnDelay(), ms));
     };
 
     return Time;

@@ -183,9 +183,9 @@
           dmg = _this.calcDmg();
           victim = _this.app.world.getActorByCell(nc);
           victim.receiveDmg(_this, dmg);
+          _this.app.world.animationTakesPlace(_this, _this.s.AID_ATTACK);
           _this.reactActionCompleted();
-          _this.reactUpdated();
-          return _this.app.world.animationTakesPlace(_this, _this.s.AID_ATTACK);
+          return _this.reactUpdated();
         };
       })(this));
     };

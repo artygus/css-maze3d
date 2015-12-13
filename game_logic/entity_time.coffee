@@ -13,6 +13,8 @@ class gameLogic.entities.Time extends gameLogic.Object
 
     @data = new gameLogic.data.Time()
 
+    @clearTurnDelay()
+
     $(@data).asEventStream(@data.s.I_DATA_CHANGED)
       .filter((v)=> v.key == "state")
       .onValue @stateUpdated
@@ -51,7 +53,7 @@ class gameLogic.entities.Time extends gameLogic.Object
         p.turnEnded()
         clearTimeout turnTimeout
         @data.tarray.delete "actorsMoveQueue", 0
-        @stateTurn()
+        setTimeout @stateTurn, @getTurnDelay()
 
       turnTimeout = setTimeout p.actionNoop, @s.TURN_TIME
       $(p).one p.s.I_ACTION_COMPLETED, completed
@@ -62,6 +64,27 @@ class gameLogic.entities.Time extends gameLogic.Object
 
   create: =>
     @data.setInitialValues()
+
+  # Set turn delay
+  # @param {Integer} ms
+  setTurnDelay: (ms)=>
+    @_turnDelay = ms
+
+  # Get turn delay
+  # @return {Integer}
+  getTurnDelay: => @_turnDelay
+
+  # Clear turn delay
+  clearTurnDelay: =>
+    @setTurnDelay 0
+
+  # Max turn delay
+  # @param {Integer} ms
+  maxTurnDelay: (ms)=>
+    @setTurnDelay(
+      Math.max @getTurnDelay(), ms
+    )
+
 
 
 
