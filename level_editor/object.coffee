@@ -1,5 +1,5 @@
 
-class levelEditor.Object
+class levelEditor.Object extends abstract.Object
 
   constructor: ->
-    @s = @constructor
+    super

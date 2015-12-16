@@ -28,3 +28,5 @@ window.dataTypes = {}
 window.models = {
   actors: {}
 }
+
+window.abstract = {}

@@ -200,8 +200,8 @@
       this.data.set("currentHealth", this.data.get("currentHealth") - damage);
       this.reactUpdated();
       if (this.isDead()) {
-        this.reactDead();
-        return this.app.world.animationTakesPlace(this, this.s.AID_DEAD);
+        this.app.world.animationTakesPlace(this, this.s.AID_DEAD);
+        return this.reactDead();
       } else {
         return this.app.world.animationTakesPlace(this, this.s.AID_RECEIVE_DMG);
       }

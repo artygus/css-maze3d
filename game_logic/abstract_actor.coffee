@@ -156,8 +156,8 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
     @reactUpdated()
 
     if @isDead()
-      @reactDead()
       @app.world.animationTakesPlace(@, @s.AID_DEAD)
+      @reactDead()
     else
       @app.world.animationTakesPlace(@, @s.AID_RECEIVE_DMG)
 

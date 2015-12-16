@@ -5,8 +5,7 @@
  */
 
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
+  var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   models.actors.Abstract = (function(_super) {
@@ -15,48 +14,8 @@
     Abstract.prototype.DT = "models.actors.Abstract";
 
     function Abstract() {
-      this.animateBasic = __bind(this.animateBasic, this);
-      this.animate = __bind(this.animate, this);
-      this.getTemplate = __bind(this.getTemplate, this);
-      this.get = __bind(this.get, this);
-      this.initAnimationsDictionary = __bind(this.initAnimationsDictionary, this);
       Abstract.__super__.constructor.apply(this, arguments);
-      this.initAnimationsDictionary();
     }
-
-    Abstract.prototype.initAnimationsDictionary = function() {
-      return this._animations = {};
-    };
-
-    Abstract.prototype.get = function() {
-      if (this._rendered == null) {
-        this._rendered = $(this.getTemplate());
-      }
-      return this._rendered;
-    };
-
-    Abstract.prototype.getTemplate = function() {
-      return "";
-    };
-
-    Abstract.prototype.animate = function(actionId) {
-      var ad;
-      if ((ad = this._animations[actionId]) != null) {
-        return this.animateBasic(ad.cl, ad.time);
-      } else {
-        return 0;
-      }
-    };
-
-    Abstract.prototype.animateBasic = function(cl, time) {
-      var el;
-      el = this.get();
-      el.addClass(cl);
-      setTimeout((function() {
-        return el.removeClass(cl);
-      }), time);
-      return time;
-    };
 
     return Abstract;
 

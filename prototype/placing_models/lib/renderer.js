@@ -1,8 +1,6 @@
 function Renderer(el, unit) {
   this.node = el;
   this.unit = unit; // unit vector in px
-
-  window.checkMe = this.node;
 }
 
 Renderer.prototype = {

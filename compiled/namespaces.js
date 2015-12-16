@@ -32,4 +32,6 @@
     actors: {}
   };
 
+  window.abstract = {};
+
 }).call(this);

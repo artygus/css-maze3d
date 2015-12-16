@@ -2,7 +2,7 @@
   Abstract game object
 ###
 
-class gameLogic.Object
+class gameLogic.Object extends abstract.Object
 
   constructor: ->
-    @s = @constructor
+    super
