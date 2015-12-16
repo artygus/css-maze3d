@@ -1,7 +1,6 @@
 function Player(gameCamera) {
   this.x = 0;
   this.y = 0;
-  this.direction = 'n';
 
   this.camera = gameCamera;
 
@@ -13,7 +12,6 @@ Player.prototype = {
   set: function(x, y, dir) {
     this.x = x;
     this.y = y;
-    this.direction = dir;
     this.camera.set(x, y, dir);
   },
 
@@ -24,13 +22,11 @@ Player.prototype = {
   },
 
   setDirection: function(dir) {
-    this.direction = dir;
     this.camera.setDirection(dir);
   },
 
   _bindLookControls: function() {
-    var that = this,
-        directions = ['n', 'e', 's', 'w'];
+    var that = this;
 
     document.addEventListener('keyup', function(e) {
       var inc = 0;
@@ -46,16 +42,8 @@ Player.prototype = {
           return true;
       }
 
-      var newDirectionIndex = directions.indexOf(that.direction) + inc;
-
-      if (newDirectionIndex >= directions.length) {
-        newDirectionIndex = 0;
-      } else if (newDirectionIndex < 0){
-        newDirectionIndex = directions.length - 1;
-      }
-
       that.camera.setTransition(0.3);
-      that.setDirection(directions[newDirectionIndex]);
+      that.camera.rotateDelta(0, inc * 90);
     }, false);
   },
 

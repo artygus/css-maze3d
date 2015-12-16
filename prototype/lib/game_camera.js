@@ -1,6 +1,5 @@
 function GameCamera(viewportEl, worldEl, cameraEl, unit) {
   this.unit = unit;
-  this.direction = 'n';
   this.camera = new Camera(viewportEl, worldEl, cameraEl);
 
   this._bindLookControls();
@@ -12,8 +11,8 @@ GameCamera.prototype = {
   _bindLookControls: function() {
     var that = this,
         mouseLookTimeout,
-        mx = my = 0,
-        directions = ['n', 'e', 's', 'w'];
+        mx = 0,
+        my = 0;
 
     // mouse
     document.addEventListener('mouseover', function(e) {
@@ -46,9 +45,11 @@ GameCamera.prototype = {
   },
 
   centerLook: function() {
-    // var closestDirection = this.getDirection();
+    var rotZ = Math.round(this.camera.rotate3[2] / 90) * 90;
     this.setTransition(0.3);
-    this.setDirection(this.direction);
+
+    this.camera.rotate(90, rotZ);
+    this.camera.update();
   },
 
   setCell: function(x, y) {
@@ -63,17 +64,16 @@ GameCamera.prototype = {
       case 'n':
         rotZ = 0;
         break;
-      case 'e':
-        rotZ = 270;
+      case 'w':
+        rotZ = 90;
         break;
       case 's':
         rotZ = 180;
         break;
-      case 'w':
-        rotZ = 90;
+      case 'e':
+        rotZ = 270;
     }
 
-    this.direction = dir;
     this.camera.rotate(90, rotZ);
     this.camera.update();
   },
@@ -86,7 +86,7 @@ GameCamera.prototype = {
   getNextCell: function(x, y, course) {
     var walkAxis, walkForwardFactor,
         strafeAxis, strafeLeftFactor,
-        turnAngle = this.camera.rotate3[2],
+        turnAngle = this.camera.rotate3[2] % 360,
         switchAxis = false;
 
     if (turnAngle >= 135 && turnAngle <= 225) { // 180
@@ -130,17 +130,25 @@ GameCamera.prototype = {
   },
 
   getDirection: function() {
-    var turnAngle = this.camera.rotate3[2];
+    var turnAngle = this.camera.rotate3[2] % 360;
 
     if (turnAngle >= 135 && turnAngle <= 225) { // 180
       return 's';
     } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      return 'e';
+      return 'w';
     } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
       return 'n';
     }
 
-    return 'w';
+    return 'e';
+  },
+
+
+  directionToAngle: function(dir) {
+    if (dir === 's') return 180;
+    else if (dir === 'w') return 90;
+    else if (dir === 'n') return 0;
+    else return 270;
   },
 
   rotateDelta: function(dx, dz) {
