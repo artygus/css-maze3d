@@ -36,12 +36,6 @@ Camera.prototype = {
       this.rotate3[0] = newX;
     }
 
-    if (newZ < 0) {
-      newZ += 360;
-    } else if (newZ >= 360) {
-      newZ -= 360;
-    }
-
     this.rotate3[2] = newZ;
   },
 
