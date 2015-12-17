@@ -15,6 +15,7 @@
     Actor.prototype.DT = "gameLogic.data.Actor";
 
     function Actor() {
+      this.getCurrentHealthInPercent = __bind(this.getCurrentHealthInPercent, this);
       this.init = __bind(this.init, this);
       Actor.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
@@ -25,6 +26,16 @@
       this.set("inCharge", false);
       this.set("maxHealth", 0);
       return this.set("currentHealth", 0);
+    };
+
+    Actor.prototype.getCurrentHealthInPercent = function() {
+      var v;
+      v = this.get("currentHealth") / this.get("maxHealth");
+      if (isNaN(v)) {
+        return 0;
+      } else {
+        return v;
+      }
     };
 
     return Actor;

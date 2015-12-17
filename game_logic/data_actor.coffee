@@ -23,3 +23,16 @@ class gameLogic.data.Actor extends chms.ard.AbstractReactiveData
     # {Integer} Current actor health
     @set "currentHealth", 0
 
+
+  # section: Helpers
+
+  # @return {Float}
+  getCurrentHealthInPercent: =>
+    v = @get("currentHealth") / @get("maxHealth")
+
+    if isNaN(v)
+      return 0
+    else
+      return v
+
+
