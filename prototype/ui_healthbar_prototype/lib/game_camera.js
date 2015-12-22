@@ -1,5 +1,6 @@
 function GameCamera(viewportEl, worldEl, cameraEl, unit) {
   this.unit = unit;
+  this.direction = 'n';
   this.camera = new Camera(viewportEl, worldEl, cameraEl);
 
   this._bindLookControls();
@@ -58,23 +59,16 @@ GameCamera.prototype = {
   },
 
   setDirection: function(dir) {
-    var rotZ;
+    var dz = this.directionToAngle(dir) - this.directionToAngle(this.direction),
+        absDelta = Math.abs(dz);
+    dz = Math.min(absDelta, 360 - absDelta) * Math.sign(dz);
 
-    switch(dir) {
-      case 'n':
-        rotZ = 0;
-        break;
-      case 'w':
-        rotZ = 90;
-        break;
-      case 's':
-        rotZ = 180;
-        break;
-      case 'e':
-        rotZ = 270;
+    if (absDelta > 360 - absDelta) {
+      dz *= -1;
     }
 
-    this.camera.rotate(90, rotZ);
+    this.direction = dir;
+    this.camera.rotate(90, this.camera.rotate3[2] + dz);
     this.camera.update();
   },
 
@@ -84,71 +78,40 @@ GameCamera.prototype = {
   },
 
   getNextCell: function(x, y, course) {
-    var walkAxis, walkForwardFactor,
-        strafeAxis, strafeLeftFactor,
-        turnAngle = this.camera.rotate3[2] % 360,
-        switchAxis = false;
-
-    if (turnAngle >= 135 && turnAngle <= 225) { // 180
-      walkAxis = y;
-      walkForwardFactor = -1;
-      strafeAxis = x;
-      strafeLeftFactor = 1;
-    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      walkAxis = x;
-      walkForwardFactor = 1;
-      strafeAxis = y;
-      strafeLeftFactor = 1;
-      switchAxis = true;
-    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
-      walkAxis = y;
-      walkForwardFactor = 1;
-      strafeAxis = x;
-      strafeLeftFactor = -1;
-    } else { // 270
-      walkAxis = x;
-      walkForwardFactor = -1;
-      strafeAxis = y;
-      strafeLeftFactor = -1;
-      switchAxis = true;
-    }
+    var dx, dy;
 
     switch(course) {
       case 'f':
-        walkAxis += walkForwardFactor;
+        dx = Math.sin(this.camera.rotate3[2] * 3.14 / 180);
+        dy = Math.cos(this.camera.rotate3[2] * 3.14 / 180);
         break;
       case 'r':
-        strafeAxis -= strafeLeftFactor;
+        dx = Math.sin((90 + this.camera.rotate3[2]) * 3.14 / 180);
+        dy = Math.cos((90 + this.camera.rotate3[2]) * 3.14 / 180);
         break;
       case 'b':
-        walkAxis -= walkForwardFactor;
+        dx = -Math.sin(this.camera.rotate3[2] * 3.14 / 180);
+        dy = -Math.cos(this.camera.rotate3[2] * 3.14 / 180);
         break;
       case 'l':
-        strafeAxis += strafeLeftFactor;
-    }
-    return switchAxis ? [walkAxis, strafeAxis] : [strafeAxis, walkAxis];
-  },
-
-  getDirection: function() {
-    var turnAngle = this.camera.rotate3[2] % 360;
-
-    if (turnAngle >= 135 && turnAngle <= 225) { // 180
-      return 's';
-    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      return 'w';
-    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
-      return 'n';
+        dx = -Math.sin((90 + this.camera.rotate3[2]) * 3.14 / 180);
+        dy = -Math.cos((90 + this.camera.rotate3[2]) * 3.14 / 180);
     }
 
-    return 'e';
+    if (Math.abs(dx) > Math.abs(dy)) {
+      return [x + 1 * Math.sign(dx), y];
+    } else {
+      return [x, y + 1 * Math.sign(dy)];
+    }
   },
-
 
   directionToAngle: function(dir) {
-    if (dir === 's') return 180;
-    else if (dir === 'w') return 90;
-    else if (dir === 'n') return 0;
-    else return 270;
+    switch(dir) {
+      case 's': return 180;
+      case 'w': return 90;
+      case 'n': return 0;
+      default: return 270;
+    }
   },
 
   rotateDelta: function(dx, dz) {
@@ -160,4 +123,3 @@ GameCamera.prototype = {
     this.camera.setTransition.apply(this.camera, arguments);
   }
 }
-

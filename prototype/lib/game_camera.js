@@ -1,5 +1,6 @@
 function GameCamera(viewportEl, worldEl, cameraEl, unit) {
   this.unit = unit;
+  this.direction = 'n';
   this.camera = new Camera(viewportEl, worldEl, cameraEl);
 
   this._bindLookControls();
@@ -58,23 +59,16 @@ GameCamera.prototype = {
   },
 
   setDirection: function(dir) {
-    var rotZ;
+    var dz = this.directionToAngle(dir) - this.directionToAngle(this.direction),
+        absDelta = Math.abs(dz);
+    dz = Math.min(absDelta, 360 - absDelta) * Math.sign(dz);
 
-    switch(dir) {
-      case 'n':
-        rotZ = 0;
-        break;
-      case 'w':
-        rotZ = 90;
-        break;
-      case 's':
-        rotZ = 180;
-        break;
-      case 'e':
-        rotZ = 270;
+    if (absDelta > 360 - absDelta) {
+      dz *= -1;
     }
 
-    this.camera.rotate(90, rotZ);
+    this.direction = dir;
+    this.camera.rotate(90, this.camera.rotate3[2] + dz);
     this.camera.update();
   },
 
@@ -111,18 +105,13 @@ GameCamera.prototype = {
     }
   },
 
-  getDirection: function() {
-    var turnAngle = this.camera.rotate3[2] % 360;
-
-    if (turnAngle >= 135 && turnAngle <= 225) { // 180
-      return 's';
-    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      return 'w';
-    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
-      return 'n';
+  directionToAngle: function(dir) {
+    switch(dir) {
+      case 's': return 180;
+      case 'w': return 90;
+      case 'n': return 0;
+      default: return 270;
     }
-
-    return 'e';
   },
 
   rotateDelta: function(dx, dz) {
@@ -134,4 +123,3 @@ GameCamera.prototype = {
     this.camera.setTransition.apply(this.camera, arguments);
   }
 }
-

@@ -126,8 +126,7 @@
     GamePrototype.prototype.cameraUpdate = function() {
       var pos;
       pos = this.gl.world.data.get("actors").getDataByEntity(this.gl.player);
-      this.camera.setCell(pos.cell[0], pos.cell[1]);
-      this.camera.setDirection(pos.dir);
+      this.camera.set(pos.cell[0], pos.cell[1], pos.dir);
       return this.camera.camera.update();
     };
 

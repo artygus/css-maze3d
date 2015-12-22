@@ -92,9 +92,7 @@ class window.GamePrototype
   cameraUpdate: =>
     pos = @gl.world.data.get("actors").getDataByEntity(@gl.player)
 
-    @camera.setCell pos.cell[0], pos.cell[1]
-    @camera.setDirection pos.dir
-
+    @camera.set pos.cell[0], pos.cell[1], pos.dir
     @camera.camera.update()
 
 
