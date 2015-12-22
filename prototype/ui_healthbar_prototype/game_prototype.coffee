@@ -25,7 +25,6 @@ class window.GamePrototype
     viewportEl = document.getElementById('viewport')
     @render = new Renderer(worldEl, unit)
     @camera = new GameCamera(viewportEl, worldEl, cameraEl, unit)
-    @camera.camera.moveDelta(0, 0, -35)
 
   # TODO: module
   initKeyboard: =>

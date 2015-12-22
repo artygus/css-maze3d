@@ -41,8 +41,7 @@
       cameraEl = document.getElementById('camera');
       viewportEl = document.getElementById('viewport');
       this.render = new Renderer(worldEl, unit);
-      this.camera = new GameCamera(viewportEl, worldEl, cameraEl, unit);
-      return this.camera.camera.moveDelta(0, 0, -35);
+      return this.camera = new GameCamera(viewportEl, worldEl, cameraEl, unit);
     };
 
     GamePrototype.prototype.initKeyboard = function() {
