@@ -230,7 +230,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
     else
       dim = 1
 
-    if direction in [wd.N, wd.W]
+    if direction in [wd.N, wd.E]
       vector = +1
     else
       vector = -1
