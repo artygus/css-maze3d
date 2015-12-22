@@ -84,49 +84,31 @@ GameCamera.prototype = {
   },
 
   getNextCell: function(x, y, course) {
-    var walkAxis, walkForwardFactor,
-        strafeAxis, strafeLeftFactor,
-        turnAngle = this.camera.rotate3[2] % 360,
-        switchAxis = false;
-
-    if (turnAngle >= 135 && turnAngle <= 225) { // 180
-      walkAxis = y;
-      walkForwardFactor = -1;
-      strafeAxis = x;
-      strafeLeftFactor = 1;
-    } else if (turnAngle >= 45 && turnAngle <= 135) { // 90
-      walkAxis = x;
-      walkForwardFactor = 1;
-      strafeAxis = y;
-      strafeLeftFactor = 1;
-      switchAxis = true;
-    } else if (turnAngle >= 315 || turnAngle <= 45) { // 0
-      walkAxis = y;
-      walkForwardFactor = 1;
-      strafeAxis = x;
-      strafeLeftFactor = -1;
-    } else { // 270
-      walkAxis = x;
-      walkForwardFactor = -1;
-      strafeAxis = y;
-      strafeLeftFactor = -1;
-      switchAxis = true;
-    }
+    var dx, dy;
 
     switch(course) {
       case 'f':
-        walkAxis += walkForwardFactor;
+        dx = Math.sin(this.camera.rotate3[2] * 3.14 / 180);
+        dy = Math.cos(this.camera.rotate3[2] * 3.14 / 180);
         break;
       case 'r':
-        strafeAxis -= strafeLeftFactor;
+        dx = Math.sin((90 + this.camera.rotate3[2]) * 3.14 / 180);
+        dy = Math.cos((90 + this.camera.rotate3[2]) * 3.14 / 180);
         break;
       case 'b':
-        walkAxis -= walkForwardFactor;
+        dx = -Math.sin(this.camera.rotate3[2] * 3.14 / 180);
+        dy = -Math.cos(this.camera.rotate3[2] * 3.14 / 180);
         break;
       case 'l':
-        strafeAxis += strafeLeftFactor;
+        dx = -Math.sin((90 + this.camera.rotate3[2]) * 3.14 / 180);
+        dy = -Math.cos((90 + this.camera.rotate3[2]) * 3.14 / 180);
     }
-    return switchAxis ? [walkAxis, strafeAxis] : [strafeAxis, walkAxis];
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      return [x + 1 * Math.sign(dx), y];
+    } else {
+      return [x, y + 1 * Math.sign(dy)];
+    }
   },
 
   getDirection: function() {
@@ -141,14 +123,6 @@ GameCamera.prototype = {
     }
 
     return 'e';
-  },
-
-
-  directionToAngle: function(dir) {
-    if (dir === 's') return 180;
-    else if (dir === 'w') return 90;
-    else if (dir === 'n') return 0;
-    else return 270;
   },
 
   rotateDelta: function(dx, dz) {
