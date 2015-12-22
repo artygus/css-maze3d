@@ -9,7 +9,7 @@ function Camera(viewportEl, worldEl, cameraEl) {
   viewportEl.style.perspective = this.perspective + 'px';
 
   cameraEl.style.transformStyle = 'preserve-3d';
-  cameraEl.style.transformOrigin = '50% 50% 50px';
+  cameraEl.style.transformOrigin = '50% 50% 51px';
   cameraEl.style.position = 'absolute';
   cameraEl.style.top = '50%';
   cameraEl.style.left = '50%';
