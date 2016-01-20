@@ -5,7 +5,8 @@
  */
 
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   gameLogic.App = (function(_super) {
@@ -13,12 +14,27 @@
 
     App.prototype.DT = "gameLogic.App";
 
+    App.ERR_UNDEFINED_ACTOR = new Error("gameLogic.App: Undefined actor!");
+
     function App() {
+      this.createActorById = __bind(this.createActorById, this);
       App.__super__.constructor.apply(this, arguments);
       this.world = new gameLogic.entities.World(this);
       this.time = new gameLogic.entities.Time(this);
       this.player = new gameLogic.actors.Player(this);
     }
+
+    App.ACTOR_PLAYER_ID = "Player";
+
+    App.prototype.createActorById = function(id) {
+      if (id === this.s.ACTOR_PLAYER_ID) {
+        return this.player;
+      } else if (gameLogic.actors[id] != null) {
+        return new gameLogic.actors[id](this);
+      } else {
+        throw this.s.ERR_UNDEFINED_ACTOR;
+      }
+    };
 
     return App;
 

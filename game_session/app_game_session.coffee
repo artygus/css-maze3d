@@ -74,7 +74,8 @@ class gameSession.App extends abstract.Object
   # Load given actors collection to a current level
   loadLevelActors: =>
     for entry in @level.actors
-      @gl.world.placeActor entry.cell, entry.actor, entry.dir
+      actor = @gl.createActorById entry.actor
+      @gl.world.placeActor entry.cell, actor, entry.dir
 
 
   # section: Render

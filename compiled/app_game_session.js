@@ -106,12 +106,13 @@
     };
 
     App.prototype.loadLevelActors = function() {
-      var entry, _i, _len, _ref, _results;
+      var actor, entry, _i, _len, _ref, _results;
       _ref = this.level.actors;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         entry = _ref[_i];
-        _results.push(this.gl.world.placeActor(entry.cell, entry.actor, entry.dir));
+        actor = this.gl.createActorById(entry.actor);
+        _results.push(this.gl.world.placeActor(entry.cell, actor, entry.dir));
       }
       return _results;
     };
