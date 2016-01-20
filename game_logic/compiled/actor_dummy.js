@@ -31,7 +31,6 @@
       var victim;
       Dummy.__super__.act.apply(this, arguments);
       victim = this.app.world.getActorByCell(this.getNextViewpointCell());
-      console.log("LAM", "Victim is", victim);
       if (victim != null) {
         return this.actionAttack();
       } else {

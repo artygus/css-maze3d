@@ -15,7 +15,6 @@ class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
     super
 
     victim = @app.world.getActorByCell(@getNextViewpointCell())
-    console.log "LAM", "Victim is", victim
 
     if victim?
       @actionAttack()
