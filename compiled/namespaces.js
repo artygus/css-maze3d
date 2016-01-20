@@ -20,6 +20,8 @@
     actors: {}
   };
 
+  window.gameSession = {};
+
   window.utils = {
     serializers: {},
     helpers: {},

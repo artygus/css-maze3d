@@ -17,6 +17,8 @@ window.gameLogic = {
   actors: {}
 }
 
+window.gameSession = {}
+
 window.utils = {
   serializers: {}
   helpers: {}

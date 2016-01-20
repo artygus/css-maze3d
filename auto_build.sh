@@ -7,4 +7,5 @@ coffee -o compiled/ -c -w utils/*.coffee &
 coffee -o compiled/ -c -w data_types/*.coffee &
 coffee -o models/compiled/ -c -w models/*.coffee &
 coffee -o models/compiled/ -c -w models/actor/*.coffee &
-coffee -o compiled/ -c -w abstract/*.coffee
+coffee -o compiled/ -c -w abstract/*.coffee &
+coffee -o compiled/ -c -w game_session/*.coffee
