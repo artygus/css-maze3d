@@ -9,6 +9,7 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
   @AID_ATTACK: "attack"
   @AID_RECEIVE_DMG: "receive_dmg"
   @AID_DEAD: "dead"
+  @AID_MOVE: "move"
 
   MODEL: models.actors.Empty
 
@@ -77,6 +78,8 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
       @app.world.moveActor(@, newPos)
 
+      @app.world.animationTakesPlace(@, @s.AID_MOVE)
+
   actionMoveForward: => @actionMove()
 
   actionMoveBackward: => @actionMove(false)
@@ -144,7 +147,6 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
       @app.world.animationTakesPlace(@, @s.AID_ATTACK)
 
-      @reactActionCompleted()
       @reactUpdated()
 
 

@@ -86,6 +86,7 @@ Renderer.prototype = {
   // Section: Models
 
   modelPlace: function(model, cell, direction) {
+    console.log("LAM", "Model place", model);
     var t = model;
 
     var coords = this.getCellCoords(cell);
@@ -128,13 +129,14 @@ Renderer.prototype = {
       }
     );
 
-
+    console.log("LAM", "Append", t);
     $(this.node).append(t);
   },
 
   // Removes model by a given modelId
   removeModel: function(model) {
     try {
+      console.log("LAM", "Remove model", model);
       this.node.removeChild(model);
     } catch(e) {
       console.error("You are trying to remove model which is not rendered!");

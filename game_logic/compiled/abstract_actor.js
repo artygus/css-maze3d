@@ -20,6 +20,8 @@
 
     AbstractActor.AID_DEAD = "dead";
 
+    AbstractActor.AID_MOVE = "move";
+
     AbstractActor.prototype.MODEL = models.actors.Empty;
 
     function AbstractActor(app) {
@@ -110,7 +112,8 @@
           dv = _this.getMoveDimensionAndVector(pos.cell, pos.dir, forward);
           newPos = [pos.cell[0], pos.cell[1]];
           newPos[dv.dim] += dv.vector;
-          return _this.app.world.moveActor(_this, newPos);
+          _this.app.world.moveActor(_this, newPos);
+          return _this.app.world.animationTakesPlace(_this, _this.s.AID_MOVE);
         };
       })(this));
     };
@@ -189,7 +192,6 @@
           victim = _this.app.world.getActorByCell(nc);
           victim.receiveDmg(_this, dmg);
           _this.app.world.animationTakesPlace(_this, _this.s.AID_ATTACK);
-          _this.reactActionCompleted();
           return _this.reactUpdated();
         };
       })(this));

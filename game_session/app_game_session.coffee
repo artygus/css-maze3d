@@ -55,7 +55,8 @@ class gameSession.App extends abstract.Object
     $(actors)
       .asEventStream(actors.tobject.s.I_DATA_DELETED)
       .onValue (v)=>
-        @render.removeModel v.deleted.actor.getModel().get()[0]
+        if v.deleted.actor.isDead()
+          @render.removeModel v.deleted.actor.getModel().get()[0]
 
 
   # section: Getters & setters
