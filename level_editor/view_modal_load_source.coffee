@@ -35,11 +35,12 @@ class levelEditor.view.ModalLoadSource extends levelEditor.Object
     if lobject.length > 0
       h = utils.serializers.Level
       level = h.parseSerializedFromString(lobject)
+      console.log "LAM", "SErialized", level
 
       lc = @app.data.get("level-cells")
       extraData = {}
       extraData[lc.FLAG_LEVEL_LOADED] = true
-      lc.set "levelCells", level, extraData
+      lc.set "levelCells", level.geometry, extraData
 
 
   # section: Rendering

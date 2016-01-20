@@ -6,7 +6,7 @@
 
 (function() {
   utils.serializers.Level = {
-    serialize: function(level) {
+    serializeGeometry: function(level) {
       var cell, cells, cid, d, h, serialized, xcell, xcells, _i, _len;
       h = utils.helpers.Level;
       serialized = {};
@@ -32,22 +32,29 @@
       return serialized;
     },
     serializeToString: function(level) {
-      return JSON.stringify(utils.serializers.Level.serialize(level));
+      var actors, container, geometry;
+      geometry = utils.serializers.Level.serializeGeometry(level);
+      actors = [];
+      container = dataTypes.Level.get(geometry, actors);
+      return JSON.stringify(container);
     },
-    parseSerialized: function(serialized) {
+    parseSerializedGeometry: function(geometry) {
       var cell, cid, level;
       level = [];
-      for (cid in serialized) {
-        cell = serialized[cid];
+      for (cid in geometry) {
+        cell = geometry[cid];
         level.push([cell.x, cell.y]);
       }
       return level;
     },
     parseSerializedFromString: function(serialized) {
-      serialized = JSON.parse(serialized);
-      return utils.serializers.Level.parseSerialized(serialized);
+      var actors, geometry, level;
+      level = JSON.parse(serialized);
+      geometry = utils.serializers.Level.parseSerializedGeometry(level.geometry);
+      actors = [];
+      return dataTypes.Level.get(geometry, actors);
     },
-    serializeObjectToWorldTree: function(levelObj) {
+    serializeGeometryToWorldTree: function(levelObj) {
       var cell, id, serialized;
       serialized = {};
       for (id in levelObj) {

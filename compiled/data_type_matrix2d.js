@@ -64,7 +64,7 @@
     };
 
     Matrix2d.createFromLevelObject = function(lobj) {
-      return new dataTypes.Matrix2d(utils.serializers.Level.serializeObjectToWorldTree(lobj));
+      return new dataTypes.Matrix2d(utils.serializers.Level.serializeGeometryToWorldTree(lobj));
     };
 
     return Matrix2d;

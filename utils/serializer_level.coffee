@@ -6,7 +6,7 @@ utils.serializers.Level =
 
   # @param {levelEditor.data.LevelCells} level
   # @return {Object}
-  serialize: (level)->
+  serializeGeometry: (level)->
     h = utils.helpers.Level
     serialized = {}
     cells = level.get("levelCells")
@@ -33,15 +33,18 @@ utils.serializers.Level =
   # @param {levelEditor.data.LevelCells} level
   # @return {String}
   serializeToString: (level)->
-    JSON.stringify utils.serializers.Level.serialize(level)
+    geometry = utils.serializers.Level.serializeGeometry(level)
+    actors = []
+    container = dataTypes.Level.get geometry, actors
+    JSON.stringify container
 
   # Parse serialized level
   # @param {Object} serialized
   # @return {Array.<Cell>}
-  parseSerialized: (serialized)->
+  parseSerializedGeometry: (geometry)->
     level = []
 
-    for cid, cell of serialized
+    for cid, cell of geometry
       level.push [cell.x, cell.y]
 
     return level
@@ -49,13 +52,15 @@ utils.serializers.Level =
   # @param {String} serialized
   # @return {String}
   parseSerializedFromString: (serialized)->
-    serialized = JSON.parse serialized
-    return utils.serializers.Level.parseSerialized(serialized)
+    level = JSON.parse serialized
+    geometry = utils.serializers.Level.parseSerializedGeometry(level.geometry)
+    actors = []
+    return dataTypes.Level.get geometry, actors
 
   # Serialize from object to world tree
   # @param {levelObj} levelObj Serialized level object
   # @return {Object}
-  serializeObjectToWorldTree: (levelObj)->
+  serializeGeometryToWorldTree: (levelObj)->
     serialized = {}
     for id, cell of levelObj
 

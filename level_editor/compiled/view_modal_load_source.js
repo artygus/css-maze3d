@@ -41,10 +41,11 @@
       if (lobject.length > 0) {
         h = utils.serializers.Level;
         level = h.parseSerializedFromString(lobject);
+        console.log("LAM", "SErialized", level);
         lc = this.app.data.get("level-cells");
         extraData = {};
         extraData[lc.FLAG_LEVEL_LOADED] = true;
-        return lc.set("levelCells", level, extraData);
+        return lc.set("levelCells", level.geometry, extraData);
       }
     };
 

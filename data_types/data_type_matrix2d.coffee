@@ -66,7 +66,7 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
   # @return {dataTypes.Matrix2d}
   @createFromLevelObject: (lobj)=>
     new dataTypes.Matrix2d(
-      utils.serializers.Level.serializeObjectToWorldTree(lobj)
+      utils.serializers.Level.serializeGeometryToWorldTree(lobj)
     )
 
 
