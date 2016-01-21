@@ -63,15 +63,20 @@
     };
 
     World.prototype.moveActor = function(actor, cell) {
-      var ccp, fromCell, toPos;
+      var ccp, extra, fromCell, toPos;
       this.assureActorExists(actor);
       this.assureCellExistance(cell);
       this.assureCellEmpty(cell);
       ccp = this.getActorPosition(actor);
       fromCell = ccp.cell;
       toPos = dataTypes.ActorPosition.get(actor, cell, ccp.dir);
-      this.data.get("actors").removeData(fromCell);
-      return this.data.get("actors").putData(cell, toPos);
+      extra = {
+        action: actor.s.AID_MOVE,
+        moveFrom: fromCell,
+        moveTo: cell
+      };
+      this.data.get("actors").removeData(fromCell, extra);
+      return this.data.get("actors").putData(cell, toPos, extra);
     };
 
     World.prototype.removeActor = function(actor) {

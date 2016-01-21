@@ -51,8 +51,14 @@ class gameLogic.entities.World extends gameLogic.Object
     fromCell = ccp.cell
     toPos = dataTypes.ActorPosition.get actor, cell, ccp.dir
 
-    @data.get("actors").removeData fromCell
-    @data.get("actors").putData cell, toPos
+    extra = {
+      action: actor.s.AID_MOVE
+      moveFrom: fromCell
+      moveTo: cell
+    }
+
+    @data.get("actors").removeData fromCell, extra
+    @data.get("actors").putData cell, toPos, extra
 
   # Remove entity from a given cell
   removeActor: (actor)=>
