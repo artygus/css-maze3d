@@ -33,6 +33,10 @@
         dead: {
           cl: "-animate-death",
           time: 2000
+        },
+        move: {
+          cl: "-animate-move",
+          time: 2100
         }
       };
     };

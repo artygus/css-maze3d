@@ -332,5 +332,97 @@
   animation: model-sample-animation-death-leg 2s;
 }
 
+/* Move animation */
+
+@-webkit-keyframes model-sample-animation-move-left-leg {
+  0% {
+    transform: translateX(35px) translateY(200px) rotateX(0deg);
+  }
+
+  40% {
+    transform: translateX(35px) translateY(200px) rotateX(30deg);
+  }
+
+  80% {
+    transform: translateX(35px) translateY(200px) rotateX(-30deg);
+  }
+
+  100% {
+    transform: translateX(35px) translateY(200px) rotateX(0deg);
+  }
+}
+
+@-webkit-keyframes model-sample-animation-move-right-leg {
+  0% {
+    transform: translateX(-35px) translateY(200px) rotateX(0deg);
+  }
+
+  40% {
+    transform: translateX(-35px) translateY(200px) rotateX(-30deg);
+  }
+
+  80% {
+    transform: translateX(-35px) translateY(200px) rotateX(30deg);
+  }
+
+  100% {
+    transform: translateX(-35px) translateY(200px) rotateX(0deg);
+  }
+}
+
+@-webkit-keyframes model-sample-animation-move-left-hand {
+  0% {
+    transform: translateX(100px) translateY(60px) rotateX(0deg);
+  }
+
+  40% {
+    transform: translateX(100px) translateY(60px) rotateX(-20deg);
+  }
+
+  80% {
+    transform: translateX(100px) translateY(60px) rotateX(20deg);
+  }
+
+  100% {
+    transform: translateX(100px) translateY(60px) rotateX(0deg);
+  }
+}
+
+@-webkit-keyframes model-sample-animation-move-right-hand {
+  0% {
+    transform: translateX(-80px) translateY(60px) rotateX(0deg);
+  }
+
+  40% {
+    transform: translateX(-80px) translateY(60px) rotateX(20deg);
+  }
+
+  80% {
+    transform: translateX(-80px) translateY(60px) rotateX(-20deg);
+  }
+
+  100% {
+    transform: translateX(-80px) translateY(60px) rotateX(0deg);
+  }
+}
+
+.model-sample.-animate-move .model-sample__leg.-left {
+  animation: model-sample-animation-move-left-leg 2s infinite;
+}
+
+.model-sample.-animate-move .model-sample__leg.-right {
+  animation: model-sample-animation-move-right-leg 2s infinite;
+}
+
+.model-sample.-animate-move .model-sample__hand.-left {
+  animation: model-sample-animation-move-left-hand 2s infinite;
+}
+
+.model-sample.-animate-move .model-sample__hand.-right {
+  animation: model-sample-animation-move-right-hand 2s infinite;
+}
+
+
+
 
 

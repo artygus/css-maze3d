@@ -14,12 +14,12 @@ class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
   act: =>
     super
 
-    victim = @app.world.getActorByCell(@getNextViewpointCell())
-
-    if victim?
-      @actionAttack()
+    if !@_previousAction? || @_previousAction == "move_forward"
+      @actionMoveBackward()
+      @_previousAction = "move_backward"
     else
-      @actionNoop()
+      @actionMoveForward()
+      @_previousAction = "move_forward"
 
   # @param {Integer} diceValue d100 dice value
   # @return {Integer}

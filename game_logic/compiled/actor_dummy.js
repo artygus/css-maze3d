@@ -28,13 +28,13 @@
     };
 
     Dummy.prototype.act = function() {
-      var victim;
       Dummy.__super__.act.apply(this, arguments);
-      victim = this.app.world.getActorByCell(this.getNextViewpointCell());
-      if (victim != null) {
-        return this.actionAttack();
+      if ((this._previousAction == null) || this._previousAction === "move_forward") {
+        this.actionMoveBackward();
+        return this._previousAction = "move_backward";
       } else {
-        return this.actionNoop();
+        this.actionMoveForward();
+        return this._previousAction = "move_forward";
       }
     };
 

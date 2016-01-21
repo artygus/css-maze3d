@@ -20,6 +20,10 @@ class models.actors.Dummy extends models.actors.Abstract
         cl: "-animate-death"
         time: 2000
 
+      move:
+        cl: "-animate-move"
+        time: 2100
+
     }
 
   # @return {String}
