@@ -16,6 +16,7 @@
 
     function App() {
       this.start = __bind(this.start, this);
+      this.moveActor = __bind(this.moveActor, this);
       this.cameraUpdate = __bind(this.cameraUpdate, this);
       this.renderLevelActors = __bind(this.renderLevelActors, this);
       this.renderLevelGeometry = __bind(this.renderLevelGeometry, this);
@@ -78,22 +79,36 @@
     };
 
     App.prototype.linkGameLogicToRender = function() {
-      var actors, sActorsChanged;
+      var actors, fMdata, sActorsChanged;
       actors = this.gl.world.data.get("actors");
       sActorsChanged = $(actors).asEventStream(actors.s.I_DATA_CHANGED);
-      sActorsChanged.filter((function(_this) {
+      fMdata = (function(_this) {
         return function(v) {
           return v.key === "mdata";
         };
-      })(this)).onValue((function(_this) {
+      })(this);
+      sActorsChanged.filter(fMdata).onValue((function(_this) {
         return function() {
           return setTimeout(_this.cameraUpdate, 1);
         };
       })(this));
-      return $(actors).asEventStream(actors.tobject.s.I_DATA_DELETED).onValue((function(_this) {
+      return $(actors).asEventStream(actors.tobject.s.I_DATA_DELETED).filter(fMdata).onValue((function(_this) {
         return function(v) {
-          if (v.deleted.actor.isDead()) {
-            return _this.render.removeModel(v.deleted.actor.getModel().get()[0]);
+          var action, actor, extraData;
+          action = null;
+          extraData = null;
+          actor = v.deleted.actor;
+          if ((v.extraData != null) && (v.extraData.action != null)) {
+            action = v.extraData.action;
+            extraData = v.extraData;
+          }
+          if (actor.isDead()) {
+            return _this.render.removeModel(actor.getModel().get()[0]);
+          } else {
+            switch (action) {
+              case actor.s.AID_MOVE:
+                return _this.moveActor(actor, extraData.moveFrom, extraData.moveTo);
+            }
           }
         };
       })(this));
@@ -146,6 +161,16 @@
       this.camera.setCell(pos.cell[0], pos.cell[1]);
       this.camera.setDirection(pos.dir);
       return this.camera.camera.update();
+    };
+
+    App.prototype.moveActor = function(actor, from, to) {
+      var animation, model, time;
+      if (actor !== this.gl.player) {
+        model = actor.getModel();
+        animation = model.getAnimationForAction(actor.s.AID_MOVE);
+        time = animation != null ? animation.time : 0;
+        return this.render.moveModel(model.get(), from, to, time);
+      }
     };
 
     App.prototype.start = function() {

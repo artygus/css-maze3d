@@ -48,15 +48,33 @@ class gameSession.App extends abstract.Object
     sActorsChanged = $(actors)
       .asEventStream(actors.s.I_DATA_CHANGED)
 
+    fMdata = (v)=> v.key == "mdata"
+
     sActorsChanged
-      .filter((v)=> v.key == "mdata")
+      .filter(fMdata)
       .onValue => setTimeout @cameraUpdate, 1
 
     $(actors)
       .asEventStream(actors.tobject.s.I_DATA_DELETED)
+      .filter(fMdata)
       .onValue (v)=>
-        if v.deleted.actor.isDead()
-          @render.removeModel v.deleted.actor.getModel().get()[0]
+        action = null
+        extraData = null
+        actor = v.deleted.actor
+
+        if v.extraData? && v.extraData.action?
+          action = v.extraData.action
+          extraData = v.extraData
+
+        if actor.isDead()
+          @render.removeModel actor.getModel().get()[0]
+
+        else
+
+          switch action
+
+            when actor.s.AID_MOVE
+              @moveActor actor, extraData.moveFrom, extraData.moveTo
 
 
   # section: Getters & setters
@@ -93,7 +111,7 @@ class gameSession.App extends abstract.Object
         @render.modelPlace model, pos.cell, pos.dir
 
 
-  # section: Camera
+  # section: Render update
 
   cameraUpdate: =>
     pos = @gl.world.data.get("actors").getDataByEntity(@gl.player)
@@ -103,8 +121,16 @@ class gameSession.App extends abstract.Object
 
     @camera.camera.update()
 
+  moveActor: (actor, from, to)=>
+    if actor != @gl.player # Player is animated by render
+      model = actor.getModel()
+      animation = model.getAnimationForAction(actor.s.AID_MOVE)
+      time = if animation? then animation.time else 0
+      @render.moveModel model.get(), from, to, time
+
 
   # section: Main
+
   start: =>
     @initRender()
     @initControls()
