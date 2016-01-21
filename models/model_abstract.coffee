@@ -35,9 +35,13 @@ class models.Abstract extends abstract.Object
 
   # section: Animations
 
+  # @return {Object|undefined}
+  getAnimationForAction: (actionId)=>
+    @_animations[actionId]
+
   # @return {Integer} Pause time
   animate: (actionId)=>
-    if (ad = @_animations[actionId])?
+    if (ad = @getAnimationForAction(actionId))?
       return @animateBasic ad.cl, ad.time
     else
       return 0

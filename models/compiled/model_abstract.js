@@ -17,6 +17,7 @@
     function Abstract() {
       this.animateBasic = __bind(this.animateBasic, this);
       this.animate = __bind(this.animate, this);
+      this.getAnimationForAction = __bind(this.getAnimationForAction, this);
       this.getTemplate = __bind(this.getTemplate, this);
       this.get = __bind(this.get, this);
       this.initAnimationsDictionary = __bind(this.initAnimationsDictionary, this);
@@ -39,9 +40,13 @@
       return "";
     };
 
+    Abstract.prototype.getAnimationForAction = function(actionId) {
+      return this._animations[actionId];
+    };
+
     Abstract.prototype.animate = function(actionId) {
       var ad;
-      if ((ad = this._animations[actionId]) != null) {
+      if ((ad = this.getAnimationForAction(actionId)) != null) {
         return this.animateBasic(ad.cl, ad.time);
       } else {
         return 0;
