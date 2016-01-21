@@ -86,7 +86,6 @@ Renderer.prototype = {
   // Section: Models
 
   modelPlace: function(model, cell, direction) {
-    console.log("LAM", "Model place", model);
     var t = model;
 
     var coords = this.getCellCoords(cell);
@@ -133,15 +132,31 @@ Renderer.prototype = {
     $(this.node).append(t);
   },
 
-  // Removes model by a given modelId
+  // Removes model by a given model
   removeModel: function(model) {
     try {
-      console.log("LAM", "Remove model", model);
       this.node.removeChild(model);
     } catch(e) {
       console.error("You are trying to remove model which is not rendered!");
     }
 
+  },
+
+  // Moves model
+  moveModel: function(model, from, to, time) {
+    var transition = ["left ", time, "ms, ", "top ", time, "ms"];
+    model = $(model);
+    model.css({transition: transition.join("")});
+    var coords = this.getCellCoords(to);
+
+    setTimeout(function(){
+      model.css({top: coords[1], left: coords[0]});
+    }, 1);
+
+    setTimeout(
+      function(){ model.css({transition: ""}); },
+      time
+    )
   },
 
   // Section: Helpers
