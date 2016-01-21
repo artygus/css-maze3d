@@ -33,12 +33,12 @@
       return this.set("mdata", null);
     };
 
-    Matrix2d.prototype.putData = function(cell, data) {
-      return this.tobject.set("mdata", "" + cell[0] + "." + cell[1], data);
+    Matrix2d.prototype.putData = function(cell, data, extraData) {
+      return this.tobject.set("mdata", "" + cell[0] + "." + cell[1], data, extraData);
     };
 
-    Matrix2d.prototype.removeData = function(cell) {
-      return this.tobject["delete"]("mdata", "" + cell[0] + "." + cell[1]);
+    Matrix2d.prototype.removeData = function(cell, extraData) {
+      return this.tobject["delete"]("mdata", "" + cell[0] + "." + cell[1], extraData);
     };
 
     Matrix2d.prototype.getData = function(cell) {
