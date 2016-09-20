@@ -10,14 +10,19 @@
 
   <script src="../compiled/namespaces.js"></script>
   <script src="../compiled/object.js"></script>
+  <script src="../compiled/data_type_asset_entry.js"></script>
   <script src="../compiled/data_type_level.js"></script>
   <script src="compiled/object.js"></script>
+
+  <!-- Assets -->
+  <script src="../compiled/data_assets.js"></script>
+  <!-- /Assets -->
 
   <script src="compiled/data_level_editor.js"></script>
   <script src="compiled/data_level_cells.js"></script>
   <script src="compiled/data_ui_modes.js"></script>
 
-  <script src="compiled/level_editor.js"></script>
+  <script src="compiled/app_level_editor.js"></script>
 
   <script src="../compiled/helper_level.js"></script>
 
@@ -28,6 +33,7 @@
   <script src="compiled/view_ui_mode_switch_button.js"></script>
   <script src="compiled/view_modal_source.js"></script>
   <script src="compiled/view_modal_load_source.js"></script>
+  <script src="compiled/view_asset_explorer.js"></script>
 
   <script src="compiled/module_hotkeys.js"></script>
 
@@ -37,7 +43,7 @@
 
   <div app-level-editor class="level-editor">
 
-    <div class="ui -left -top">
+    <div class="ui -ui-frame -left -top">
 
       <div class="navbar navbar-default" id="menu-bar">
         <div class="container-fluid">
@@ -76,6 +82,21 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="ui -ui-frame -left -bottom" view-leditor-asset-explorer>
+      <div class="navbar navbar-default" id="asset-bar">
+        <div class="container-fluid">
+
+          <form class="ui-asset-select">
+            <div class="list-group ui-asset-select__list" asset-list>
+
+            </div>
+            <button type="button" class="btn btn-primary">Place asset</button>
+          </form>
+
+        </div>
+      </div>
     </div>
 
     <div class="appendix">

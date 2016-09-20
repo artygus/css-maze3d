@@ -109,15 +109,27 @@ body {
 
 }
 
-/* Menu bar */
-#menu-bar {
-  top: 30px;
-  left: 30px;
+.ui.-ui-frame {
+  padding: 30px;
 }
+
+/* Menu bar */
 
 #menu-bar .btn-group {
   margin-top: 10px;
   margin-bottom: 12px;
+}
+
+/* asset select form */
+.ui-asset-select {
+
+}
+
+.ui-asset-select__list {
+  height: 200px;
+  overflow-y: scroll;
+  width: 260px;
+  padding: 10px;
 }
 
 /* Helpers */

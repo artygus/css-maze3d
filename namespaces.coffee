@@ -27,6 +27,8 @@ window.utils = {
 
 window.dataTypes = {}
 
+window.data = {}
+
 window.models = {
   actors: {}
 }

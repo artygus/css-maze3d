@@ -30,6 +30,8 @@
 
   window.dataTypes = {};
 
+  window.data = {};
+
   window.models = {
     actors: {}
   };
