@@ -15,15 +15,32 @@
     Editor.prototype.DT = "levelEditor.data.Editor";
 
     function Editor() {
+      this.logicUpdateSelectedCellOnModeChanged = __bind(this.logicUpdateSelectedCellOnModeChanged, this);
       this.init = __bind(this.init, this);
       Editor.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
+      this.logicUpdateSelectedCellOnModeChanged();
     }
 
     Editor.prototype.init = function() {
       Editor.__super__.init.apply(this, arguments);
       this.set("ui-modes", new levelEditor.data.UiModes());
-      return this.set("level-cells", new levelEditor.data.LevelCells());
+      this.set("level-cells", new levelEditor.data.LevelCells());
+      return this.set("selected-cell", null);
+    };
+
+    Editor.prototype.logicUpdateSelectedCellOnModeChanged = function() {
+      return $(this.get("ui-modes")).asEventStream(this.s.I_DATA_CHANGED).filter(function(v) {
+        return v.key === "currentMode";
+      }).filter((function(_this) {
+        return function(v) {
+          return v.value !== _this.get("ui-modes").s.MODE_SELECT;
+        };
+      })(this)).onValue((function(_this) {
+        return function() {
+          return _this.setIfUnequal("selected-cell", null);
+        };
+      })(this));
     };
 
     return Editor;

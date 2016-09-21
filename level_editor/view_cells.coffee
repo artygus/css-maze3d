@@ -10,13 +10,20 @@ class levelEditor.view.Cells extends levelEditor.Object
     super
     console.log @DT, "Init."
 
-    @dUiModes = @app.data.get("ui-modes")
+    @dUIModes = @app.data.get("ui-modes")
     @dLevelCells = @app.data.get("level-cells")
 
     @initState()
     @initRender()
 
+    @drawSelectedCellState()
+
     @interactionGridClick()
+
+    $(@app.data)
+      .asEventStream(@app.data.s.I_DATA_CHANGED)
+      .filter((v)-> v.key == "selected-cell")
+      .onValue @drawSelectedCellState
 
 
   # section: State
@@ -34,15 +41,21 @@ class levelEditor.view.Cells extends levelEditor.Object
       .map((v)=> {el: $(v.target), altKey: v.altKey})
       .filter((v)=> v.el.attr("cell")?)
       .map((v)=> {cell: @s.getCellXYByEl(v.el), altKey: v.altKey})
+    
+    stream
+      .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_SELECT)
+      .filter((v)=> @dLevelCells.isCellBelongs(v.cell))
+      .onValue (v)=>
+        @app.data.setIfUnequal "selected-cell", v.cell
 
     stream
-      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_DESTROY)
+      .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_DESTROY)
       .filter((v)=> @dLevelCells.isCellBelongs(v.cell))
       .onValue (v)=>
         @dLevelCells.removeCell v.cell
 
     stream
-      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_BUILD)
+      .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_BUILD)
       .filter((v)=> !@dLevelCells.isCellBelongs(v.cell))
       .onValue (v)=>
         @dLevelCells.addCell v.cell
@@ -79,6 +92,15 @@ class levelEditor.view.Cells extends levelEditor.Object
       el.addClass "level-cell"
     else
       el.removeClass "level-cell"
+
+  # Draw selected state
+  drawSelectedCellState: =>
+    @grid.find("[cell].-selected").removeClass "-selected"
+
+    if (selected = @app.data.get("selected-cell"))?
+      el = @s.getCellByXY(selected, @grid)
+      console.log "LAM", "Select", el
+      el.addClass "-selected"
 
   # Redraw level
   redrawLevel: =>

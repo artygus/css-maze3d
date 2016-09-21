@@ -18,17 +18,22 @@
       this.grid = grid;
       this.app = app;
       this.redrawLevel = __bind(this.redrawLevel, this);
+      this.drawSelectedCellState = __bind(this.drawSelectedCellState, this);
       this.drawCellState = __bind(this.drawCellState, this);
       this.initRender = __bind(this.initRender, this);
       this.interactionGridClick = __bind(this.interactionGridClick, this);
       this.initState = __bind(this.initState, this);
       Cells.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
-      this.dUiModes = this.app.data.get("ui-modes");
+      this.dUIModes = this.app.data.get("ui-modes");
       this.dLevelCells = this.app.data.get("level-cells");
       this.initState();
       this.initRender();
+      this.drawSelectedCellState();
       this.interactionGridClick();
+      $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
+        return v.key === "selected-cell";
+      }).onValue(this.drawSelectedCellState);
     }
 
     Cells.prototype.initState = function() {
@@ -58,7 +63,20 @@
       })(this));
       stream.filter((function(_this) {
         return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_DESTROY;
+          return _this.dUIModes.get("currentMode") === _this.dUIModes.s.MODE_SELECT;
+        };
+      })(this)).filter((function(_this) {
+        return function(v) {
+          return _this.dLevelCells.isCellBelongs(v.cell);
+        };
+      })(this)).onValue((function(_this) {
+        return function(v) {
+          return _this.app.data.setIfUnequal("selected-cell", v.cell);
+        };
+      })(this));
+      stream.filter((function(_this) {
+        return function() {
+          return _this.dUIModes.get("currentMode") === _this.dUIModes.s.MODE_DESTROY;
         };
       })(this)).filter((function(_this) {
         return function(v) {
@@ -71,7 +89,7 @@
       })(this));
       return stream.filter((function(_this) {
         return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_BUILD;
+          return _this.dUIModes.get("currentMode") === _this.dUIModes.s.MODE_BUILD;
         };
       })(this)).filter((function(_this) {
         return function(v) {
@@ -118,6 +136,16 @@
         return el.addClass("level-cell");
       } else {
         return el.removeClass("level-cell");
+      }
+    };
+
+    Cells.prototype.drawSelectedCellState = function() {
+      var el, selected;
+      this.grid.find("[cell].-selected").removeClass("-selected");
+      if ((selected = this.app.data.get("selected-cell")) != null) {
+        el = this.s.getCellByXY(selected, this.grid);
+        console.log("LAM", "Select", el);
+        return el.addClass("-selected");
       }
     };
 
