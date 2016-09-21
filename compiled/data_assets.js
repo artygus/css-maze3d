@@ -5,6 +5,6 @@
  */
 
 (function() {
-  data.Assets = [dataTypes.AssetEntry.get("Dummy", "Dummy actor", gameLogic.actors.Dummy)];
+  data.Assets = [dataTypes.AssetEntry.get("Dummy", "Dummy actor")];
 
 }).call(this);
