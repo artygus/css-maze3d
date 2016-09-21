@@ -38,8 +38,10 @@
     AssetExplorer.prototype.interactionPlaceAssetBtnClick = function() {
       return this.btnPlaceAsset.asEventStream("click").onValue((function(_this) {
         return function() {
-          var selected;
-          return selected = _this.assetListContainer.find("[name=asset]:checked");
+          var asset, cell;
+          asset = _this.assetListContainer.find("[name=asset]:checked");
+          cell = _this.app.data.get("selected-cell");
+          return _this.app.data.get("level-actors").placeActor(dataTypes.ActorPosition.get(asset.attr("asset-id"), cell, dataTypes.WorldDirection.N));
         };
       })(this));
     };
@@ -69,7 +71,7 @@
       var id;
       id = "place-asset-" + asset.id;
       selected = selected ? "checked" : "";
-      return "<div class=\"radio\">\n  <label for=\"" + id + "\">\n    <input type=\"radio\" name=\"asset\" class=\"list-group-item\" id=\"" + id + "\" " + selected + ">\n    " + asset.name + "\n  </label>\n</div>";
+      return "<div class=\"radio\">\n  <label for=\"" + id + "\">\n    <input type=\"radio\" name=\"asset\" class=\"list-group-item\" id=\"" + id + "\" " + selected + " asset-id=\"" + asset.id + "\">\n    " + asset.name + "\n  </label>\n</div>";
     };
 
     return AssetExplorer;

@@ -31,10 +31,9 @@
       }
       return serialized;
     },
-    serializeToString: function(level) {
-      var actors, container, geometry;
+    serializeToString: function(level, actors) {
+      var container, geometry;
       geometry = utils.serializers.Level.serializeGeometry(level);
-      actors = [];
       container = dataTypes.Level.get(geometry, actors);
       return JSON.stringify(container);
     },

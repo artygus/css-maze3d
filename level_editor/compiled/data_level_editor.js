@@ -26,6 +26,7 @@
       Editor.__super__.init.apply(this, arguments);
       this.set("ui-modes", new levelEditor.data.UiModes());
       this.set("level-cells", new levelEditor.data.LevelCells());
+      this.set("level-actors", new levelEditor.data.LevelActors());
       return this.set("selected-cell", null);
     };
 

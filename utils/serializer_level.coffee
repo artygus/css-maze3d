@@ -32,9 +32,8 @@ utils.serializers.Level =
 
   # @param {levelEditor.data.LevelCells} level
   # @return {String}
-  serializeToString: (level)->
+  serializeToString: (level, actors)->
     geometry = utils.serializers.Level.serializeGeometry(level)
-    actors = []
     container = dataTypes.Level.get geometry, actors
     JSON.stringify container
 

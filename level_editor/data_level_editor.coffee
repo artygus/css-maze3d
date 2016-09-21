@@ -19,6 +19,8 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
 
     @set "level-cells", new levelEditor.data.LevelCells()
 
+    @set "level-actors",  new levelEditor.data.LevelActors()
+
     @set "selected-cell", null
 
 

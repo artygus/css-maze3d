@@ -27,7 +27,9 @@
     }
 
     ModalSource.prototype.drawLevelSource = function() {
-      return this.textarea.text(utils.serializers.Level.serializeToString(this.app.data.get("level-cells")));
+      var g;
+      g = this.app.data.get;
+      return this.textarea.text(utils.serializers.Level.serializeToString(g("level-cells"), g("level-actors").get("actors")));
     };
 
     return ModalSource;

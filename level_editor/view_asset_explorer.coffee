@@ -33,7 +33,16 @@ class levelEditor.view.AssetExplorer extends levelEditor.Object
   interactionPlaceAssetBtnClick: =>
     @btnPlaceAsset.asEventStream("click")
       .onValue =>
-        selected = @assetListContainer.find("[name=asset]:checked")
+        asset = @assetListContainer.find("[name=asset]:checked")
+        cell = @app.data.get("selected-cell")
+
+        @app.data.get("level-actors").placeActor(
+          dataTypes.ActorPosition.get(
+            asset.attr("asset-id"),
+            cell,
+            dataTypes.WorldDirection.N
+          )
+        )
 
 
   # Section: Draw
@@ -65,7 +74,7 @@ class levelEditor.view.AssetExplorer extends levelEditor.Object
     """
       <div class="radio">
         <label for="#{id}">
-          <input type="radio" name="asset" class="list-group-item" id="#{id}" #{selected}>
+          <input type="radio" name="asset" class="list-group-item" id="#{id}" #{selected} asset-id="#{asset.id}">
           #{asset.name}
         </label>
       </div>
