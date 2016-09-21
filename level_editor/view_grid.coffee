@@ -10,11 +10,16 @@ class levelEditor.view.Grid extends levelEditor.Object
     super
     console.log @DT, "Init."
 
-    @dUiModes = @app.data.get("ui-modes")
+    @dUIModes = @app.data.get("ui-modes")
 
     @stateInit()
     @interactionMouseMove()
     @drawInitially()
+    @drawUIModes()
+
+    $(@dUIModes)
+      .asEventStream(@dUIModes.s.I_DATA_CHANGED)
+      .onValue @drawUIModes
 
   # section: State
 
@@ -97,6 +102,13 @@ class levelEditor.view.Grid extends levelEditor.Object
       if visible.indexOf(block) == -1
         block.hide()
 
+  drawUIModes: =>
+    cm = @dUIModes.get("currentMode")
+
+    cl = "-ui-mode-#{cm} "
+    cl += Handy.jqRemoveClassByPart(@el, "-ui-mode-")
+
+    @el.attr("class", cl)
 
   # @param {Integer} blockx
   # @param {Integer} blocky
@@ -175,7 +187,7 @@ class levelEditor.view.Grid extends levelEditor.Object
 
     mouse
       .filter((v)=> v.offsetx? && v.offsety?)
-      .filter(=> @dUiModes.get("currentMode") == @dUiModes.s.MODE_NAVIGATE)
+      .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_NAVIGATE)
       .onValue (v)=>
         xy = @getGridXY()
         xy = @handleGridPosition(xy[0] + v.offsetx, xy[1] + v.offsety)

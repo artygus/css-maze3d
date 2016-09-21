@@ -30,6 +30,7 @@
       this.positionBlock = __bind(this.positionBlock, this);
       this.renderGridBlock = __bind(this.renderGridBlock, this);
       this.drawBlock = __bind(this.drawBlock, this);
+      this.drawUIModes = __bind(this.drawUIModes, this);
       this.drawVisibleBlock = __bind(this.drawVisibleBlock, this);
       this.drawGridPosition = __bind(this.drawGridPosition, this);
       this.drawInitialBlock = __bind(this.drawInitialBlock, this);
@@ -37,10 +38,12 @@
       this.stateInit = __bind(this.stateInit, this);
       Grid.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
-      this.dUiModes = this.app.data.get("ui-modes");
+      this.dUIModes = this.app.data.get("ui-modes");
       this.stateInit();
       this.interactionMouseMove();
       this.drawInitially();
+      this.drawUIModes();
+      $(this.dUIModes).asEventStream(this.dUIModes.s.I_DATA_CHANGED).onValue(this.drawUIModes);
     }
 
     Grid.prototype.stateInit = function() {
@@ -124,6 +127,14 @@
         }
       }
       return _results;
+    };
+
+    Grid.prototype.drawUIModes = function() {
+      var cl, cm;
+      cm = this.dUIModes.get("currentMode");
+      cl = "-ui-mode-" + cm + " ";
+      cl += Handy.jqRemoveClassByPart(this.el, "-ui-mode-");
+      return this.el.attr("class", cl);
     };
 
     Grid.prototype.drawBlock = function(blockx, blocky) {
@@ -234,7 +245,7 @@
         };
       })(this)).filter((function(_this) {
         return function() {
-          return _this.dUiModes.get("currentMode") === _this.dUiModes.s.MODE_NAVIGATE;
+          return _this.dUIModes.get("currentMode") === _this.dUIModes.s.MODE_NAVIGATE;
         };
       })(this)).onValue((function(_this) {
         return function(v) {
