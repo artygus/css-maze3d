@@ -21,27 +21,55 @@
       this.app = app;
       this.templateAssetListItem = __bind(this.templateAssetListItem, this);
       this.renderAssetsList = __bind(this.renderAssetsList, this);
+      this.drawPlaceButtonState = __bind(this.drawPlaceButtonState, this);
+      this.interactionPlaceAssetBtnClick = __bind(this.interactionPlaceAssetBtnClick, this);
       AssetExplorer.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
+      this.assetListContainer = this.view.find("[asset-list]");
+      this.btnPlaceAsset = this.view.find("[place-asset]");
       this.renderAssetsList();
+      this.drawPlaceButtonState();
+      this.interactionPlaceAssetBtnClick();
+      $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
+        return v.key === "selected-cell";
+      }).onValue(this.drawPlaceButtonState);
     }
 
+    AssetExplorer.prototype.interactionPlaceAssetBtnClick = function() {
+      return this.btnPlaceAsset.asEventStream("click").onValue((function(_this) {
+        return function() {
+          var selected;
+          return selected = _this.assetListContainer.find("[name=asset]:checked");
+        };
+      })(this));
+    };
+
+    AssetExplorer.prototype.drawPlaceButtonState = function() {
+      if (this.app.data.get("selected-cell") != null) {
+        return this.btnPlaceAsset.attr("disabled", null);
+      } else {
+        return this.btnPlaceAsset.attr("disabled", true);
+      }
+    };
+
     AssetExplorer.prototype.renderAssetsList = function() {
-      var asset, container, _i, _len, _ref, _results;
-      container = this.view.find("[asset-list]");
+      var asset, selected, _i, _len, _ref, _results;
+      selected = true;
       _ref = data.Assets;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         asset = _ref[_i];
-        _results.push(container.append(this.templateAssetListItem(asset)));
+        this.assetListContainer.append(this.templateAssetListItem(asset, selected));
+        _results.push(selected = false);
       }
       return _results;
     };
 
-    AssetExplorer.prototype.templateAssetListItem = function(asset) {
+    AssetExplorer.prototype.templateAssetListItem = function(asset, selected) {
       var id;
       id = "place-asset-" + asset.id;
-      return "<div class=\"radio\">\n  <label for=\"" + id + "\">\n    <input type=\"radio\" name=\"asset\" class=\"list-group-item\" id=\"" + id + "\">\n    " + asset.name + "\n  </label>\n</div>";
+      selected = selected ? "checked" : "";
+      return "<div class=\"radio\">\n  <label for=\"" + id + "\">\n    <input type=\"radio\" name=\"asset\" class=\"list-group-item\" id=\"" + id + "\" " + selected + ">\n    " + asset.name + "\n  </label>\n</div>";
     };
 
     return AssetExplorer;
