@@ -19,9 +19,18 @@ class levelEditor.data.LevelActors extends chms.ard.AbstractReactiveData
       console.warn @DT, "placeActor: Actor already exists on " + actorpos.cell
 
   # @retun {Boolean}
-  isAnyActorOnCell: (cell)=>
-    @get("actors").reduce(
-      (acc, cur)=> dataTypes.WorldCell.isEqual(cur.cell, cell)
-      false
+  isAnyActorOnCell: (cell)=> @getActorOnCell(cell)?
+
+  # @return {dataTypes.ActorPosition}
+  getActorOnCell: (cell)=>
+    actor = @get("actors").filter(
+      (cur)=> dataTypes.WorldCell.isEqual(cur.cell, cell)
     )
+
+    if actor.length == 1
+      return actor[0]
+    else if actor.length > 1
+      throw "#{@DT}: There are 2 or more actors at one cell!"
+    else
+      return null
 

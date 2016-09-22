@@ -12,6 +12,7 @@ class levelEditor.view.Cells extends levelEditor.Object
 
     @dUIModes = @app.data.get("ui-modes")
     @dLevelCells = @app.data.get("level-cells")
+    @dLevelActors = @app.data.get("level-actors")
 
     @initState()
     @initRender()
@@ -19,11 +20,6 @@ class levelEditor.view.Cells extends levelEditor.Object
     @drawSelectedCellState()
 
     @interactionGridClick()
-
-    $(@app.data)
-      .asEventStream(@app.data.s.I_DATA_CHANGED)
-      .filter((v)-> v.key == "selected-cell")
-      .onValue @drawSelectedCellState
 
 
   # section: State
@@ -80,6 +76,18 @@ class levelEditor.view.Cells extends levelEditor.Object
       .filter((v)=> v.extraData? && v.extraData[@dLevelCells.FLAG_LEVEL_LOADED] == true)
       .onValue @redrawLevel
 
+    $(@app.data)
+      .asEventStream(@app.data.s.I_DATA_CHANGED)
+      .filter((v)-> v.key == "selected-cell")
+      .onValue @drawSelectedCellState
+
+    $(@dLevelActors)
+      .asEventStream(@app.data.tarray.s.I_DATA_INSERTED)
+      .filter((v)-> v.key == "actors")
+      .onValue (v)=>
+        actor = v.inserted
+        @drawActorCellState(actor.cell)
+
 
   # Draw current cell state
   # @param {Cell} cell
@@ -99,8 +107,13 @@ class levelEditor.view.Cells extends levelEditor.Object
 
     if (selected = @app.data.get("selected-cell"))?
       el = @s.getCellByXY(selected, @grid)
-      console.log "LAM", "Select", el
       el.addClass "-selected"
+
+  drawActorCellState: (cell)=>
+    actor = @dLevelActors.getActorOnCell(cell)
+
+    el = @s.getCellByXY(cell, @grid)
+    el.toggleClass "actor-cell", actor?
 
   # Redraw level
   redrawLevel: =>

@@ -18,6 +18,7 @@
       this.grid = grid;
       this.app = app;
       this.redrawLevel = __bind(this.redrawLevel, this);
+      this.drawActorCellState = __bind(this.drawActorCellState, this);
       this.drawSelectedCellState = __bind(this.drawSelectedCellState, this);
       this.drawCellState = __bind(this.drawCellState, this);
       this.initRender = __bind(this.initRender, this);
@@ -27,13 +28,11 @@
       console.log(this.DT, "Init.");
       this.dUIModes = this.app.data.get("ui-modes");
       this.dLevelCells = this.app.data.get("level-cells");
+      this.dLevelActors = this.app.data.get("level-actors");
       this.initState();
       this.initRender();
       this.drawSelectedCellState();
       this.interactionGridClick();
-      $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
-        return v.key === "selected-cell";
-      }).onValue(this.drawSelectedCellState);
     }
 
     Cells.prototype.initState = function() {
@@ -121,11 +120,23 @@
           };
         })(this));
       }
-      return $(this.dLevelCells).asEventStream(this.dLevelCells.s.I_DATA_CHANGED).filter((function(_this) {
+      $(this.dLevelCells).asEventStream(this.dLevelCells.s.I_DATA_CHANGED).filter((function(_this) {
         return function(v) {
           return (v.extraData != null) && v.extraData[_this.dLevelCells.FLAG_LEVEL_LOADED] === true;
         };
       })(this)).onValue(this.redrawLevel);
+      $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
+        return v.key === "selected-cell";
+      }).onValue(this.drawSelectedCellState);
+      return $(this.dLevelActors).asEventStream(this.app.data.tarray.s.I_DATA_INSERTED).filter(function(v) {
+        return v.key === "actors";
+      }).onValue((function(_this) {
+        return function(v) {
+          var actor;
+          actor = v.inserted;
+          return _this.drawActorCellState(actor.cell);
+        };
+      })(this));
     };
 
     Cells.prototype.drawCellState = function(cell) {
@@ -144,9 +155,15 @@
       this.grid.find("[cell].-selected").removeClass("-selected");
       if ((selected = this.app.data.get("selected-cell")) != null) {
         el = this.s.getCellByXY(selected, this.grid);
-        console.log("LAM", "Select", el);
         return el.addClass("-selected");
       }
+    };
+
+    Cells.prototype.drawActorCellState = function(cell) {
+      var actor, el;
+      actor = this.dLevelActors.getActorOnCell(cell);
+      el = this.s.getCellByXY(cell, this.grid);
+      return el.toggleClass("actor-cell", actor != null);
     };
 
     Cells.prototype.redrawLevel = function() {

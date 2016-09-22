@@ -13,6 +13,7 @@
     __extends(LevelActors, _super);
 
     function LevelActors() {
+      this.getActorOnCell = __bind(this.getActorOnCell, this);
       this.isAnyActorOnCell = __bind(this.isAnyActorOnCell, this);
       this.placeActor = __bind(this.placeActor, this);
       this.init = __bind(this.init, this);
@@ -35,11 +36,23 @@
     };
 
     LevelActors.prototype.isAnyActorOnCell = function(cell) {
-      return this.get("actors").reduce((function(_this) {
-        return function(acc, cur) {
+      return this.getActorOnCell(cell) != null;
+    };
+
+    LevelActors.prototype.getActorOnCell = function(cell) {
+      var actor;
+      actor = this.get("actors").filter((function(_this) {
+        return function(cur) {
           return dataTypes.WorldCell.isEqual(cur.cell, cell);
         };
-      })(this), false);
+      })(this));
+      if (actor.length === 1) {
+        return actor[0];
+      } else if (actor.length > 1) {
+        throw "" + this.DT + ": There are 2 or more actors at one cell!";
+      } else {
+        return null;
+      }
     };
 
     return LevelActors;

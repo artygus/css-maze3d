@@ -70,6 +70,17 @@ body {
   border-left-color: blue;
 }
 
+/* Actor cell */
+.actor-cell:before {
+  content: 'x';
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
 
 /* UI */
 
