@@ -43,7 +43,7 @@
       var actor;
       actor = this.get("actors").filter((function(_this) {
         return function(cur) {
-          return dataTypes.WorldCell.isEqual(cur.cell, cell);
+          return dataTypes.Pos.isEqual(cur.cell, cell);
         };
       })(this));
       if (actor.length === 1) {

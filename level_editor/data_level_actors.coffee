@@ -24,7 +24,7 @@ class levelEditor.data.LevelActors extends chms.ard.AbstractReactiveData
   # @return {dataTypes.ActorPosition}
   getActorOnCell: (cell)=>
     actor = @get("actors").filter(
-      (cur)=> dataTypes.WorldCell.isEqual(cur.cell, cell)
+      (cur)=> dataTypes.Pos.isEqual(cur.cell, cell)
     )
 
     if actor.length == 1

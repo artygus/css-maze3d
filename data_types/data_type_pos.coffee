@@ -1,8 +1,8 @@
 ###
-  World cell
+  2d position
 ###
 
-dataTypes.WorldCell =
+dataTypes.Pos =
 
   get: (x, y)-> [x, y]
 

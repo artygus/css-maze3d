@@ -327,9 +327,9 @@
       cp = pos.cell;
       md = this.getMoveDimensionAndVector(cp, pos.dir);
       if (md.dim === 0) {
-        return dataTypes.WorldCell.get(cp[0] + md.vector, cp[1]);
+        return dataTypes.Pos.get(cp[0] + md.vector, cp[1]);
       } else {
-        return dataTypes.WorldCell.get(cp[0], cp[1] + md.vector);
+        return dataTypes.Pos.get(cp[0], cp[1] + md.vector);
       }
     };
 

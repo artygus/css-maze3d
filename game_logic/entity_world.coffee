@@ -118,7 +118,7 @@ class gameLogic.entities.World extends gameLogic.Object
 
   # section: Helpers
 
-  # @param {dataTypes.WorldCell} cell
+  # @param {dataTypes.Pos} cell
   # @return {gameLogic.actors.AbstractActor|undefined}
   getActorByCell: (cell)=>
     pos = @data.get("actors").getData(cell)
