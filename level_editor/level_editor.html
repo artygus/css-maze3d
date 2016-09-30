@@ -13,7 +13,7 @@
   <script src="../compiled/object.js"></script>
   <script src="../compiled/data_type_asset_entry.js"></script>
   <script src="../compiled/data_type_actor_position.js"></script>
-  <script src="../compiled/data_type_world_directions.js"></script>
+  <script src="../compiled/data_type_world_direction.js"></script>
   <script src="../compiled/data_type_pos.js"></script>
   <script src="../compiled/data_type_level.js"></script>
   <script src="compiled/object.js"></script>
@@ -39,6 +39,7 @@
   <script src="compiled/view_modal_source.js"></script>
   <script src="compiled/view_modal_load_source.js"></script>
   <script src="compiled/view_asset_explorer.js"></script>
+  <script src="compiled/view_actor_direction.js"></script>
 
   <script src="compiled/module_hotkeys.js"></script>
 
@@ -100,6 +101,42 @@
             <button type="button" class="btn btn-primary" place-asset>Place asset</button>
           </form>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="ui -ui-frame -right -bottom" view-leditor-actor-direction>
+      <div class="navbar navbar-default">
+        <div class="container-fluid">
+          <form class="ui-actor-direction">
+            <div class="row">
+              <div class="col-md-12">
+                <label for="actor-direction-n">
+                  <input type="radio" name="actor-direction" id="actor-direction-n"> North
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label for="actor-direction-w">
+                  <input type="radio" name="actor-direction" id="actor-direction-w"> West
+                </label>
+              </div>
+              <div class="col-md-4 ui-actor-direction__actor-id" actor-id>#{Actor id}</div>
+              <div class="col-md-4">
+                <label for="actor-direction-e">
+                  <input type="radio" name="actor-direction" id="actor-direction-e"> East
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="actor-direction-s">
+                  <input type="radio" name="actor-direction" id="actor-direction-s"> South
+                </label>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

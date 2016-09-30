@@ -131,7 +131,7 @@ body {
   margin-bottom: 12px;
 }
 
-/* asset select form */
+/* Asset select form */
 .ui-asset-select {
 
 }
@@ -141,6 +141,32 @@ body {
   overflow-y: scroll;
   width: 260px;
   padding: 10px;
+}
+
+/* Actor direction view */
+
+.ui-actor-direction {
+  margin-top: 14px;
+}
+
+.ui-actor-direction {
+  width: 290px;
+}
+
+.ui-actor-direction .col-md-12 {
+  text-align: center;
+}
+
+.ui-actor-direction .col-md-4 {
+  text-align: center;
+}
+
+.ui-actor-direction .col-md-4:first-child {
+  text-align: right;
+}
+
+.ui-actor-direction .col-md-4:last-child {
+  text-align: left;
 }
 
 /* Helpers */

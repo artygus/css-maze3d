@@ -25,6 +25,7 @@
       new levelEditor.view.ModalSource(this.el.find("[" + levelEditor.view.ModalSource.VID + "]"), this);
       new levelEditor.view.ModalLoadSource(this.el.find("[" + levelEditor.view.ModalLoadSource.VID + "]"), this);
       new levelEditor.view.AssetExplorer(this.el.find("[" + levelEditor.view.AssetExplorer.VID + "]"), this);
+      new levelEditor.view.ActorDirection(this.el.find("[" + levelEditor.view.ActorDirection.VID + "]"), this);
       this.el.find("[" + levelEditor.view.UIModeSwitchButton.VID + "]").each((function(_this) {
         return function(i, v) {
           return new levelEditor.view.UIModeSwitchButton($(v), _this);
