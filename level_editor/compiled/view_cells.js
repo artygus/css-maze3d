@@ -179,7 +179,7 @@
     };
 
     Cells.getCellXYByEl = function(el) {
-      return [parseInt(el.attr("x")), parseInt(el.attr("y"))];
+      return dataTypes.Pos.get(parseInt(el.attr("x")), parseInt(el.attr("y")));
     };
 
     Cells.getCellByXY = function(cell, grid) {

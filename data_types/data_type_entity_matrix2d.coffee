@@ -21,7 +21,7 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
   # section: Cells
 
   # Put data to a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @param {*} entity
   putData: (cell, entity)=>
     super
@@ -30,7 +30,7 @@ class dataTypes.EntityMatrix2d extends dataTypes.Matrix2d
 
 
   # Remove data from a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   removeData: (cell)=>
     d = @getData cell
 

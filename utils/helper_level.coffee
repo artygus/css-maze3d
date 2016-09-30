@@ -5,7 +5,7 @@
 utils.helpers.Level =
 
   # Get nearest cross-cells for a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @return {Object}
   getCrossCellsForCell: (cell)->
     x = cell[0]
@@ -19,6 +19,6 @@ utils.helpers.Level =
     }
 
   # Construct cell-id for a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @return {String}
   getCellId: (cell)-> "#{cell[0]}x#{cell[1]}"

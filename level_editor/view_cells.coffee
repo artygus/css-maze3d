@@ -90,7 +90,7 @@ class levelEditor.view.Cells extends levelEditor.Object
 
 
   # Draw current cell state
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   drawCellState: (cell)=>
     console.log @DT, "Draw cell state", cell
 
@@ -128,12 +128,14 @@ class levelEditor.view.Cells extends levelEditor.Object
   # sub section: Helpers
 
   # Get cell x,y by element
-  # @return {Cell}
+  # @return {dataTypes.Pos}
   @getCellXYByEl: (el)->
-    [parseInt(el.attr("x")), parseInt(el.attr("y"))]
+    dataTypes.Pos.get(
+      parseInt(el.attr("x")), parseInt(el.attr("y"))
+    )
 
   # Get cell by x,y
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @param {jQuery} grid
   @getCellByXY: (cell, grid)=>
     grid.find("[cell][x=#{cell[0]}][y=#{cell[1]}]")

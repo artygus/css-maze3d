@@ -15,20 +15,20 @@ class levelEditor.data.LevelCells extends chms.ard.AbstractReactiveData
   init: =>
     super
 
-    # {Array.<Cell>}
+    # {Array.<dataTypes.Pos>}
     @set "levelCells", []
 
 
   # section: Cells
 
   # Adds cell to level
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   addCell: (cell)=>
     unless @isCellBelongs(cell)
       @tarray.push "levelCells", cell
 
   # Remove cell from level
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   removeCell: (cell)=>
     i = @getCellIndex(cell)
 
@@ -36,7 +36,7 @@ class levelEditor.data.LevelCells extends chms.ard.AbstractReactiveData
       @tarray.delete "levelCells", i
 
   # Is cell belongs to level?
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @return {Boolean}
   isCellBelongs: (cell)=>
     @getCellIndex(cell) != -1

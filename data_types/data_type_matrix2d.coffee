@@ -22,26 +22,26 @@ class dataTypes.Matrix2d extends chms.ard.AbstractReactiveData
   # section: Cells
 
   # Put data to a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @param {*} data
   # @param {Object} extraData
   putData: (cell, data, extraData)=>
     @tobject.set "mdata", "#{cell[0]}.#{cell[1]}", data, extraData
 
   # Remove data from a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @param {Object} extraData
   removeData: (cell, extraData)=>
     @tobject.delete "mdata", "#{cell[0]}.#{cell[1]}", extraData
 
   # Get data from a given cell
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @return {*}
   getData: (cell)=>
     @tobject.get "mdata", "#{cell[0]}.#{cell[1]}"
 
   # Checks whatever given cell contains data or not
-  # @param {Cell} cell
+  # @param {dataTypes.Pos} cell
   # @return {Boolean}
   isCellContainsData: (cell)=> @getData(cell)?
 
