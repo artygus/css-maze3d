@@ -12,10 +12,24 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
     super
     console.log @DT, "Init."
 
+    @dactors = @app.data.get("level-actors")
+
     @logicUpdateDisableStateOnCellSelected()
+    @logicUpdateActorDirectionOnRadioSelected()
 
 
   # section: Logic
+
+  logicUpdateActorDirectionOnRadioSelected: =>
+    @getRadios()
+      .asEventStream("click")
+      .filter(@app.data.isCellSelectedWithActor)
+      .onValue (e)=>
+        dir = $(e.currentTarget).attr("value")
+        s = @app.data.get("selected-cell")
+        actor = @dactors.getActorOnCell(s)
+        actor.dir = dir
+        @dactors.updateActor(actor)
 
   logicUpdateDisableStateOnCellSelected: =>
     updateState = (s)=>
@@ -23,7 +37,7 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
 
       if s == null
         @stateNoCellSelected()
-      else if (apos = @app.data.get("level-actors").getActorOnCell(s))?
+      else if (apos = @dactors.getActorOnCell(s))?
         @stateActor(apos)
       else
         @stateNoActor()
@@ -33,7 +47,7 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
       .filter((v)-> v.key == "selected-cell")
       .onValue updateState
 
-    $(@app.data.get("level-actors"))
+    $(@dactors)
       .asEventStream(@app.data.s.I_DATA_CHANGED)
       .filter((v)-> v.key == "actors")
       .onValue updateState

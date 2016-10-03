@@ -15,6 +15,7 @@
     Editor.prototype.DT = "levelEditor.data.Editor";
 
     function Editor() {
+      this.isCellSelectedWithActor = __bind(this.isCellSelectedWithActor, this);
       this.logicUpdateSelectedCellOnModeChanged = __bind(this.logicUpdateSelectedCellOnModeChanged, this);
       this.init = __bind(this.init, this);
       Editor.__super__.constructor.apply(this, arguments);
@@ -42,6 +43,12 @@
           return _this.setIfUnequal("selected-cell", null);
         };
       })(this));
+    };
+
+    Editor.prototype.isCellSelectedWithActor = function() {
+      var s;
+      s = this.get("selected-cell");
+      return (s != null) && (this.get("level-actors").getActorOnCell(s) != null);
     };
 
     return Editor;

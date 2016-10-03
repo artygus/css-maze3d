@@ -30,10 +30,26 @@
       this.disableWorldDirectionRadios = __bind(this.disableWorldDirectionRadios, this);
       this.getRadios = __bind(this.getRadios, this);
       this.logicUpdateDisableStateOnCellSelected = __bind(this.logicUpdateDisableStateOnCellSelected, this);
+      this.logicUpdateActorDirectionOnRadioSelected = __bind(this.logicUpdateActorDirectionOnRadioSelected, this);
       ActorDirection.__super__.constructor.apply(this, arguments);
       console.log(this.DT, "Init.");
+      this.dactors = this.app.data.get("level-actors");
       this.logicUpdateDisableStateOnCellSelected();
+      this.logicUpdateActorDirectionOnRadioSelected();
     }
+
+    ActorDirection.prototype.logicUpdateActorDirectionOnRadioSelected = function() {
+      return this.getRadios().asEventStream("click").filter(this.app.data.isCellSelectedWithActor).onValue((function(_this) {
+        return function(e) {
+          var actor, dir, s;
+          dir = $(e.currentTarget).attr("value");
+          s = _this.app.data.get("selected-cell");
+          actor = _this.dactors.getActorOnCell(s);
+          actor.dir = dir;
+          return _this.dactors.updateActor(actor);
+        };
+      })(this));
+    };
 
     ActorDirection.prototype.logicUpdateDisableStateOnCellSelected = function() {
       var updateState;
@@ -43,7 +59,7 @@
           s = _this.app.data.get("selected-cell");
           if (s === null) {
             return _this.stateNoCellSelected();
-          } else if ((apos = _this.app.data.get("level-actors").getActorOnCell(s)) != null) {
+          } else if ((apos = _this.dactors.getActorOnCell(s)) != null) {
             return _this.stateActor(apos);
           } else {
             return _this.stateNoActor();
@@ -53,7 +69,7 @@
       $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
         return v.key === "selected-cell";
       }).onValue(updateState);
-      $(this.app.data.get("level-actors")).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
+      $(this.dactors).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
         return v.key === "actors";
       }).onValue(updateState);
       return updateState();

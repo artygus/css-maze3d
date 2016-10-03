@@ -34,3 +34,9 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
       .onValue => @setIfUnequal "selected-cell", null
 
 
+  # section: Helpers
+
+  # @return {Boolean}
+  isCellSelectedWithActor: =>
+    s = @get("selected-cell")
+    s? && @get("level-actors").getActorOnCell(s)?

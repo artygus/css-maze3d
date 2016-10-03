@@ -13,8 +13,10 @@
     __extends(LevelActors, _super);
 
     function LevelActors() {
+      this.findActorIndexByPos = __bind(this.findActorIndexByPos, this);
       this.getActorOnCell = __bind(this.getActorOnCell, this);
       this.isAnyActorOnCell = __bind(this.isAnyActorOnCell, this);
+      this.updateActor = __bind(this.updateActor, this);
       this.placeActor = __bind(this.placeActor, this);
       this.init = __bind(this.init, this);
       return LevelActors.__super__.constructor.apply(this, arguments);
@@ -35,23 +37,42 @@
       }
     };
 
+    LevelActors.prototype.updateActor = function(actorpos) {
+      var i;
+      if ((i = this.findActorIndexByPos(actorpos.cell)) > -1) {
+        this.tarray["delete"]("actors", i);
+        return this.placeActor(actorpos);
+      } else {
+        throw "" + this.DT + ": Actor not exist on a given cell " + actorpos.cell;
+      }
+    };
+
     LevelActors.prototype.isAnyActorOnCell = function(cell) {
       return this.getActorOnCell(cell) != null;
     };
 
     LevelActors.prototype.getActorOnCell = function(cell) {
-      var actor;
-      actor = this.get("actors").filter((function(_this) {
-        return function(cur) {
-          return dataTypes.Pos.isEqual(cur.cell, cell);
-        };
-      })(this));
-      if (actor.length === 1) {
-        return actor[0];
-      } else if (actor.length > 1) {
-        throw "" + this.DT + ": There are 2 or more actors at one cell!";
+      var i;
+      if ((i = this.findActorIndexByPos(cell)) > -1) {
+        return this.get("actors")[i];
       } else {
         return null;
+      }
+    };
+
+    LevelActors.prototype.findActorIndexByPos = function(pos) {
+      var res;
+      res = this.get("actors").map(function(e, i) {
+        return [e, i];
+      }).filter(function(e) {
+        return dataTypes.Pos.isEqual(e[0].cell, pos);
+      });
+      if (res.length === 1) {
+        return res[0][1];
+      } else if (res.length === 0) {
+        return -1;
+      } else {
+        throw "" + this.DT + ": There are two or more actor on a given pos " + pos;
       }
     };
 
