@@ -21,7 +21,7 @@ class levelEditor.data.LevelActors extends chms.ard.AbstractReactiveData
   # @retun {Boolean}
   isAnyActorOnCell: (cell)=> @getActorOnCell(cell)?
 
-  # @return {dataTypes.ActorPosition}
+  # @return {dataTypes.ActorPosition|null}
   getActorOnCell: (cell)=>
     actor = @get("actors").filter(
       (cur)=> dataTypes.Pos.isEqual(cur.cell, cell)
