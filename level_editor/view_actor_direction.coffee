@@ -19,6 +19,8 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
 
   logicUpdateDisableStateOnCellSelected: =>
     updateState = (s)=>
+      s = @app.data.get("selected-cell")
+
       if s == null
         @stateNoCellSelected()
       else if (apos = @app.data.get("level-actors").getActorOnCell(s))?
@@ -29,9 +31,14 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
     $(@app.data)
       .asEventStream(@app.data.s.I_DATA_CHANGED)
       .filter((v)-> v.key == "selected-cell")
-      .onValue (v)=> updateState(v.value)
+      .onValue updateState
 
-    updateState @app.data.get("selected-cell")
+    $(@app.data.get("level-actors"))
+      .asEventStream(@app.data.s.I_DATA_CHANGED)
+      .filter((v)-> v.key == "actors")
+      .onValue updateState
+
+    updateState()
 
 
   # section: View

@@ -40,6 +40,7 @@
       updateState = (function(_this) {
         return function(s) {
           var apos;
+          s = _this.app.data.get("selected-cell");
           if (s === null) {
             return _this.stateNoCellSelected();
           } else if ((apos = _this.app.data.get("level-actors").getActorOnCell(s)) != null) {
@@ -51,12 +52,11 @@
       })(this);
       $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
         return v.key === "selected-cell";
-      }).onValue((function(_this) {
-        return function(v) {
-          return updateState(v.value);
-        };
-      })(this));
-      return updateState(this.app.data.get("selected-cell"));
+      }).onValue(updateState);
+      $(this.app.data.get("level-actors")).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
+        return v.key === "actors";
+      }).onValue(updateState);
+      return updateState();
     };
 
     ActorDirection.prototype.getRadios = function() {
