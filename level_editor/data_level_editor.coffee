@@ -34,6 +34,16 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
       .onValue => @setIfUnequal "selected-cell", null
 
 
+  # section: Actors
+
+  # @param {dataTypes.ActorPosition} actorpos
+  placeActor: (actorpos)=>
+    if @get("level-cells").isCellBelongs(actorpos.cell)
+      @get("level-actors").placeActor(actorpos)
+    else
+      throw "#{@DT}: cell #{actorpos.cell} does not belongs to level"
+
+
   # section: Cells
 
   # Remove cell from level

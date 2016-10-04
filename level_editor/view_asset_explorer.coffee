@@ -36,7 +36,7 @@ class levelEditor.view.AssetExplorer extends levelEditor.Object
         asset = @assetListContainer.find("[name=asset]:checked")
         cell = @app.data.get("selected-cell")
 
-        @app.data.get("level-actors").placeActor(
+        @app.data.placeActor(
           dataTypes.ActorPosition.get(
             asset.attr("asset-id"),
             cell,

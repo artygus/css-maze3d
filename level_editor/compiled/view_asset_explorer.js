@@ -41,7 +41,7 @@
           var asset, cell;
           asset = _this.assetListContainer.find("[name=asset]:checked");
           cell = _this.app.data.get("selected-cell");
-          return _this.app.data.get("level-actors").placeActor(dataTypes.ActorPosition.get(asset.attr("asset-id"), cell, dataTypes.WorldDirection.N));
+          return _this.app.data.placeActor(dataTypes.ActorPosition.get(asset.attr("asset-id"), cell, dataTypes.WorldDirection.N));
         };
       })(this));
     };

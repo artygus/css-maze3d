@@ -17,6 +17,7 @@
     function Editor() {
       this.isCellSelectedWithActor = __bind(this.isCellSelectedWithActor, this);
       this.removeCell = __bind(this.removeCell, this);
+      this.placeActor = __bind(this.placeActor, this);
       this.logicUpdateSelectedCellOnModeChanged = __bind(this.logicUpdateSelectedCellOnModeChanged, this);
       this.init = __bind(this.init, this);
       Editor.__super__.constructor.apply(this, arguments);
@@ -44,6 +45,14 @@
           return _this.setIfUnequal("selected-cell", null);
         };
       })(this));
+    };
+
+    Editor.prototype.placeActor = function(actorpos) {
+      if (this.get("level-cells").isCellBelongs(actorpos.cell)) {
+        return this.get("level-actors").placeActor(actorpos);
+      } else {
+        throw "" + this.DT + ": cell " + actorpos.cell + " does not belongs to level";
+      }
     };
 
     Editor.prototype.removeCell = function(pos) {
