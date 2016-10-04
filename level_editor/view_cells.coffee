@@ -115,6 +115,10 @@ class levelEditor.view.Cells extends levelEditor.Object
     el = @s.getCellByXY(cell, @grid)
     el.toggleClass "actor-cell", actor?
 
+    cprefix = "-actor-direction-"
+    cl = Handy.jqRemoveClassByPart(el, cprefix)
+    el.attr class: cl + " " + cprefix + actor.dir.toLowerCase()
+
   # Redraw level
   redrawLevel: =>
     @grid.find("[cell].level-cell").removeClass "level-cell"

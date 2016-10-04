@@ -72,13 +72,28 @@ body {
 
 /* Actor cell */
 .actor-cell:before {
-  content: 'x';
   position: absolute;
   display: inline-block;
   text-align: center;
   width: 30px;
   height: 30px;
-  line-height: 30px;
+  line-height: 28px;
+}
+
+.-actor-direction-n:before {
+  content: '\2191';
+}
+
+.-actor-direction-w:before {
+  content: '\2190';
+}
+
+.-actor-direction-e:before {
+  content: '\2192';
+}
+
+.-actor-direction-s:before {
+  content: '\2193';
 }
 
 

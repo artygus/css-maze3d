@@ -160,10 +160,15 @@
     };
 
     Cells.prototype.drawActorCellState = function(cell) {
-      var actor, el;
+      var actor, cl, cprefix, el;
       actor = this.dLevelActors.getActorOnCell(cell);
       el = this.s.getCellByXY(cell, this.grid);
-      return el.toggleClass("actor-cell", actor != null);
+      el.toggleClass("actor-cell", actor != null);
+      cprefix = "-actor-direction-";
+      cl = Handy.jqRemoveClassByPart(el, cprefix);
+      return el.attr({
+        "class": cl + " " + cprefix + actor.dir.toLowerCase()
+      });
     };
 
     Cells.prototype.redrawLevel = function() {
