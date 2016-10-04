@@ -7,6 +7,8 @@ class gameLogic.actors.Dummy extends gameLogic.actors.AbstractActor
 
   MODEL: models.actors.Dummy
 
+  @ASSET_NAME: "dummy-actor"
+
   initState: =>
     @data.set "maxHealth", 50
     @data.set "currentHealth", 50

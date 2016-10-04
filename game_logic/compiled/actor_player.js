@@ -22,6 +22,8 @@
 
     Player.prototype.MODEL = models.actors.Player;
 
+    Player.ASSET_NAME = "player";
+
     Player.prototype.initState = function() {
       this.data.set("maxHealth", 200);
       return this.data.set("currentHealth", 200);

@@ -101,7 +101,7 @@
 
     ActorDirection.prototype.stateActor = function(apos) {
       this.enableWorldDirectionRadios();
-      this.setActorIdText("Actor#id");
+      this.setActorIdText(apos.actor);
       return this.checkRadioByDirection(apos.dir);
     };
 

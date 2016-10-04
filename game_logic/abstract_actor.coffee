@@ -6,6 +6,8 @@ class gameLogic.actors.AbstractActor extends gameLogic.Object
 
   @UID_KEY: "actor"
 
+  @ASSET_NAME: "abstract-actor"
+
   @AID_ATTACK: "attack"
   @AID_RECEIVE_DMG: "receive_dmg"
   @AID_DEAD: "dead"

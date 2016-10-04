@@ -14,6 +14,8 @@
 
     AbstractActor.UID_KEY = "actor";
 
+    AbstractActor.ASSET_NAME = "abstract-actor";
+
     AbstractActor.AID_ATTACK = "attack";
 
     AbstractActor.AID_RECEIVE_DMG = "receive_dmg";

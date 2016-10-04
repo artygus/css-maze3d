@@ -22,6 +22,8 @@
 
     Dummy.prototype.MODEL = models.actors.Dummy;
 
+    Dummy.ASSET_NAME = "dummy-actor";
+
     Dummy.prototype.initState = function() {
       this.data.set("maxHealth", 50);
       return this.data.set("currentHealth", 50);

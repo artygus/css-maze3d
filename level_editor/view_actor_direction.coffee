@@ -75,7 +75,7 @@ class levelEditor.view.ActorDirection extends levelEditor.Object
   # @param {dataTypes.ActorPosition} apos
   stateActor: (apos)=>
     @enableWorldDirectionRadios()
-    @setActorIdText("Actor#id")
+    @setActorIdText(apos.actor)
     @checkRadioByDirection(apos.dir)
 
   stateNoCellSelected: =>

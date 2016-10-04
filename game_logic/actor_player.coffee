@@ -8,6 +8,8 @@ class gameLogic.actors.Player extends gameLogic.actors.AbstractActor
 
   MODEL: models.actors.Player
 
+  @ASSET_NAME: "player"
+
   initState: =>
     @data.set "maxHealth", 200
     @data.set "currentHealth", 200
