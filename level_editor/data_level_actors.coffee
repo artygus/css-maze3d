@@ -20,9 +20,13 @@ class levelEditor.data.LevelActors extends chms.ard.AbstractReactiveData
 
   # @param {dataTypes.ActorPosition} actorpos
   updateActor: (actorpos)=>
-    if (i = @findActorIndexByPos(actorpos.cell)) > -1
+    @removeActor(actorpos.cell)
+    @placeActor(actorpos)
+
+  # @param {dataTypes.Pos} pos
+  removeActor: (pos)=>
+    if (i = @findActorIndexByPos(pos)) > -1
       @tarray.delete "actors", i
-      @placeActor(actorpos)
     else
       throw "#{@DT}: Actor not exist on a given cell #{actorpos.cell}"
 

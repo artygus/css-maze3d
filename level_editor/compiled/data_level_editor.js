@@ -16,6 +16,7 @@
 
     function Editor() {
       this.isCellSelectedWithActor = __bind(this.isCellSelectedWithActor, this);
+      this.removeCell = __bind(this.removeCell, this);
       this.logicUpdateSelectedCellOnModeChanged = __bind(this.logicUpdateSelectedCellOnModeChanged, this);
       this.init = __bind(this.init, this);
       Editor.__super__.constructor.apply(this, arguments);
@@ -43,6 +44,13 @@
           return _this.setIfUnequal("selected-cell", null);
         };
       })(this));
+    };
+
+    Editor.prototype.removeCell = function(pos) {
+      this.get("level-cells").removeCell(pos);
+      if (this.get("level-actors").isAnyActorOnCell(pos)) {
+        return this.get("level-actors").removeActor(pos);
+      }
     };
 
     Editor.prototype.isCellSelectedWithActor = function() {

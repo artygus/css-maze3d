@@ -47,8 +47,7 @@ class levelEditor.view.Cells extends levelEditor.Object
     stream
       .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_DESTROY)
       .filter((v)=> @dLevelCells.isCellBelongs(v.cell))
-      .onValue (v)=>
-        @dLevelCells.removeCell v.cell
+      .onValue (v)=> @app.data.removeCell v.cell
 
     stream
       .filter(=> @dUIModes.get("currentMode") == @dUIModes.s.MODE_BUILD)
@@ -88,6 +87,12 @@ class levelEditor.view.Cells extends levelEditor.Object
         actor = v.inserted
         @drawActorCellState(actor.cell)
 
+    $(@dLevelActors)
+      .asEventStream(@app.data.tarray.s.I_DATA_DELETED)
+      .filter((v)-> v.key == "actors")
+      .onValue (v)=>
+        actor = v.deleted
+        @drawActorCellState(actor.cell)
 
   # Draw current cell state
   # @param {dataTypes.Pos} cell
@@ -117,7 +122,8 @@ class levelEditor.view.Cells extends levelEditor.Object
 
     cprefix = "-actor-direction-"
     cl = Handy.jqRemoveClassByPart(el, cprefix)
-    el.attr class: cl + " " + cprefix + actor.dir.toLowerCase()
+    cl += " " + cprefix + actor.dir.toLowerCase() if actor?
+    el.attr class: cl
 
   # Redraw level
   redrawLevel: =>

@@ -34,6 +34,16 @@ class levelEditor.data.Editor extends chms.ard.AbstractReactiveData
       .onValue => @setIfUnequal "selected-cell", null
 
 
+  # section: Cells
+
+  # Remove cell from level
+  # @param {dataTypes.Pos} pos
+  removeCell: (pos)=>
+    @get("level-cells").removeCell(pos)
+
+    if @get("level-actors").isAnyActorOnCell(pos)
+      @get("level-actors").removeActor(pos)
+
   # section: Helpers
 
   # @return {Boolean}

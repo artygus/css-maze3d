@@ -16,6 +16,7 @@
       this.findActorIndexByPos = __bind(this.findActorIndexByPos, this);
       this.getActorOnCell = __bind(this.getActorOnCell, this);
       this.isAnyActorOnCell = __bind(this.isAnyActorOnCell, this);
+      this.removeActor = __bind(this.removeActor, this);
       this.updateActor = __bind(this.updateActor, this);
       this.placeActor = __bind(this.placeActor, this);
       this.init = __bind(this.init, this);
@@ -38,10 +39,14 @@
     };
 
     LevelActors.prototype.updateActor = function(actorpos) {
+      this.removeActor(actorpos.cell);
+      return this.placeActor(actorpos);
+    };
+
+    LevelActors.prototype.removeActor = function(pos) {
       var i;
-      if ((i = this.findActorIndexByPos(actorpos.cell)) > -1) {
-        this.tarray["delete"]("actors", i);
-        return this.placeActor(actorpos);
+      if ((i = this.findActorIndexByPos(pos)) > -1) {
+        return this.tarray["delete"]("actors", i);
       } else {
         throw "" + this.DT + ": Actor not exist on a given cell " + actorpos.cell;
       }

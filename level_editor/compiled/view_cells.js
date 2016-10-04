@@ -83,7 +83,7 @@
         };
       })(this)).onValue((function(_this) {
         return function(v) {
-          return _this.dLevelCells.removeCell(v.cell);
+          return _this.app.data.removeCell(v.cell);
         };
       })(this));
       return stream.filter((function(_this) {
@@ -128,12 +128,21 @@
       $(this.app.data).asEventStream(this.app.data.s.I_DATA_CHANGED).filter(function(v) {
         return v.key === "selected-cell";
       }).onValue(this.drawSelectedCellState);
-      return $(this.dLevelActors).asEventStream(this.app.data.tarray.s.I_DATA_INSERTED).filter(function(v) {
+      $(this.dLevelActors).asEventStream(this.app.data.tarray.s.I_DATA_INSERTED).filter(function(v) {
         return v.key === "actors";
       }).onValue((function(_this) {
         return function(v) {
           var actor;
           actor = v.inserted;
+          return _this.drawActorCellState(actor.cell);
+        };
+      })(this));
+      return $(this.dLevelActors).asEventStream(this.app.data.tarray.s.I_DATA_DELETED).filter(function(v) {
+        return v.key === "actors";
+      }).onValue((function(_this) {
+        return function(v) {
+          var actor;
+          actor = v.deleted;
           return _this.drawActorCellState(actor.cell);
         };
       })(this));
@@ -166,8 +175,11 @@
       el.toggleClass("actor-cell", actor != null);
       cprefix = "-actor-direction-";
       cl = Handy.jqRemoveClassByPart(el, cprefix);
+      if (actor != null) {
+        cl += " " + cprefix + actor.dir.toLowerCase();
+      }
       return el.attr({
-        "class": cl + " " + cprefix + actor.dir.toLowerCase()
+        "class": cl
       });
     };
 
