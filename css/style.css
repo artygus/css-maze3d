@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+}
+
+.viewport-container {
+  height: 100%;
+  background: black;
+}
+
+#viewport {
+  background: #000;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.black-wall {
+  background-color: black;
+  border: solid white;
+  border-width: 1px;
+  box-sizing: border-box;
+}
+
+.white-wall {
+}
