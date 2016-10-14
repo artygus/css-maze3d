@@ -1,0 +1,13 @@
+.ui-start-menu {
+  height: 100%;
+  text-align: center;
+  padding-top: 40px;
+  font-size: 33px;
+  font-family: "Times new roman";
+}
+
+.ui-start-menu a {
+  color: darkblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
