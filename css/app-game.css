@@ -1,0 +1,19 @@
+.app-game {
+
+}
+
+.app-game.-state-ui-main .viewport-container {
+  display: none;
+}
+
+.app-game.-state-ui-main .ui-main-menu {
+  display: block;
+}
+
+.app-game.-state-game-session .ui-main-menu {
+  display: none;
+}
+
+.app-game.-state-game-session .viewport-container {
+  display: block;  
+}

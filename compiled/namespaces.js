@@ -36,6 +36,8 @@
     actors: {}
   };
 
+  window.game = {};
+
   window.abstract = {};
 
 }).call(this);

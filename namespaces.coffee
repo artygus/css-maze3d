@@ -33,4 +33,6 @@ window.models = {
   actors: {}
 }
 
+window.game = {}
+
 window.abstract = {}
